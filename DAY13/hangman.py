@@ -1,11 +1,10 @@
 import random
 
-""""words_list = ["wood","ball","dog","cat","shit","complex"]
+words_list = ["wood","ball","dog","cat","shit","complex"]
 #words_list = ["dog","dog","dog","dog","dog","dog"]
 rand_Index = random.randint(0,5)
-"""
-words_list = input("Fjala: ")
-random_word = words_list[words_list]
+
+random_word = words_list[rand_Index]
 
 chances = 5
 

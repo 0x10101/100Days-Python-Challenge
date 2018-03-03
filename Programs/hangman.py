@@ -1,13 +1,11 @@
 """
 
-Version : 1.1
+Version 1.2
 
-Fixed bugs
-   -The letters that the user guesses are added in a list then printed
-
+Changes
+    -When a letter is guessed the user doesn't loose a chance
 
 """
-
 
 import random
 
@@ -45,6 +43,7 @@ while chances:
         chances -= 1
     if len(guess_Word) == 1:
         global indexCheck
+        global chances
         #print(indexCheck)
         for l in list(random_word):
             if guess_Word in list(random_word[indexCheck]):
@@ -52,6 +51,7 @@ while chances:
                 global guessed_number
                 global letters_List
                 print("You guessed a letter!")
+                chances += 1
                 guessed_number += 1
                 letters_List[indexCheck] = guess_Word
                 print(letters_List)

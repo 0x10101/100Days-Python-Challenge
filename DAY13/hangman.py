@@ -1,3 +1,12 @@
+"""
+
+Version 1.2
+
+Changes
+    -When a letter is guessed the user doesn't loose a chance
+
+"""
+
 import random
 
 words_list = ["wood","ball","dog","cat","shit","complex"]

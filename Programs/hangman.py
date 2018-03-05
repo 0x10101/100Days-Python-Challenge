@@ -1,15 +1,13 @@
 """
 
-Version 1.4
+Version 1.5
 
 Changes
-    -Added ASCII Art
+    -Commented the code a bit
+    -Removed unnessecary variable guessed_letter
 """
 
 import random
-
-#words_list = ["wood","ball","dog","cat","shit","complex"]
-#words_list = ["dog","dog","dog","dog","dog","dog"]
 
 hangman_art = """
     __  __ ___     _   __ ______ __  ___ ___     _   __
@@ -87,12 +85,15 @@ stages  = ['''
 
 
 file = open("random_words.txt", "r")
+#Make a list out of every word in file
 words = list(file.read().split())
 
+#Generate a random number for random_Index
+# use random_Index to pick a random word from the 'words' list
 rand_Index = random.randint(0,len(words))
-
 random_word = words[rand_Index]
 
+#Number of guesses the user can make
 chances = 10
 
 print(hangman_art)
@@ -101,16 +102,15 @@ print("--You have 5 guesses!--")
 print("--If you want to type a letter you can predict only the next letter!")
       
 #Testing purposes
-#print(random_word)
-guessed_letters = [list(random_word)[0]]
+print(random_word)
 guessed_number = 1
 randomMinusNumber = len(random_word) - guessed_number
-letters_Left = guessed_letters[0] + "_" * randomMinusNumber
+letters_Left = list(random_word)[0] + "_" * randomMinusNumber
 letters = letters_Left
 letters_List = list(letters)
 indexCheck = 1
 
-
+#Index for ASCII Hangman body art
 stages_index = 0
 
 while chances:
@@ -139,15 +139,17 @@ while chances:
                 chances += 1
                 guessed_number += 1
                 letters_List[indexCheck] = guess_Word
-                print(letters_List)
+                #print(letters_List)
                 indexCheck += 1
                 break
-            
+    #Check if the user guessed all the letters       
     if guessed_number == len(random_word):
         print("You guessed all the letters!")
         break
+    #Check if the user guessed the whole word
     if guess_Word == random_word:
         print("You guessed the word!")
         break
+    #Print chances left if user
     elif guess_Word != random_word:
         print("You have " + str(chances) + " chances left!")

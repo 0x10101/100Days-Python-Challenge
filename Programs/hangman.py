@@ -1,19 +1,23 @@
 """
 
-Version 1.2
+Version 1.3
 
 Changes
-    -When a letter is guessed the user doesn't loose a chance
-
+    -Made a txt file that contains random words and the program picks
+        a random one for the user to guess.
 """
 
 import random
 
-words_list = ["wood","ball","dog","cat","shit","complex"]
+#words_list = ["wood","ball","dog","cat","shit","complex"]
 #words_list = ["dog","dog","dog","dog","dog","dog"]
-rand_Index = random.randint(0,5)
 
-random_word = words_list[rand_Index]
+file = open("random_words.txt", "r")
+words = list(file.read().split())
+
+rand_Index = random.randint(0,len(words))
+
+random_word = words[rand_Index]
 
 chances = 5
 

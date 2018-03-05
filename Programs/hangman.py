@@ -1,16 +1,90 @@
 """
 
-Version 1.3
+Version 1.4
 
 Changes
-    -Made a txt file that contains random words and the program picks
-        a random one for the user to guess.
+    -Added ASCII Art
 """
 
 import random
 
 #words_list = ["wood","ball","dog","cat","shit","complex"]
 #words_list = ["dog","dog","dog","dog","dog","dog"]
+
+hangman_art = """
+    __  __ ___     _   __ ______ __  ___ ___     _   __
+   / / / //   |   / | / // ____//  |/  //   |   / | / /
+  / /_/ // /| |  /  |/ // / __ / /|_/ // /| |  /  |/ / 
+ / __  // ___ | / /|  // /_/ // /  / // ___ | / /|  /  
+/_/ /_//_/  |_|/_/ |_/ \____//_/  /_//_/  |_|/_/ |_/   
+
+ """
+
+stages  = ['''
+ =========''', '''
+       |
+       |
+       |
+       |
+       |
+ =========''', '''
+    +---+
+       |
+       |
+       |
+       |
+       |
+ =========''', '''
+   +---+
+   |   |
+       |
+       |
+       |
+       |
+ =========''', '''
+   +---+
+   |   |
+   O   |
+       |
+       |
+       |
+ =========''', '''
+   +---+
+   |   |
+   O   |
+   |   |
+       |
+       |
+ =========''', '''
+   +---+
+   |   |
+   O   |
+  /|   |
+       |
+       |
+ =========''', '''
+   +---+
+   |   |
+   O   |
+  /|\  |
+       |
+       |
+ =========''', '''
+   +---+
+   |   |
+   O   |
+  /|\  |
+  /    |
+       |
+=========''', '''
+   +---+
+   |   |
+   O   |
+  /|\  |
+  / \  |
+       |
+=========''']
+
 
 file = open("random_words.txt", "r")
 words = list(file.read().split())
@@ -19,8 +93,9 @@ rand_Index = random.randint(0,len(words))
 
 random_word = words[rand_Index]
 
-chances = 5
+chances = 10
 
+print(hangman_art)
 print("---Hangman Game---")
 print("--You have 5 guesses!--")
 print("--If you want to type a letter you can predict only the next letter!")
@@ -35,16 +110,22 @@ letters = letters_Left
 letters_List = list(letters)
 indexCheck = 1
 
+
+stages_index = 0
+
 while chances:
     print(str(letters_List))
     while True:
         try:
             guess_Word = str(input("Guess the word or a letter: "))
+            print(stages[stages_index])
             break
         except ValueError:
             print("Please don't enter integers or floating numbers!")
     if guess_Word:
         chances -= 1
+        stages_index += 1
+        
     if len(guess_Word) == 1:
         global indexCheck
         global chances

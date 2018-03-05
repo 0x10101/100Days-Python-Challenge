@@ -1,10 +1,12 @@
 """
 
-Version 1.5
+Version 1.6
 
 Changes
-    -Commented the code a bit
-    -Removed unnessecary variable guessed_letter
+    -Fixed a bug when the user typed the last letter in the last try but the
+         code printed "You lost!"
+    -If the user types the last letter then it passes on without printing
+        "You guessed a letter!" and prints "You guessed all the letters!"
 """
 
 import random
@@ -135,13 +137,17 @@ while chances:
                 print(l)
                 global guessed_number
                 global letters_List
-                print("You guessed a letter!")
                 chances += 1
                 guessed_number += 1
                 letters_List[indexCheck] = guess_Word
                 #print(letters_List)
                 indexCheck += 1
+                if guessed_number != len(random_word):
+                    print("You guessed a letter!")
                 break
+    if stages_index == 10 and guessed_number != len(random_word):
+        print("You lost!")
+        break
     #Check if the user guessed all the letters       
     if guessed_number == len(random_word):
         print("You guessed all the letters!")

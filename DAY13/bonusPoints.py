@@ -1,8 +1,9 @@
 """
 
 Developer : Gjergj Kadriu
-Version : 2.0
-Last Update : 02.03.2018
+Version : 1.1
+
+-Completed the program as the first version one worked only for 6th class.
 
 """
 
@@ -18,6 +19,7 @@ classes789 = ["Gjuhe Shqipe","Gjuhe Angleze","Matematike","Biologji","Fizike","H
 class_number = [7,8,9]
 classesAverage = []
 classes6789 = []
+
 
 def classesGrades(cls): # cls for classes6 or classes789
     global class_sum
@@ -53,9 +55,9 @@ def classf789():
     class_average = class_sum / float(len(classes789))
     classesAverage.append(class_average)
     #testing
-    print("class_average = " + str(class_average))
-    print("class_sum = " + str(class_sum))
-    print("len(classes789) = " + str(float(len(classes789))))
+    #print("class_average = " + str(class_average))
+    #print("class_sum = " + str(class_sum))
+    #print("len(classes789) = " + str(float(len(classes789))))
     ####
     print(str("C" + str(c) + " Average: " + str(class_average)))
     if len(classesAverage) == 4:
@@ -64,6 +66,8 @@ def classf789():
             classesAverage_sum += i
             bonusPoints = ( classesAverage_sum / 4 ) * 5
         print("---You'll get " + str(bonusPoints) + " bonus points!")
+
+print("Calculator for school grades"
 
 classf6()
 for c in class_number:

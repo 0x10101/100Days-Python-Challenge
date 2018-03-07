@@ -1,10 +1,10 @@
 """
 
-Version 1.7
+Version 1.8
 
-Changes
-    -If the user guesses the word or a letter the next stage won't show
-       and he won't lose any chances.
+Changes:
+    -The user can guess any letter from the list not only the next one
+    -The whole word is printed when the user guesses all the letters or the word
 """
 
 import random
@@ -99,8 +99,8 @@ chances = 10
 print(hangman_art)
 print("---Hangman Game---")
 print("--You have 5 guesses!--")
-print("--If you want to type a letter you can predict only the next letter!")
-      
+
+ 
 #Testing purposes
 print(random_word)
 guessed_number = 1
@@ -118,7 +118,8 @@ while chances:
     while True:
         try:
             guess_Word = str(input("Guess the word or a letter: "))
-            print(stages[stages_index])
+            if stages_index < 10:
+                print(stages[stages_index])
             break
         except ValueError:
             print("Please don't enter integers or floating numbers!")
@@ -127,9 +128,27 @@ while chances:
     #    stages_index += 1
         
     if len(guess_Word) == 1:
+        indexCheck = 0
         global indexCheck
         global chances
         #print(indexCheck)
+        while indexCheck <= len(random_word) - 1:
+            if guess_Word in list(random_word[indexCheck]):
+                print("Guess word" + guess_Word)
+                print("Index Check " + str(indexCheck))
+                global guessed_number
+                global letters_List
+                chances += 1
+                guessed_number += 1
+                letters_List[indexCheck] = guess_Word
+                #print(letters_List)
+                if guessed_number != len(random_word):
+                    print("You guessed a letter!")
+                if indexCheck == len(random_word) - 1:
+                    break
+            indexCheck += 1
+
+        """
         for l in list(random_word):
             if guess_Word in list(random_word[indexCheck]):
                 print(l)
@@ -139,13 +158,13 @@ while chances:
                 guessed_number += 1
                 letters_List[indexCheck] = guess_Word
                 #print(letters_List)
-                indexCheck += 1
                 if guessed_number != len(random_word):
                     print("You guessed a letter!")
-                break
-            else:
-                chances -= 1
-                stages_index += 1
+                if indexCheck == len(random_word) - 1:
+                    break
+            indexCheck += 1
+        """
+            
     if guess_Word != random_word and guess_Word not in list(random_word):
         chances -= 1
         stages_index += 1
@@ -154,10 +173,12 @@ while chances:
         break
     #Check if the user guessed all the letters       
     if guessed_number == len(random_word):
+        print(str(letters_List))
         print("You guessed all the letters!")
         break
     #Check if the user guessed the whole word
     if guess_Word == random_word:
+        print(str(letters_List))
         print("You guessed the word!")
         break
     #Print chances left if user

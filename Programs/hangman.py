@@ -1,22 +1,20 @@
 """
 
-Version 1.6
+Version 1.7
 
 Changes
-    -Fixed a bug when the user typed the last letter in the last try but the
-         code printed "You lost!"
-    -If the user types the last letter then it passes on without printing
-        "You guessed a letter!" and prints "You guessed all the letters!"
+    -If the user guesses the word or a letter the next stage won't show
+       and he won't lose any chances.
 """
 
 import random
 
 hangman_art = """
-    __  __ ___     _   __ ______ __  ___ ___     _   __/n
-   / / / //   |   / | / // ____//  |/  //   |   / | / //n
-  / /_/ // /| |  /  |/ // / __ / /|_/ // /| |  /  |/ / /n
- / __  // ___ | / /|  // /_/ // /  / // ___ | / /|  /  /n
-/_/ /_//_/  |_|/_/ |_/ \____//_/  /_//_/  |_|/_/ |_/   /n
+    __  __ ___     _   __ ______ __  ___ ___     _   __
+   / / / //   |   / | / // ____//  |/  //   |   / | / /
+  / /_/ // /| |  /  |/ // / __ / /|_/ // /| |  /  |/ / 
+ / __  // ___ | / /|  // /_/ // /  / // ___ | / /|  /  
+/_/ /_//_/  |_|/_/ |_/ \____//_/  /_//_/  |_|/_/ |_/   
 
  """
 
@@ -124,9 +122,9 @@ while chances:
             break
         except ValueError:
             print("Please don't enter integers or floating numbers!")
-    if guess_Word:
-        chances -= 1
-        stages_index += 1
+    #if guess_Word:
+    #    chances -= 1
+    #    stages_index += 1
         
     if len(guess_Word) == 1:
         global indexCheck
@@ -145,6 +143,12 @@ while chances:
                 if guessed_number != len(random_word):
                     print("You guessed a letter!")
                 break
+            else:
+                chances -= 1
+                stages_index += 1
+    if guess_Word != random_word and guess_Word not in list(random_word):
+        chances -= 1
+        stages_index += 1
     if stages_index == 10 and guessed_number != len(random_word):
         print("You lost!")
         break
@@ -159,3 +163,4 @@ while chances:
     #Print chances left if user
     elif guess_Word != random_word:
         print("You have " + str(chances) + " chances left!")
+    

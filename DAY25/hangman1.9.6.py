@@ -1,6 +1,7 @@
 """
 Version 1.9.6
 Changes:
+    -Handles FileNotFoundError for random_words.txt
     - When the user for example enters "e" for the words 'Indepedent':
         instead of printing every time the program finds the letter and print the list like this
         You guessed a letter!
@@ -13,6 +14,9 @@ Changes:
               instead it prints this:
           You guessed a letter!
           ['I', '_', '_', 'e', '_', 'e', '_', '_', 'e', '_', '_']
+    -Fixed a bug where the functio pickWord() could generate an index out of range for
+            words[index]
+    
 To-Do:
     -Redesign the code... what was I thinking when using so much global
        variable wtf -_-

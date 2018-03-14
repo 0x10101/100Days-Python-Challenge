@@ -1,13 +1,21 @@
 """
 Version 1.9.6
 Changes:
-    -Handles FileNotFoundError for random_words.txt
-          
-
+    - When the user for example enters "e" for the words 'Indepedent':
+        instead of printing every time the program finds the letter and print the list like this
+        You guessed a letter!
+        ['I', '_', '_', 'e', '_', '_', '_', '_', '_', '_', '_']
+        You guessed a letter!
+        ['I', '_', '_', 'e', '_', 'e', '_', '_', '_', '_', '_']
+        You guessed a letter!
+        ['I', '_', '_', 'e', '_', 'e', '_', '_', 'e', '_', '_']
+        
+              instead it prints this:
+          You guessed a letter!
+          ['I', '_', '_', 'e', '_', 'e', '_', '_', 'e', '_', '_']
 To-Do:
     -Redesign the code... what was I thinking when using so much global
        variable wtf -_-
-
     
 """
 
@@ -107,7 +115,7 @@ def pickWord():
     global random_word
     #Pick a random number for random_Index
     # use random_Index to pick a random word from the 'words' list
-    rand_Index = random.randint(0,len(words))
+    rand_Index = random.randint(0,len(words)-1)
     random_word = words[rand_Index].title()
     #Number of guesses the user can make
 
@@ -196,9 +204,9 @@ while playing:
         print(*tried_Letters, sep=", ")
         if len(guess_Word) == 1:
             indexCheck = 0
+            sameLetter = False
             #global indexCheck
             #global chances
-            print("(Testing) The word is :" + random_word)
             while indexCheck <= len(random_word) - 1:
                 if guess_Word in list(random_word[indexCheck]):
                     #global guessed_number
@@ -210,12 +218,12 @@ while playing:
                     if guess_Word not in tried_Letters:
                         guessed_number += 1
                     letters_List[indexCheck] = guess_Word
-                    print(letters_List)
                     tried_LettersMinusLast = tried_Letters
-                    if guessed_number != len(random_word) and guess_Word not in tried_Letters[:-1] and guess_Word == tried_Letters[-1]:
+                    if not sameLetter and guessed_number != len(random_word) and guess_Word not in tried_Letters[:-1] and guess_Word == tried_Letters[-1]:
                         print("You guessed a letter!")
                     if indexCheck == len(random_word) - 1:
                         break
+                    sameLetter = True
                 indexCheck += 1
             if guess_Word in tried_Letters[:-1]:
                 print("You've already guessed that letter!")
@@ -232,4 +240,3 @@ while playing:
             print(str(letters_List))
             print("You guessed all the letters!")
             askPlay()
-        

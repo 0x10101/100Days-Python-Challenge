@@ -4,6 +4,7 @@ Changes:
     -Added "Successfully registered" and "Username or Password is wrong!"
     -login() runs until the user enter's correct username,password and is
               logged in
+    -The user can use /logout to log out of the current account
 
 To-Do:
     -Redesign the code... what was I thinking when using so much global
@@ -300,22 +301,24 @@ def guessed_all_letters():
         askPlay()
 
 def login():
-    username = str(input("Username: ")).lower()
-    password = str(input("Password: ")).lower()
-    conn = sqlite3.connect("database.db")
-    c = conn.cursor()
-    access = [False,0,"","",0]
-    for account in c.execute("SELECT * from accounts"):
-        #Prints username and password for every row in account table
-        #print(account[1],account[2])
-        if username == account[1] and password == account[2]:
-            #accounts[3] is the score
-            print(account[3])
-            access = [True,account[0],account[1],account[2],account[3]]
-    if access[0]:
-        print("Logged in successfully!")
-    else:
-        print("Username or Password is wrong!")
+    while True:
+        username = str(input("Username: ")).lower()
+        password = str(input("Password: ")).lower()
+        conn = sqlite3.connect("database.db")
+        c = conn.cursor()
+        access = [False,0,"","",0]
+        for account in c.execute("SELECT * from accounts"):
+            #Prints username and password for every row in account table
+            #print(account[1],account[2])
+            if username == account[1] and password == account[2]:
+                #accounts[3] is the score
+                print(account[3])
+                access = [True,account[0],account[1],account[2],account[3]]
+        if access[0]:
+            print("Logged in successfully!")
+            break
+        else:
+            print("Username or Password is wrong!")
     print(access)
     return access        
 
@@ -333,76 +336,83 @@ generateList()
 stages_index = 0
 playing = True
 
+logged_in = login()
 
-while True:
-    logged_in = login()
-    if logged_in[0] == True:
-        break
-
-while logged_in[0]:
-    while playing:
-        while chances:
-            print("The word is {}".format(random_word))
+while logged_in[0] and chances:
+    print("""
+    /logout to log out of your account
+    /exit to exit the program
+    /score to see your score
+    /help to show these cmd options
+    """)
+    print("The word is {}".format(random_word))
+    print(str(letters_List))
+    while True:
+        try:
+            guess_Word = str(input("Guess the word or a letter: ")).lower().strip()
+            if guess_Word == "/logout":
+                logged_in[0] = False
+                print("Logged out successfully!")
+                break
+            if stages_index < 10:
+                print(stages[stages_index])
+                break
+            #if guess_Word in list(string.ascii_letters):
+            #    break
+            #else:
+            #    print("Only letters (from english vocabulary) please!")
+        except ValueError:
+            print("Please don't enter integers or floating numbers!")
+    if logged_in[0]:
+        if guess_Word: #not in tried_Letters   
+            tried_Letters.append(guess_Word)
+        #Testing purposes print(len(guess_Word))
+        
+        #Check if the user guessed the whole word
+        if guess_Word == random_word.lower():
             print(str(letters_List))
-            while True:
-                try:
-                    guess_Word = str(input("Guess the word or a letter: ")).lower().strip()
-                    if stages_index < 10:
-                        print(stages[stages_index])
+            print("You guessed the word!")
+            askPlay()
+        
+        print("Words/Letters you've already tried: ")
+        print(*tried_Letters, sep=", ")
+        if len(guess_Word) == 1:
+            indexCheck = 0
+            sameLetter = False
+            #global indexCheck
+            #global chances
+            while indexCheck <= len(random_word) - 1:
+                if guess_Word in list(random_word[indexCheck]):
+                    #global guessed_number
+                    #global letters_List
+                    #global tried_Letters
+                    #Testing purposes
+                    #print("Guess word- " + guess_Word)
+                    #print("Index Check " + str(indexCheck))
+                    if guess_Word not in tried_Letters:
+                        guessed_number += 1
+                    letters_List[indexCheck] = guess_Word
+                    tried_LettersMinusLast = tried_Letters
+                    if not sameLetter and guessed_number != len(random_word) and guess_Word not in tried_Letters[:-1] and guess_Word == tried_Letters[-1]:
+                        print("You guessed a letter!")
+                    if indexCheck == len(random_word) - 1:
                         break
-                    #if guess_Word in list(string.ascii_letters):
-                    #    break
-                    #else:
-                    #    print("Only letters (from english vocabulary) please!")
-                except ValueError:
-                    print("Please don't enter integers or floating numbers!")
-            if guess_Word: #not in tried_Letters   
-                tried_Letters.append(guess_Word)
-            #Testing purposes print(len(guess_Word))
-            
-            #Check if the user guessed the whole word
-            if guess_Word == random_word.lower():
-                print(str(letters_List))
-                print("You guessed the word!")
-                askPlay()
-            
-            print("Words/Letters you've already tried: ")
-            print(*tried_Letters, sep=", ")
-            if len(guess_Word) == 1:
-                indexCheck = 0
-                sameLetter = False
-                #global indexCheck
-                #global chances
-                while indexCheck <= len(random_word) - 1:
-                    if guess_Word in list(random_word[indexCheck]):
-                        #global guessed_number
-                        #global letters_List
-                        #global tried_Letters
-                        #Testing purposes
-                        #print("Guess word- " + guess_Word)
-                        #print("Index Check " + str(indexCheck))
-                        if guess_Word not in tried_Letters:
-                            guessed_number += 1
-                        letters_List[indexCheck] = guess_Word
-                        tried_LettersMinusLast = tried_Letters
-                        if not sameLetter and guessed_number != len(random_word) and guess_Word not in tried_Letters[:-1] and guess_Word == tried_Letters[-1]:
-                            print("You guessed a letter!")
-                        if indexCheck == len(random_word) - 1:
-                            break
-                        sameLetter = True
-                    indexCheck += 1
-                if guess_Word in tried_Letters[:-1]:
-                    print("You've already guessed that letter!")
-                  
-            if guess_Word != random_word and guess_Word not in list(random_word):
-                chances -= 1
-                stages_index += 1
-            if stages_index == 10 and guessed_number != len(random_word):
-                print("The word was: " + random_word)
-                print(gameOver_art)
-                sys.exit()
-            #Check if the user guessed all the letters       
-            if guessed_number == len(random_word) or letters_List == list(random_word):
-                print(str(letters_List))
-                print("You guessed all the letters!")
-                askPlay()
+                    sameLetter = True
+                indexCheck += 1
+            if guess_Word in tried_Letters[:-1]:
+                print("You've already guessed that letter!")
+              
+        if guess_Word != random_word and guess_Word not in list(random_word):
+            chances -= 1
+            stages_index += 1
+        if stages_index == 10 and guessed_number != len(random_word):
+            print("The word was: " + random_word)
+            print(gameOver_art)
+            sys.exit()
+        #Check if the user guessed all the letters       
+        if guessed_number == len(random_word) or letters_List == list(random_word):
+            print(str(letters_List))
+            print("You guessed all the letters!")
+            askPlay()
+    else:
+        logged_in = login()

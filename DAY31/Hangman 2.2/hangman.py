@@ -20,6 +20,8 @@ To-Do:
         (Commented until fixed)
     -Fix bug "When user enters a uppercase letter it added stages_index +1
        even when the letter is in the word
+
+    -Fix those bugs (To my self.morning forgive me for programming this late)
     
 """
 
@@ -270,6 +272,9 @@ def generateList():
     letters = letters_Left
     letters_List = list(letters)
 
+value = {"chances":10,"guess_Word":"","indexCheck":1,"guessed_Letter":[],
+         "tried_Letters":[]}
+
 def restart():
     print("Restarting...")
     global chances
@@ -334,6 +339,7 @@ def login():
     print(access)
     return access
 
+
 def register():
     while True:
         print("Register an account!")
@@ -351,7 +357,9 @@ def register():
         print("Account successfully registered. Please log in!")
         login()
         break
-        
+
+def restartTest():
+    pass
 
 """Commented until fixed!
 def updateAccount():
@@ -449,46 +457,49 @@ while logged_in[0] and chances:
         except ValueError:
             print("Please don't enter integers or floating numbers!")
     if logged_in[0]:
-        if guess_Word and guess_Word not in cmdOptions : #not in tried_Letters (removed)  
-            tried_Letters.append(guess_Word)
+        if value[guess_Word] and value[guess_Word] not in cmdOptions: #not in tried_Letters (removed)  
+            tried_Letters.append(value[guess_Word])
         #Testing purpose print(len(guess_Word))
 
         #Check if the user guessed the whole word
-        if guess_Word == random_word.lower():
+        if value[guess_Word] == random_word.lower():
             print(str(letters_List))
             print("You guessed the word!")
             earnedPoints = 100 * len(random_word)
             logged_in[4] = logged_in[4] + earnedPoints
             print("You guessed all the letters and earned {} points!".format(earnedPoints))
             earnedPoints = 0
-            askPlay()
-        
+            #askPlay()
+            restartTest()
+            pickWord()
+            generateList()
+            
         print("Words/Letters you've already tried: ")
         print(*tried_Letters, sep=", ")
-        if len(guess_Word) == 1:
-            indexCheck = 0
+        if len(value[guess_Word]) == 1:
+            value[indexCheck] = 0
             sameLetter = False
-            while indexCheck <= len(random_word) - 1:
-                if guess_Word in list(random_word[indexCheck]):
+            while valie[indexCheck] <= len(random_word) - 1:
+                if value[guess_Word] in list(random_word[indexCheck]):
                     #Testing purposes
                     #print("Guess word- " + guess_Word)
                     #print("Index Check " + str(indexCheck))
-                    if guess_Word not in tried_Letters:
+                    if value[guess_Word] not in value[tried_Letters]:
                         guessed_number += 1
-                    letters_List[indexCheck] = guess_Word
-                    tried_LettersMinusLast = tried_Letters
-                    if not sameLetter and guessed_number != len(random_word) and guess_Word not in tried_Letters[:-1] and guess_Word == tried_Letters[-1]:
+                    letters_List[value[indexCheck]] = guess_Word
+                    tried_LettersMinusLast = value[tried_Letters]
+                    if not sameLetter and value[guessed_number] != len(random_word) and value[guess_Word] not in value[tried_Letters][:-1] and value[guess_Word] == value[tried_Letters][-1]:
                         print("You guessed a letter!")
-                    if indexCheck == len(random_word) - 1:
+                    if value[indexCheck] == len(random_word) - 1:
                         break
                     sameLetter = True
-                indexCheck += 1
-            if guess_Word in tried_Letters[:-1]:
+                value[indexCheck] += 1
+            if value[guess_Word] in value[tried_Letters][:-1]:
                 print("You've already guessed that letter!")
               
-        if guess_Word != random_word and guess_Word not in list(random_word):
+        if value[guess_Word] != random_word and value[guess_Word] not in list(random_word):
             if guess_Word not in cmdOptions:
-                chances -= 1
+                value[chances] -= 1
                 stages_index += 1
         if stages_index == 10 and guessed_number != len(random_word):
             print("The word was: " + random_word)
@@ -501,7 +512,10 @@ while logged_in[0] and chances:
             logged_in[4] = logged_in[4] + earnedPoints
             print("You guessed all the letters and earned {} points!".format(earnedPoints))
             earnedPoints = 0
-            askPlay()
+            #askPlay()
+            restartTest()
+            pickWord()
+            generateList()
     else:
         logged_in = login()
 

@@ -13,7 +13,8 @@ Changes:
     -Created createDatabase() to check if database.py exists/has accounts
            TABLE and if it doesn't then it creates it
     -Created insertAccount(user,passw) for register()
-    -Doesn't allow to /register with an taken username
+    -100 * len(random_word) instead of 100 * len(guess_Word)
+    -Score is saved on database now
     -Organized the code
     
 
@@ -276,9 +277,12 @@ while logged_in[0] and chances:
         if guess_Word == random_word.lower():
             print(str(letters_List))
             print("You guessed the word!")
-            earnedPoints = 100 * len(guess_Word)
+            earnedPoints = 100 * len(random_word)
             logged_in[4] = logged_in[4] + earnedPoints
             print("You guessed all the letters and earned {} points!".format(earnedPoints))
+            database.addScore(logged_in[4],logged_in[2])
+            print(logged_in[4],logged_in[2])
+            print(logged_in)
             earnedPoints = 0
             askPlay()
         
@@ -316,10 +320,11 @@ while logged_in[0] and chances:
         #Check if the user guessed all the letters       
         if guessed_number == len(random_word) or letters_List == list(random_word):
             print(str(letters_List))
-            earnedPoints = 100 * len(guess_Word)
+            earnedPoints = 100 * len(random_word)
             logged_in[4] = logged_in[4] + earnedPoints
             print("You guessed all the letters and earned {} points!".format(earnedPoints))
             earnedPoints = 0
+            database.addScore(logged_in[4],logged_in[2])
             askPlay()
     else:
         logged_in = login_system.login()

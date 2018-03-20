@@ -13,6 +13,7 @@ Changes:
     -Created createDatabase() to check if database.py exists/has accounts
            TABLE and if it doesn't then it creates it
     -Created insertAccount(user,passw) for register()
+    -Doesn't allow to /register with an taken username
     -Organized the code
     
 

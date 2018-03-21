@@ -15,6 +15,9 @@ Changes:
     -Created insertAccount(user,passw) for register()
     -100 * len(random_word) instead of 100 * len(guess_Word)
     -Score is saved on database now
+    -The programs runs database.showScoreboard when cmd option /scoreboard is
+         entered.
+    -Created hidden cmd option /value to print out "value" dict
     -Organized the code
     
 
@@ -142,18 +145,15 @@ def generateList():
     letters = letters_Left
     letters_List = list(letters)
 
-def restart():
+def restart(dict_):
     print("Restarting...")
-    global chances
-    global guess_Word
-    global guessed_Letters
-    global tried_Letters
-    guess_Word = ""
+    dict_["guess_Word"]
     pickWord()
-    chances = 10
-    indexCheck = 1
-    guessed_Letters = []
-    tried_Letters = []
+    dict_["chances"] = 10
+    dict_["indexCheck"] = ""
+    dict_["guessed_Letters"] = []
+    dict_["tried_Letters"]  = []
+    return dict_
 
 def askPlay():
     global play
@@ -161,7 +161,6 @@ def askPlay():
     while True:
         play = input("Want to continue? y/N: ").lower().strip()
         if play == "y":
-            restart()
             generateList()
             stages_index = 0
         elif play == "n":
@@ -175,21 +174,7 @@ def guessed_all_letters():
         print(str(letters_List))
         print("You guessed all the letters!")
         askPlay()
-
         
-
-"""Commented until fixed!
-def updateAccount():
-    conn = sqlite3.connect("database.db")
-    c = conn.cursor()
-    print(logged_in)
-    c.execute("UPDATE accounts SET score=logged_in[3] WHERE name=logged_in[1]")
-    print(logged_in)
-    c.close()
-    print(logged_in)
-"""
-        
-
 
 def showHelp():
     if logged_in[0] == True:
@@ -200,16 +185,13 @@ def showHelp():
         /score to see your score
         /help to show these cmd options
         /account to show your account info
+        /scoreboard to show Scoreboard
         """)
     else:
         print("""
         /register to create an account if you don't have one already
         """)
 
-
-
-tried_Letters = []
-chances = 10
 
 print(hangman_art)
 
@@ -228,36 +210,43 @@ database.createDatabase()
 logged_in = login_system.login()
 showHelp()
 
-cmdOptions = ["/help","/exit","/score","/logout","/profile",
-				"/account","/register","/printword"]
-while logged_in[0] and chances:
+value = {"chances":10,"guess_Word":"","guesed_Letters":[],"tried_Letters":[]}
+
+cmdOptions = ["/help","/exit","/score","/logout","/profile","/scoreboard",
+				"/account","/register","/printword","/value"]
+while logged_in[0] and value["chances"]:
     #print("The word is {}".format(random_word))
     print(str(letters_List))
     #updateAccount()
     while True:
         try:
-            guess_Word = input("Guess the word or a letter: ").lower().strip()
-            if guess_Word == "/logout":
+            value["guess_Word"] = input("Guess the word or a letter: ").lower().strip()
+            if value["guess_Word"] == "/logout":
                 logged_in[0] = False
                 print("Logged out successfully!")
                 break
-            elif guess_Word == "/help":
+            elif value["guess_Word"] == "/help":
                 showHelp()
-            elif guess_Word == "/exit":
+            elif value["guess_Word"] == "/exit":
                 print("Any data that hasn't been saved will be erased!")
                 permission = input("Are you sure you want to continue?Y/n :")
                 if permission.lower() == "y":
                     sys.exit()
-            elif guess_Word == "/score":
+            elif value["guess_Word"] == "/score":
                 print("Your score is {}".format(logged_in[4]))
-            elif guess_Word == "/account":
+            elif value["guess_Word"] == "/account":
                 login_system.accountInfo(logged_in[1],logged_in[2],
                                          "*" * len(logged_in[3]),logged_in[4])
-            elif guess_Word == "/register":
+            elif value["guess_Word"] == "/register":
                 print("You can't create an account while logged in!")
+            elif value["guess_Word"] == "/scoreboard":
+                database.showScoreboard()
             #hidden cmd option
-            elif guess_Word == "/printword":
+            elif value["guess_Word"] == "/printword":
                 print("The word you have to guess is {} ...".format(random_word))
+            elif value["guess_Word"] == "/value":
+                print(value)
+            ##############
             if stages_index < 10:
                 print(stages[stages_index])
                 break
@@ -269,12 +258,12 @@ while logged_in[0] and chances:
         except ValueError:
             print("Please don't enter integers or floating numbers!")
     if logged_in[0]:
-        if guess_Word and guess_Word not in cmdOptions : #not in tried_Letters (removed)  
-            tried_Letters.append(guess_Word)
+        if value["guess_Word"] and value["guess_Word"] not in cmdOptions : #not in tried_Letters (removed)  
+            value["tried_Letters"].append(value["guess_Word"])
         #Testing purposes print(len(guess_Word))
         
         #Check if the user guessed the whole word
-        if guess_Word == random_word.lower():
+        if value["guess_Word"] == random_word.lower():
             print(str(letters_List))
             print("You guessed the word!")
             earnedPoints = 100 * len(random_word)
@@ -284,34 +273,37 @@ while logged_in[0] and chances:
             print(logged_in[4],logged_in[2])
             print(logged_in)
             earnedPoints = 0
+            value = restart(value)
             askPlay()
         
         print("Words/Letters you've already tried: ")
-        print(*tried_Letters, sep=", ")
-        if len(guess_Word) == 1:
+        print(*value["tried_Letters"], sep=", ")
+        if len(value["guess_Word"]) == 1:
             indexCheck = 0
             sameLetter = False
             while indexCheck <= len(random_word) - 1:
-                if guess_Word in list(random_word[indexCheck]):
+                if value["guess_Word"] in list(random_word[indexCheck]):
                     #Testing purposes
                     #print("Guess word- " + guess_Word)
                     #print("Index Check " + str(indexCheck))
-                    if guess_Word not in tried_Letters:
+                    if value["guess_Word"] not in value["tried_Letters"]:
                         guessed_number += 1
-                    letters_List[indexCheck] = guess_Word
-                    tried_LettersMinusLast = tried_Letters
-                    if not sameLetter and guessed_number != len(random_word) and guess_Word not in tried_Letters[:-1] and guess_Word == tried_Letters[-1]:
-                        print("You guessed a letter!")
+                    letters_List[indexCheck] = value["guess_Word"]
+                    tried_LettersMinusLast = value["tried_Letters"]
+                    if not sameLetter and guessed_number != len(random_word):
+                        if value["guess_Word"] not in value["tried_Letters"][:-1]:
+                            if value["guess_Word"] == value["tried_Letters"][-1]:
+                                print("You guessed a letter!")
                     if indexCheck == len(random_word) - 1:
                         break
                     sameLetter = True
                 indexCheck += 1
-            if guess_Word in tried_Letters[:-1]:
+            if value["guess_Word"] in value["tried_Letters"][:-1]:
                 print("You've already guessed that letter!")
               
-        if guess_Word != random_word and guess_Word not in list(random_word):
-            if guess_Word not in cmdOptions:
-                chances -= 1
+        if value["guess_Word"] != random_word and value["guess_Word"] not in list(random_word):
+            if value["guess_Word"] not in cmdOptions:
+                value["chances"] -= 1
                 stages_index += 1
         if stages_index == 10 and guessed_number != len(random_word):
             print("The word was: " + random_word)
@@ -325,6 +317,7 @@ while logged_in[0] and chances:
             print("You guessed all the letters and earned {} points!".format(earnedPoints))
             earnedPoints = 0
             database.addScore(logged_in[4],logged_in[2])
+            value = restart(value)
             askPlay()
     else:
         logged_in = login_system.login()

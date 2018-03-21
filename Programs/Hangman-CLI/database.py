@@ -1,3 +1,5 @@
+#Created showScoreboard() function
+
 import sqlite3
 
 
@@ -40,5 +42,11 @@ def addScore(currentScore,addScore):
             WHERE username = ? """, (currentScore,addScore))
         db.commit()
         db.close()
-                
 
+def showScoreboard():
+        db = sqlite3.connect("database.db")
+        cursor = db.cursor()
+        for account in cursor.execute("SELECT * from accounts"):
+                print("{} Score --> {}".format(account[1],account[3]))
+        db.commit()
+        db.close()

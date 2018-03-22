@@ -21,6 +21,9 @@ Changes:
     -Doesn't ask "Want to continue? y/N: " anymore
     -Fixed bug where stages_index was used instead of value["stages_index"]
        accidentally unnoticed which introduced some unusual behavior
+    -Created /staged_index and /logged_in hidden cmd option
+    -Prints youWon_art when the user guessed the word 
+    -
     
 
 To-Do:
@@ -195,6 +198,39 @@ def showHelp():
         /register to create an account if you don't have one already
         """)
 
+def checkOption(loggedIn,guess_Word):
+    if guess_Word == "/logout":
+        loggedIn = False
+        print("Logged out successfully!")
+    elif guess_Word == "/help":
+        showHelp()
+    elif guess_Word == "/exit":
+        print("Any data that hasn't been saved will be erased!")
+        permission = input("Are you sure you want to continue?Y/n :")
+        if permission.lower() == "y":
+            sys.exit()
+    elif guess_Word == "/score":
+        print("Your score is {}".format(logged_in[4]))
+    elif guess_Word == "/account":
+        login_system.accountInfo(logged_in[1],logged_in[2],
+                                 "*" * len(logged_in[3]),logged_in[4],logged_in[5])
+    elif guess_Word == "/register":
+        print("You can't create an account while logged in!")
+    elif guess_Word == "/scoreboard":
+        database.showScoreboard()
+    elif guess_Word == "/deleteaccount":
+        logged_in[0] = database.deleteAccount(logged_in[1])
+    #hidden cmd option
+    elif guess_Word == "/printword":
+        print("The word you have to guess is {} ...".format(random_word))
+    elif guess_Word == "/value":
+        print(value)
+    elif guess_Word == "/stages_index":
+        print("value['stages_index'] = {}".format(value["stages_index"]))
+    elif guess_Word == "/logged_in":
+        print("logged_in = {}".format(logged_in))
+    ##############
+    return loggedIn
 
 print(hangman_art)
 
@@ -215,9 +251,9 @@ showHelp()
 value = {"chances":10,"guess_Word":"","guesed_Letters":[],
                       "tried_Letters":[],"stages_index":0}
 
-cmdOptions = ["/help","/exit","/score","/logout","/profile","/scoreboard",
-				"/account","/register","/printword",
-                                "/value","/deleteaccount"]
+cmdOptions_list = ["/help","/exit","/score","/logout","/profile","/scoreboard",
+				          "/account","/register","/printword","/stages_index",
+                              "/logged_in","/value","/deleteaccount"]
 while logged_in[0] and value["chances"]:
     #print("The word is {}".format(random_word))
     print(str(letters_List))
@@ -225,38 +261,9 @@ while logged_in[0] and value["chances"]:
     while True:
         try:
             value["guess_Word"] = input("Guess the word or a letter: ").lower().strip()
-            if value["guess_Word"] == "/logout":
-                logged_in[0] = False
-                print("Logged out successfully!")
-                break
-            elif value["guess_Word"] == "/help":
-                showHelp()
-            elif value["guess_Word"] == "/exit":
-                print("Any data that hasn't been saved will be erased!")
-                permission = input("Are you sure you want to continue?Y/n :")
-                if permission.lower() == "y":
-                    sys.exit()
-            elif value["guess_Word"] == "/score":
-                print("Your score is {}".format(logged_in[4]))
-            elif value["guess_Word"] == "/account":
-                login_system.accountInfo(logged_in[1],logged_in[2],
-                                         "*" * len(logged_in[3]),logged_in[4],logged_in[5])
-            elif value["guess_Word"] == "/register":
-                print("You can't create an account while logged in!")
-            elif value["guess_Word"] == "/scoreboard":
-                database.showScoreboard()
-            elif value["guess_Word"] == "/deleteaccount":
-                logged_in[0] = database.deleteAccount(logged_in[1])
-            #hidden cmd option
-            elif value["guess_Word"] == "/printword":
-                print("The word you have to guess is {} ...".format(random_word))
-            elif value["guess_Word"] == "/value":
-                print(value)
-            elif value["guess_Word"] == "/stages_index":
-                print("value['stages_index'] = {}".format(value["stages_index"]))
-            elif value["guess_Word"] == "/logged_in":
-                print("logged_in = {}".format(logged_in))
-            ##############
+            logged_in[0] = checkOption(True,value["guess_Word"])
+            if not logged_in[0]:
+              break
             if value["stages_index"] < 10 and logged_in[0]:
                 print(stages[value["stages_index"]])
                 break
@@ -268,7 +275,7 @@ while logged_in[0] and value["chances"]:
         except ValueError:
             print("Please don't enter integers or floating numbers!")
     if logged_in[0]:
-        if value["guess_Word"] and value["guess_Word"] not in cmdOptions : #not in tried_Letters (removed)  
+        if value["guess_Word"] and value["guess_Word"] not in cmdOptions_list : #not in tried_Letters (removed)  
             value["tried_Letters"].append(value["guess_Word"])
         #Testing purposes print(len(guess_Word))
         
@@ -313,7 +320,7 @@ while logged_in[0] and value["chances"]:
                 print("You've already guessed that letter!")
               
         if value["guess_Word"] != random_word and value["guess_Word"] not in list(random_word):
-            if value["guess_Word"] not in cmdOptions:
+            if value["guess_Word"] not in cmdOptions_list:
                 value["chances"] -= 1
                 value["stages_index"] += 1
         if value["stages_index"] == 10 and guessed_number != len(random_word):

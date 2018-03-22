@@ -146,13 +146,13 @@ def pickWord():
     return word
 
 def generateList():
-    global letters_List
     #Testing purposes
     #print(random_word)
     randomMinusNumber = len(random_word) - value["guessed_number"]
     letters_Left = list(random_word)[0] + "_" * randomMinusNumber
     letters = letters_Left
     letters_List = list(letters)
+    return letters_List
 
 def restart(dict_):
     #print("Restarting...")
@@ -227,16 +227,13 @@ cmdOptions_list = ["/help","/exit","/score","/logout","/profile","/scoreboard",
 
 print(hangman_art)
 
-random_word = pickWord()
-generateList()
-
 playing = True
 
 #Create database.db if it doesn't exist
 database.createDatabase()
 
 random_word = pickWord()
-generateList()
+letters_List = generateList()
 
 
 logged_in = login_system.login()
@@ -281,7 +278,7 @@ while logged_in[0] and value["chances"]:
             earnedPoints = 0
             value = restart(value)
             random_word = pickWord()
-            generateList()
+            letters_List = generateList()
         
         print("Words/Letters you've already tried: ")
         print(*value["tried_Letters"], sep=", ")
@@ -317,7 +314,7 @@ while logged_in[0] and value["chances"]:
             print(gameOver_art)
             value = restart(value)
             random_word = pickWord()
-            generateList()
+            letters_List = generateList()
         #Check if the user guessed all the letters       
         if value["guessed_number"] == len(random_word) or letters_List == list(random_word):
             print(str(letters_List))
@@ -329,7 +326,7 @@ while logged_in[0] and value["chances"]:
             database.addScore(logged_in[4],logged_in[2])
             value = restart(value)
             random_word = pickWord()
-            generateList()
+            letters_List = generateList()
     else:
         logged_in = login_system.login()
 

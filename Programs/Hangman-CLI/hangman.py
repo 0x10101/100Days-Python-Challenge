@@ -46,6 +46,15 @@ hangman_art = """
 /_/ /_//_/  |_|/_/ |_/ \____//_/  /_//_/  |_|/_/ |_/   
  """
 
+youWon_art = """
+ __     __                               _ 
+ \ \   / /                              | |
+  \ \_/ /__  _   _  __      _____  _ __ | |
+   \   / _ \| | | | \ \ /\ / / _ \| '_ \| |
+    | | (_) | |_| |  \ V  V / (_) | | | |_|
+    |_|\___/ \__,_|   \_/\_/ \___/|_| |_(_)                                        
+"""
+
 gameOver_art = """
  __   __            _              _   _ 
  \ \ / /__  _   _  | |    ___  ___| |_| |
@@ -164,6 +173,7 @@ def guessed_all_letters():
     if guessed_number == len(random_word):
         print(str(letters_List))
         print("You guessed all the letters!")
+        print(youWon_art)
         generateList()
         value = restart(value)
         
@@ -269,6 +279,7 @@ while logged_in[0] and value["chances"]:
             earnedPoints = 100 * len(random_word)
             logged_in[4] = logged_in[4] + earnedPoints
             print("You guessed all the letters and earned {} points!".format(earnedPoints))
+            print(youWon_art)
             database.addScore(logged_in[4],logged_in[2])
             print(logged_in[4],logged_in[2])
             print(logged_in)
@@ -316,6 +327,7 @@ while logged_in[0] and value["chances"]:
             earnedPoints = 100 * len(random_word)
             logged_in[4] = logged_in[4] + earnedPoints
             print("You guessed all the letters and earned {} points!".format(earnedPoints))
+            print(youWon_art)
             earnedPoints = 0
             database.addScore(logged_in[4],logged_in[2])
             value = restart(value)

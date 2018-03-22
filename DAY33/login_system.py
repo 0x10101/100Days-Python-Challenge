@@ -1,10 +1,3 @@
-"""
-Version 1.1
-Changes:
-    -accountInfo() shows level 
-
-"""
-
 import sqlite3
 from database import insertAccount
 

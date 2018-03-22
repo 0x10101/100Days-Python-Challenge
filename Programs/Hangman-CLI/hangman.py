@@ -19,6 +19,8 @@ Changes:
     -/account shows your level
     -After the user loses it doesn't sys.exit() after printing gameOver_art
     -Doesn't ask "Want to continue? y/N: " anymore
+    -Fixed bug where stages_index was used instead of value["stages_index"]
+       accidentally unnoticed which introduced some unusual behavior
     
 
 To-Do:
@@ -163,7 +165,7 @@ def guessed_all_letters():
         print(str(letters_List))
         print("You guessed all the letters!")
         generateList()
-        restart(value)
+        value = restart(value)
         
 
 def showHelp():
@@ -190,7 +192,6 @@ pickWord()
 generateList()
 
 #Index for ASCII Hangman body art
-stages_index = 0
 playing = True
 
 #register()
@@ -241,9 +242,13 @@ while logged_in[0] and value["chances"]:
                 print("The word you have to guess is {} ...".format(random_word))
             elif value["guess_Word"] == "/value":
                 print(value)
+            elif value["guess_Word"] == "/stages_index":
+                print("value['stages_index'] = {}".format(value["stages_index"]))
+            elif value["guess_Word"] == "/logged_in":
+                print("logged_in = {}".format(logged_in))
             ##############
-            if stages_index < 10 and logged_in[0]:
-                print(stages[stages_index])
+            if value["stages_index"] < 10 and logged_in[0]:
+                print(stages[value["stages_index"]])
                 break
             #Commented until I fix it
             #if guess_Word in list(string.ascii_letters):
@@ -269,7 +274,6 @@ while logged_in[0] and value["chances"]:
             print(logged_in)
             earnedPoints = 0
             value = restart(value)
-            restart(value)
             generateList()
         
         print("Words/Letters you've already tried: ")
@@ -300,11 +304,11 @@ while logged_in[0] and value["chances"]:
         if value["guess_Word"] != random_word and value["guess_Word"] not in list(random_word):
             if value["guess_Word"] not in cmdOptions:
                 value["chances"] -= 1
-                stages_index += 1
-        if stages_index == 10 and guessed_number != len(random_word):
+                value["stages_index"] += 1
+        if value["stages_index"] == 10 and guessed_number != len(random_word):
             print("The word was: " + random_word)
             print(gameOver_art)
-            restart(value)
+            value = restart(value)
             generateList()
         #Check if the user guessed all the letters       
         if guessed_number == len(random_word) or letters_List == list(random_word):
@@ -315,7 +319,6 @@ while logged_in[0] and value["chances"]:
             earnedPoints = 0
             database.addScore(logged_in[4],logged_in[2])
             value = restart(value)
-            restart(value)
             generateList()
     else:
         logged_in = login_system.login()

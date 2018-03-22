@@ -147,11 +147,9 @@ def pickWord():
 
 def generateList():
     global letters_List
-    global guessed_number
     #Testing purposes
     #print(random_word)
-    guessed_number = 1
-    randomMinusNumber = len(random_word) - guessed_number
+    randomMinusNumber = len(random_word) - value["guessed_number"]
     letters_Left = list(random_word)[0] + "_" * randomMinusNumber
     letters = letters_Left
     letters_List = list(letters)
@@ -165,19 +163,8 @@ def restart(dict_):
     dict_["guessed_Letters"] = []
     dict_["tried_Letters"]  = []
     dict_["stages_index"] = 0
+    dict_["guessed_number"] = 1
     return dict_
-
-#def restart():
-#    generateList()
-
-
-def guessed_all_letters():
-    if guessed_number == len(random_word):
-        print(str(letters_List))
-        print("You guessed all the letters!")
-        print(youWon_art)
-        generateList()
-        value = restart(value)
         
 
 def showHelp():
@@ -230,6 +217,14 @@ def checkOption(loggedIn,guess_Word):
     ##############
     return loggedIn
 
+value = {"chances":10,"guess_Word":"","guesed_Letters":[],
+                      "tried_Letters":[],"stages_index":0,
+                      "guessed_number":1}
+
+cmdOptions_list = ["/help","/exit","/score","/logout","/profile","/scoreboard",
+                  "/account","/register","/printword","/stages_index",
+                              "/logged_in","/value","/deleteaccount",]
+
 print(hangman_art)
 
 random_word = pickWord()
@@ -247,12 +242,6 @@ generateList()
 logged_in = login_system.login()
 showHelp()
 
-value = {"chances":10,"guess_Word":"","guesed_Letters":[],
-                      "tried_Letters":[],"stages_index":0}
-
-cmdOptions_list = ["/help","/exit","/score","/logout","/profile","/scoreboard",
-				          "/account","/register","/printword","/stages_index",
-                              "/logged_in","/value","/deleteaccount"]
 while logged_in[0] and value["chances"]:
     #print("The word is {}".format(random_word))
     print(str(letters_List))
@@ -308,7 +297,7 @@ while logged_in[0] and value["chances"]:
                         guessed_number += 1
                     letters_List[indexCheck] = value["guess_Word"]
                     tried_LettersMinusLast = value["tried_Letters"]
-                    if not sameLetter and guessed_number != len(random_word):
+                    if not sameLetter and value["guessed_number"] != len(random_word):
                         if value["guess_Word"] not in value["tried_Letters"][:-1]:
                             if value["guess_Word"] == value["tried_Letters"][-1]:
                                 print("You guessed a letter!")
@@ -323,14 +312,14 @@ while logged_in[0] and value["chances"]:
             if value["guess_Word"] not in cmdOptions_list:
                 value["chances"] -= 1
                 value["stages_index"] += 1
-        if value["stages_index"] == 10 and guessed_number != len(random_word):
+        if value["stages_index"] == 10 and value["guessed_number"] != len(random_word):
             print("The word was: " + random_word)
             print(gameOver_art)
             value = restart(value)
             random_word = pickWord()
             generateList()
         #Check if the user guessed all the letters       
-        if guessed_number == len(random_word) or letters_List == list(random_word):
+        if value["guessed_number"] == len(random_word) or letters_List == list(random_word):
             print(str(letters_List))
             earnedPoints = 100 * len(random_word)
             logged_in[4] = logged_in[4] + earnedPoints

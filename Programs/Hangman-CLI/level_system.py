@@ -17,11 +17,10 @@ def checkLevel(score):
 		if value < score:
 			currentLevel = key
 	return currentLevel
-	
-	#db = sqlite3.connect("database.db")
-	
-	#cursor = db.cursor()
 
-	#db.close()
+def updateLevel(pastLevel,currentLevel):
+	if pastLevel < currentLevel:
+		print("You are now in LV{}!".format(currentLevel))
+		database.upgradeLevel(currentLevel)
 
 #checkLevel(2500)

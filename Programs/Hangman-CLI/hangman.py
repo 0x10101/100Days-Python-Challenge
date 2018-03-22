@@ -17,7 +17,8 @@ Changes:
 Version 2.3
 Changes:
     -/account shows your level
-    -
+    -After the user loses it doesn't sys.exit() after printing gameOver_art
+    
     
 
 To-Do:
@@ -157,10 +158,13 @@ def askPlay():
     global stages_index
     while True:
         play = input("Want to continue? y/N: ").lower().strip()
+        print(play + " outside")
         if play == "y":
+            valuee = restart(value)
             generateList()
             stages_index = 0
         elif play == "n":
+            print("n")
             sys.exit()
         else:
             print("Chose a valid option!")
@@ -309,7 +313,7 @@ while logged_in[0] and value["chances"]:
         if stages_index == 10 and guessed_number != len(random_word):
             print("The word was: " + random_word)
             print(gameOver_art)
-            sys.exit()
+            askPlay()
         #Check if the user guessed all the letters       
         if guessed_number == len(random_word) or letters_List == list(random_word):
             print(str(letters_List))

@@ -27,7 +27,9 @@ Changes:
     -generateList() returns letters_List value instead of changing with globals 
              letters_List
     -Moved all the variables containing ascii art in ascii_art.py
-    -Fixed a bug where after deleting your account user woulds till be logged in
+    -Fixed a bug where after deleting your account user woulds still be logged in
+    -Removed all globals
+    -40 * len(random_word) instead of 100 * len(random_word)
     
 
 To-Do:
@@ -140,8 +142,6 @@ cmdOptions_list = ["/help","/exit","/score","/logout","/profile","/scoreboard",
 
 print(hangman_art)
 
-playing = True
-
 #Create database.db if it doesn't exist
 database.createDatabase()
 
@@ -181,7 +181,7 @@ while logged_in[0] and value["chances"]:
         if value["guess_Word"] == random_word.lower():
             print(str(letters_List))
             print("You guessed the word!")
-            earnedPoints = 100 * len(random_word)
+            earnedPoints = 40 * len(random_word)
             logged_in[4] = logged_in[4] + earnedPoints
             print("You guessed all the letters and earned {} points!".format(earnedPoints))
             print(youWon_art)
@@ -231,7 +231,7 @@ while logged_in[0] and value["chances"]:
         #Check if the user guessed all the letters       
         if value["guessed_number"] == len(random_word) or letters_List == list(random_word):
             print(str(letters_List))
-            earnedPoints = 100 * len(random_word)
+            earnedPoints = 40 * len(random_word)
             logged_in[4] = logged_in[4] + earnedPoints
             print("You guessed all the letters and earned {} points!".format(earnedPoints))
             print(youWon_art)

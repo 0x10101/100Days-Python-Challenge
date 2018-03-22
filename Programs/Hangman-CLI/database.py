@@ -26,6 +26,17 @@ def createDatabase():
                 PRIMARY KEY(`ID`)) """)
         db.commit()
 
+def get_accountInfo():
+    for account in cursor.execute("SELECT * from accounts"):
+        #Prints username and password for every row in account table
+        #print(account[1],account[2])
+        if username == account[1] and password == account[2]:
+            #accounts[3] is the score
+            print(account[3])
+            access = [True,account[0],account[1],account[2],account[3],account[4]]
+    return access
+
+
 def insertAccount(user,passw):
         userTaken = False
         try:
@@ -79,5 +90,16 @@ def showScoreboard():
                 print("{} Score --> {}".format(account[1],account[3]))
         db.commit()
         db.close()
+
+def upgradeLevel(currentLevel):
+    db = sqlite3.connect("database.db")
+    ID = get_accountInfo()[1]
+    cursor = db.cursor()
+    cursor.execute("INSERT INTO accounts(level) where rowid=?", (ID,))
+    db.commit()
+    db.close()
+    print("You upgraded to level {}".format(ID))
+
+
 
 #deleteAccount(4)

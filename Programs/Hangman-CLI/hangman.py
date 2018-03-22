@@ -23,113 +23,25 @@ Changes:
        accidentally unnoticed which introduced some unusual behavior
     -Created /staged_index and /logged_in hidden cmd option
     -Prints youWon_art when the user guessed the word 
-    -
+    -pickWord() returns word instead of changing with globals random_word
+    -generateList() returns letters_List value instead of changing with globals 
+             letters_List
+    -Moved all the variables containing ascii art in ascii_art.py
+    -Fixed a bug where after deleting your account user woulds till be logged in
     
 
 To-Do:
-    -Redesign the code... what was I thinking when using so much global
-       variable wtf -_-
     -Add difficulty level
     -Fix "Only letters (from english vocabulary) please!" bug
         (Commented until fixed)
-    -Fix bug "When user enters a uppercase letter it added stages_index +1
-       even when the letter is in the word
+    -Fix bug where for t
     -Fix /deleteAccount cmd option "Guss the word or a letter" bug
     
 """
 
 import random, sys, string, time, sqlite3
 import fileHandling, login_system, database#, level_system
-
-hangman_art = """
-    __  __ ___     _   __ ______ __  ___ ___     _   __
-   / / / //   |   / | / // ____//  |/  //   |   / | / /
-  / /_/ // /| |  /  |/ // / __ / /|_/ // /| |  /  |/ / 
- / __  // ___ | / /|  // /_/ // /  / // ___ | / /|  /  
-/_/ /_//_/  |_|/_/ |_/ \____//_/  /_//_/  |_|/_/ |_/   
- """
-
-youWon_art = """
- __     __                               _ 
- \ \   / /                              | |
-  \ \_/ /__  _   _  __      _____  _ __ | |
-   \   / _ \| | | | \ \ /\ / / _ \| '_ \| |
-    | | (_) | |_| |  \ V  V / (_) | | | |_|
-    |_|\___/ \__,_|   \_/\_/ \___/|_| |_(_)                                        
-"""
-
-gameOver_art = """
- __   __            _              _   _ 
- \ \ / /__  _   _  | |    ___  ___| |_| |
-  \ V / _ \| | | | | |   / _ \/ __| __| |
-   | | (_) | |_| | | |__| (_) \__ \ |_|_|
-   |_|\___/ \__,_| |_____\___/|___/\__(_)
-"""
-
-stages  = ['''
- =========''', '''
-       |
-       |
-       |
-       |
-       |
- =========''', '''
-    +---+
-       |
-       |
-       |
-       |
-       |
- =========''', '''
-   +---+
-   |   |
-       |
-       |
-       |
-       |
- =========''', '''
-   +---+
-   |   |
-   O   |
-       |
-       |
-       |
- =========''', '''
-   +---+
-   |   |
-   O   |
-   |   |
-       |
-       |
- =========''', '''
-   +---+
-   |   |
-   O   |
-  /|   |
-       |
-       |
- =========''', '''
-   +---+
-   |   |
-   O   |
-  /|\  |
-       |
-       |
- =========''', '''
-   +---+
-   |   |
-   O   |
-  /|\  |
-  /    |
-       |
-=========''', '''
-   +---+
-   |   |
-   O   |
-  /|\  |
-  / \  |
-       |
-=========''']
+from ascii_art import *
 
 #Function from hangman_functions
 fileHandling.check_randomWFile()
@@ -205,6 +117,7 @@ def checkOption(loggedIn,guess_Word):
         database.showScoreboard()
     elif guess_Word == "/deleteaccount":
         logged_in[0] = database.deleteAccount(logged_in[1])
+        loggedIn = False
     #hidden cmd option
     elif guess_Word == "/printword":
         print("The word you have to guess is {} ...".format(random_word))

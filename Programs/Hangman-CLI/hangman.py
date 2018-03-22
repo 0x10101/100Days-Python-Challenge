@@ -18,7 +18,7 @@ Version 2.3
 Changes:
     -/account shows your level
     -After the user loses it doesn't sys.exit() after printing gameOver_art
-    
+    -Doesn't ask "Want to continue? y/N: " anymore
     
 
 To-Do:
@@ -151,30 +151,19 @@ def restart(dict_):
     dict_["indexCheck"] = ""
     dict_["guessed_Letters"] = []
     dict_["tried_Letters"]  = []
+    dict_["stages_index"] = 0
     return dict_
 
-def askPlay():
-    global play
-    global stages_index
-    while True:
-        play = input("Want to continue? y/N: ").lower().strip()
-        print(play + " outside")
-        if play == "y":
-            valuee = restart(value)
-            generateList()
-            stages_index = 0
-        elif play == "n":
-            print("n")
-            sys.exit()
-        else:
-            print("Chose a valid option!")
-        break
+#def restart():
+#    generateList()
+
 
 def guessed_all_letters():
     if guessed_number == len(random_word):
         print(str(letters_List))
         print("You guessed all the letters!")
-        askPlay()
+        generateList()
+        restart(value)
         
 
 def showHelp():
@@ -212,7 +201,8 @@ database.createDatabase()
 logged_in = login_system.login()
 showHelp()
 
-value = {"chances":10,"guess_Word":"","guesed_Letters":[],"tried_Letters":[]}
+value = {"chances":10,"guess_Word":"","guesed_Letters":[],
+                      "tried_Letters":[],"stages_index":0}
 
 cmdOptions = ["/help","/exit","/score","/logout","/profile","/scoreboard",
 				"/account","/register","/printword",
@@ -279,7 +269,8 @@ while logged_in[0] and value["chances"]:
             print(logged_in)
             earnedPoints = 0
             value = restart(value)
-            askPlay()
+            restart(value)
+            generateList()
         
         print("Words/Letters you've already tried: ")
         print(*value["tried_Letters"], sep=", ")
@@ -313,7 +304,8 @@ while logged_in[0] and value["chances"]:
         if stages_index == 10 and guessed_number != len(random_word):
             print("The word was: " + random_word)
             print(gameOver_art)
-            askPlay()
+            restart(value)
+            generateList()
         #Check if the user guessed all the letters       
         if guessed_number == len(random_word) or letters_List == list(random_word):
             print(str(letters_List))
@@ -323,7 +315,8 @@ while logged_in[0] and value["chances"]:
             earnedPoints = 0
             database.addScore(logged_in[4],logged_in[2])
             value = restart(value)
-            askPlay()
+            restart(value)
+            generateList()
     else:
         logged_in = login_system.login()
 

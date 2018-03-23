@@ -33,6 +33,7 @@ Changes:
     -Used level_system functions on the while loop
     -Changed print(letters_List) to print(*letters_List, sep=" ")
     -Moved showHelp() to console.py
+    -console.showHelp() is printed only once
 
     
 
@@ -95,8 +96,11 @@ letters_List = generateList()
 
 logged_in = login_system.login()
 
+once = True
 while logged_in[0] and value["chances"]:
-    console.showHelp(True)
+    while once:
+      console.showHelp(True)
+      once = False
     #print("The word is {}".format(random_word))
     print(*letters_List, sep=" ")
     #updateAccount()

@@ -7,10 +7,11 @@ Changes:
 Version 1.2
 Changes:
         -added level INTEGER DEFAULT 1 on createDatabase() 
+        -Fixed bug - json.load(data) to -> json.loads(data)
 
 """
 
-import sqlite3
+import sqlite3, json 
 
 
 def createDatabase():		
@@ -27,17 +28,8 @@ def createDatabase():
         db.commit()
 
 def get_accountInfo():
-    db = sqlite3.connect("database.db")
-    cursor = db.cursor()
-    for account in cursor.execute("SELECT * from accounts"):
-        #Prints username and password for every row in account table
-        #print(account[1],account[2])
-        if username == account[1] and password == account[2]:
-            #accounts[3] is the score
-            print(account[3])
-            access = [True,account[0],account[1],account[2],account[3],account[4]]
-    db.commit()
-    db.close()
+    with open("data") as data:
+        access = json.loads(data.read())
     return access
 
 
@@ -96,15 +88,17 @@ def showScoreboard():
         db.close()
 
 
-def upgradeLevel(currentLevel):
+def upgradeLevel(currentLv):
     db = sqlite3.connect("database.db")
     ID = get_accountInfo()[1]
+    username = get_accountInfo()[2]
     cursor = db.cursor()
-    cursor.execute("INSERT INTO accounts(level) where rowid=?", (ID,))
+    cursor.execute("UPDATE accounts SET level=? WHERE id=?", (currentLv,ID,))
     db.commit()
     db.close()
-    print("You upgraded to level {}".format(ID))
+    print("Congratulations {}! You upgraded to level {}".format(username,
+                                                        currentLv))
 
-print(get_accountInfo()[1])
+#print(get_accountInfo()[1])
 
 #deleteAccount(4)

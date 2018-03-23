@@ -20,7 +20,7 @@ def register():
         if username == "/login":
             login()
         elif username != "/login":
-            console.checkOption(False,username)
+            console.checkOption(False,username,"",0)
         password = input("Create Password: ").lower()
         if password == "/login":
             login()
@@ -28,7 +28,7 @@ def register():
             console.checkOption(False,password)
         
         #If the account was inserted then it returns True
-        created = insertAccount(username,password)
+        created = insertAccount(username,password,"",0)
         
         if created:
             login()
@@ -43,12 +43,12 @@ def login():
         if username == "/register":
             register()
         elif username != "/register":
-            console.checkOption(False,username)
+            console.checkOption(False,username,"")
         password = input("Password: ").lower()
         if password == "/register":
             register()
         elif password != "/register":
-            console.checkOption(False,password)
+            console.checkOption(False,password,"")
         db = sqlite3.connect("database.db")
         cursor = db.cursor()
         access = [False,0,"","",0]

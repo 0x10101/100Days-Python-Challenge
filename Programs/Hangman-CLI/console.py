@@ -17,7 +17,7 @@ def showHelp(loggedIn):
         /register to create an account if you don't have one already
         """)
 
-def checkOption(loggedIn,guess_Word,accountInfo):
+def checkOption(loggedIn,guess_Word,accountInfo,score):
     if loggedIn:
         if guess_Word == "/logout":
             loggedIn = False
@@ -25,7 +25,7 @@ def checkOption(loggedIn,guess_Word,accountInfo):
         elif guess_Word == "/help":
             showHelp(True)
         elif guess_Word == "/score":
-            print("Your score is {}".format(logged_in[4]))
+            print("Your score is {}".format(score))
         elif guess_Word == "/account":
             login_system.accountInfo(accountInfo[1],accountInfo[2],
                                      "*" * len(accountInfo[3]),

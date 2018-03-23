@@ -31,6 +31,8 @@ Changes:
     -Removed all globals
     -40 * len(random_word) instead of 100 * len(random_word)
     -Used level_system functions on the while loop
+    -Changed print(letters_List) to print(*letters_List, sep=" ")
+
     
 
 To-Do:
@@ -45,6 +47,7 @@ To-Do:
 import random, sys, string, time, sqlite3
 import fileHandling, login_system, database, level_system
 from ascii_art import *
+import console
 
 #Function from hangman_functions
 fileHandling.check_randomWFile()
@@ -99,42 +102,6 @@ def showHelp():
         /register to create an account if you don't have one already
         """)
 
-def checkOption(loggedIn,guess_Word):
-    if guess_Word == "/logout":
-        loggedIn = False
-        print("Logged out successfully!")
-    elif guess_Word == "/help":
-        showHelp()
-    elif guess_Word == "/exit":
-        permission = input("Are you sure you want to continue?Y/n :")
-        if permission.lower() == "y":
-            sys.exit()
-    elif guess_Word == "/score":
-        print("Your score is {}".format(logged_in[4]))
-    elif guess_Word == "/account":
-        login_system.accountInfo(logged_in[1],logged_in[2],
-                                 "*" * len(logged_in[3]),logged_in[4],logged_in[5])
-    elif guess_Word == "/register":
-        print("You can't create an account while logged in!")
-    elif guess_Word == "/scoreboard":
-        database.showScoreboard()
-    elif guess_Word == "/deleteaccount":
-        logged_in[0] = database.deleteAccount(logged_in[1])
-        loggedIn = False
-    #hidden cmd option
-    elif guess_Word == "/printword":
-        print("The word you have to guess is {} ...".format(random_word))
-    elif guess_Word == "/value":
-        print(value)
-    elif guess_Word == "/stages_index":
-        print("value['stages_index'] = {}".format(value["stages_index"]))
-    elif guess_Word == "/logged_in":
-        print("logged_in = {}".format(logged_in))
-    elif guess_Word =="/levels":
-        print(level_system.generateLevel())
-    ##############
-    return loggedIn
-
 value = {"chances":10,"guess_Word":"","guesed_Letters":[],
                       "tried_Letters":[],"stages_index":0,
                       "guessed_number":1}
@@ -164,7 +131,7 @@ while logged_in[0] and value["chances"]:
         pastLevel = level_system.checkLevel(logged_in[4])
         try:
             value["guess_Word"] = input("Guess the word or a letter: ").lower().strip()
-            logged_in[0] = checkOption(True,value["guess_Word"])
+            logged_in[0] = console.checkOption(True,value["guess_Word"])
             if not logged_in[0]:
               break
             if value["stages_index"] < 10 and logged_in[0]:

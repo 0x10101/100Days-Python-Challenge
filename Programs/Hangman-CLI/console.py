@@ -1,7 +1,8 @@
-import sys
+import sys, login_system, database
 
-def checkOption(loggedIn,guess_Word):
-    if loggedIn:
+
+def checkOption(access,guess_Word,accountInfo):
+    if access:
         if guess_Word == "/logout":
             loggedIn = False
             print("Logged out successfully!")
@@ -12,14 +13,15 @@ def checkOption(loggedIn,guess_Word):
         elif guess_Word == "/score":
             print("Your score is {}".format(logged_in[4]))
         elif guess_Word == "/account":
-            login_system.accountInfo(logged_in[1],logged_in[2],
-                                     "*" * len(logged_in[3]),logged_in[4],logged_in[5])
+            login_system.accountInfo(accountInfo[1],accountInfo[2],
+                                     "*" * len(accountInfo[3]),
+                                     accountInfo[4],accountInfo[5])
         elif guess_Word == "/register":
             print("You can't create an account while logged in!")
         elif guess_Word == "/deleteaccount":
             logged_in[0] = database.deleteAccount(logged_in[1])
             loggedIn = False
-    elif not loggedIn:
+    elif not access:
         if guess_Word == "/register":
             login_system.register()
     

@@ -42,7 +42,7 @@ To-Do:
 """
 
 import random, sys, string, time, sqlite3
-import fileHandling, login_system, database#, level_system
+import fileHandling, login_system, database, level_system
 from ascii_art import *
 
 #Function from hangman_functions
@@ -129,6 +129,8 @@ def checkOption(loggedIn,guess_Word):
         print("value['stages_index'] = {}".format(value["stages_index"]))
     elif guess_Word == "/logged_in":
         print("logged_in = {}".format(logged_in))
+    elif guess_Word =="/levels":
+        print(level_system.generateLevel())
     ##############
     return loggedIn
 
@@ -157,6 +159,7 @@ while logged_in[0] and value["chances"]:
     print(str(letters_List))
     #updateAccount()
     while True:
+        pastLevel = level_system.checkLevel(logged_in[4])
         try:
             value["guess_Word"] = input("Guess the word or a letter: ").lower().strip()
             logged_in[0] = checkOption(True,value["guess_Word"])
@@ -186,8 +189,8 @@ while logged_in[0] and value["chances"]:
             print("You guessed all the letters and earned {} points!".format(earnedPoints))
             print(youWon_art)
             database.addScore(logged_in[4],logged_in[2])
-            print(logged_in[4],logged_in[2])
-            print(logged_in)
+            #print(logged_in[4],logged_in[2])
+            #print(logged_in)
             earnedPoints = 0
             value = restart(value)
             random_word = pickWord()
@@ -242,5 +245,7 @@ while logged_in[0] and value["chances"]:
             letters_List = generateList()
     else:
         logged_in = login_system.login()
+    currentLevel = level_system.checkLevel(logged_in[4])
+    logged_in[5] = level_system.updateLevel(pastLevel,currentLevel)
 
 

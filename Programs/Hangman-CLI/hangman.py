@@ -85,23 +85,6 @@ def restart(dict_):
     return dict_
         
 
-def showHelp():
-    if logged_in[0] == True:
-        print("""
-        /logout to log out of your account
-        /register to create an account if you don't have one already
-        /account to show your account info
-        /deleteAccount
-        /score to see your score
-        /help to show these cmd options
-        /scoreboard to show Scoreboard
-        /exit to exit the program       
-        """)
-    else:
-        print("""
-        /register to create an account if you don't have one already
-        """)
-
 value = {"chances":10,"guess_Word":"","guesed_Letters":[],
                       "tried_Letters":[],"stages_index":0,
                       "guessed_number":1}

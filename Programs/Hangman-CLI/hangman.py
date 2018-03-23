@@ -131,7 +131,7 @@ while logged_in[0] and value["chances"]:
         pastLevel = level_system.checkLevel(logged_in[4])
         try:
             value["guess_Word"] = input("Guess the word or a letter: ").lower().strip()
-            logged_in[0] = console.checkOption(True,value["guess_Word"])
+            logged_in[0] = console.checkOption(True,value["guess_Word"],logged_in)
             if not logged_in[0]:
               break
             if value["stages_index"] < 10 and logged_in[0]:

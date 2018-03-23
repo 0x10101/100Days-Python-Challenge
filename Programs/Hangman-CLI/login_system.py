@@ -43,12 +43,12 @@ def login():
         if username == "/register":
             register()
         elif username != "/register":
-            console.checkOption(False,username,"")
+            console.checkOption(False,username,"",0)
         password = input("Password: ").lower()
         if password == "/register":
             register()
         elif password != "/register":
-            console.checkOption(False,password,"")
+            console.checkOption(False,password,"",0)
         db = sqlite3.connect("database.db")
         cursor = db.cursor()
         access = [False,0,"","",0]

@@ -2,10 +2,12 @@
 Version 1.1
 Changes:
     -accountInfo() shows level 
+    -register() and login() use console.checkOption to see if user
+       entered a cmd option
 
 """
 
-import sqlite3, json
+import sqlite3, json, console
 from database import insertAccount
 
 def register():
@@ -17,9 +19,13 @@ def register():
         username = input("Create Username: ").lower()
         if username == "/login":
             login()
+        elif username != "/login":
+            console.checkOption(False,username)
         password = input("Create Password: ").lower()
         if password == "/login":
             login()
+        elif password !="/login":
+            console.checkOption(False,password)
         
         #If the account was inserted then it returns True
         created = insertAccount(username,password)
@@ -36,9 +42,13 @@ def login():
         username = input("Username: ").lower()
         if username == "/register":
             register()
+        elif username != "/register":
+            console.checkOption(False,username)
         password = input("Password: ").lower()
         if password == "/register":
             register()
+        elif password != "/register":
+            console.checkOption(False,password)
         db = sqlite3.connect("database.db")
         cursor = db.cursor()
         access = [False,0,"","",0]

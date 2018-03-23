@@ -65,7 +65,7 @@ def generateList():
 def restart(dict_):
     #print("Restarting...")
     dict_["guess_Word"]
-    random_word = pickWord()
+    random_word = fileHandling.pickWord()
     dict_["chances"] = 10
     dict_["indexCheck"] = ""
     dict_["guessed_Letters"] = []
@@ -89,7 +89,7 @@ print(hangman_art)
 #Create database.db if it doesn't exist
 database.createDatabase()
 
-random_word = pickWord()
+random_word = fileHandling.pickWord()
 letters_List = generateList()
 
 
@@ -135,7 +135,7 @@ while logged_in[0] and value["chances"]:
             #print(logged_in)
             earnedPoints = 0
             value = restart(value)
-            random_word = pickWord()
+            random_word = fileHandling.pickWord()
             letters_List = generateList()
         
         print("Words/Letters you've already tried: ")
@@ -171,7 +171,7 @@ while logged_in[0] and value["chances"]:
             print("The word was: " + random_word)
             print(gameOver_art)
             value = restart(value)
-            random_word = pickWord()
+            random_word = fileHandling.pickWord()
             letters_List = generateList()
         #Check if the user guessed all the letters       
         if value["guessed_number"] == len(random_word) or letters_List == list(random_word):
@@ -183,7 +183,7 @@ while logged_in[0] and value["chances"]:
             earnedPoints = 0
             database.addScore(logged_in[4],logged_in[2])
             value = restart(value)
-            random_word = pickWord()
+            random_word = fileHandling.pickWord()
             letters_List = generateList()
     else:
         logged_in = login_system.login()

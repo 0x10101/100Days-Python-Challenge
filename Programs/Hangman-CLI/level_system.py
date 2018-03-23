@@ -1,26 +1,26 @@
-import sqlite3
+import sqlite3, database
 
 def generateLevel():
 	level = []
-	plus = 250
+	plus = 0
 	for lv in range(1,51):
 		level.append([lv,500+plus])
-		plus += 150
+		plus += 500
 	return level
 
 def checkLevel(score):
 	levels = generateLevel()
-	print(levels)
 	currentLevel = 1
-	for key, value in levels:
+	for lv, lvScore in levels:
 		#print("KEY: {} \n VALUE {}".format(key,value))
-		if value < score:
-			currentLevel = key
+		if lvScore < score:
+			currentLevel = lv
 	return currentLevel
 
-def updateLevel(pastLevel,currentLevel):
-	if pastLevel < currentLevel:
-		print("You are now in LV{}!".format(currentLevel))
-		database.upgradeLevel(currentLevel)
+def updateLevel(pastLv,currentLv):
+	if pastLv < currentLv:
+		print("You are now in LV{}!".format(currentLv))
+		database.upgradeLevel(currentLv)
+	return currentLv
 
 #checkLevel(2500)

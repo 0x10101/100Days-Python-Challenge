@@ -52,17 +52,6 @@ import console
 
 #Function from hangman_functions
 fileHandling.check_randomWFile()
-    
-#Make a list out of every word in file
-with open("random_words.txt","r") as file:
-    words = list(file.read().split())
-
-def pickWord():
-    #Pick a random number for random_Index
-    # use random_Index to pick a random word from the 'words' list
-    rand_Index = random.randint(0,len(words)-1)
-    word = words[rand_Index].title()
-    return word
 
 def generateList():
     #Testing purposes

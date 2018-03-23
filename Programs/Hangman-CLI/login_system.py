@@ -5,7 +5,7 @@ Changes:
 
 """
 
-import sqlite3
+import sqlite3, json
 from database import insertAccount
 
 def register():
@@ -49,6 +49,8 @@ def login():
                 #accounts[3] is the score
                 print(account[3])
                 access = [True,account[0],account[1],account[2],account[3],account[4]]
+                with open("data","w") as outfile:
+                    json.dump(access,outfile)
         if access[0]:
             print("Logged in successfully!")
             break

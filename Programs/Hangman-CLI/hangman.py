@@ -105,9 +105,9 @@ letters_List = generateList()
 
 
 logged_in = login_system.login()
-console.showHelp()
 
 while logged_in[0] and value["chances"]:
+    console.showHelp(True)
     #print("The word is {}".format(random_word))
     print(*letters_List, sep=" ")
     #updateAccount()

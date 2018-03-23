@@ -30,6 +30,7 @@ Changes:
     -Fixed a bug where after deleting your account user woulds still be logged in
     -Removed all globals
     -40 * len(random_word) instead of 100 * len(random_word)
+    -Used level_system functions on the while loop
     
 
 To-Do:
@@ -156,7 +157,7 @@ showHelp()
 
 while logged_in[0] and value["chances"]:
     #print("The word is {}".format(random_word))
-    print(str(letters_List))
+    print(letters_List)
     #updateAccount()
     while True:
         pastLevel = level_system.checkLevel(logged_in[4])

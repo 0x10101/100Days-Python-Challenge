@@ -32,6 +32,7 @@ Changes:
     -40 * len(random_word) instead of 100 * len(random_word)
     -Used level_system functions on the while loop
     -Changed print(letters_List) to print(*letters_List, sep=" ")
+    -Moved showHelp() to console.py
 
     
 
@@ -104,7 +105,7 @@ letters_List = generateList()
 
 
 logged_in = login_system.login()
-showHelp()
+console.showHelp()
 
 while logged_in[0] and value["chances"]:
     #print("The word is {}".format(random_word))

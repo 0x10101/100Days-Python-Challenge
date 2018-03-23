@@ -158,7 +158,7 @@ showHelp()
 
 while logged_in[0] and value["chances"]:
     #print("The word is {}".format(random_word))
-    print(letters_List)
+    print(*letters_List, sep=" ")
     #updateAccount()
     while True:
         pastLevel = level_system.checkLevel(logged_in[4])

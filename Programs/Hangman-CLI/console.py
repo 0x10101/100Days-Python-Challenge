@@ -1,15 +1,29 @@
 import sys, login_system, database
 
+def showHelp(loggedIn):
+    if loggedIn:
+        print("""
+        /logout to log out of your account
+        /register to create an account if you don't have one already
+        /account to show your account info
+        /deleteAccount
+        /score to see your score
+        /help to show these cmd options
+        /scoreboard to show Scoreboard
+        /exit to exit the program       
+        """)
+    else:
+        print("""
+        /register to create an account if you don't have one already
+        """)
 
-def checkOption(access,guess_Word,accountInfo):
-    if access:
+def checkOption(loggedIn,guess_Word,accountInfo):
+    if loggedIn:
         if guess_Word == "/logout":
             loggedIn = False
             print("Logged out successfully!")
         elif guess_Word == "/help":
-            showHelp()
-            if permission.lower() == "y":
-                sys.exit()
+            showHelp(True)
         elif guess_Word == "/score":
             print("Your score is {}".format(logged_in[4]))
         elif guess_Word == "/account":
@@ -21,7 +35,7 @@ def checkOption(access,guess_Word,accountInfo):
         elif guess_Word == "/deleteaccount":
             logged_in[0] = database.deleteAccount(logged_in[1])
             loggedIn = False
-    elif not access:
+    elif not loggedIn:
         if guess_Word == "/register":
             login_system.register()
     
@@ -40,5 +54,7 @@ def checkOption(access,guess_Word,accountInfo):
         print(level_system.generateLevel())
     elif guess_Word == "/exit":
         permission = input("Are you sure you want to continue?Y/n :")
+        if permission.lower() == "y":
+            sys.exit()
     ##############
     return loggedIn

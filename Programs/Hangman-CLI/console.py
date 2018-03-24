@@ -7,7 +7,7 @@ Changes:
 
 """
 
-import sys, login_system, database
+import sys, login_system, database, level_system
 
 def showHelp(loggedIn):
     if loggedIn:

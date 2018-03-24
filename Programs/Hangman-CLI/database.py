@@ -83,7 +83,10 @@ def showScoreboard():
         db = sqlite3.connect("database.db")
         cursor = db.cursor()
         for account in cursor.execute("SELECT * from accounts"):
-                print("{} Score --> {}".format(account[1],account[3]))
+                show = "Username : {} Score : {}".format(account[1],account[3])
+                print("-"*len(show))
+                print(show)
+        print("-"*len(show))
         db.commit()
         db.close()
 

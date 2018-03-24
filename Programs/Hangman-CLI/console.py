@@ -1,3 +1,12 @@
+"""
+Version 1.1
+Changes:
+    -logged_in[0] = database.deleteAccount(logged_in[1]) changed to -->
+                    accountInfo[0] = database.deleteAccount(accountInfo[1])
+
+
+"""
+
 import sys, login_system, database
 
 def showHelp(loggedIn):
@@ -33,7 +42,7 @@ def checkOption(loggedIn,guess_Word,accountInfo,score):
         elif guess_Word == "/register":
             print("You can't create an account while logged in!")
         elif guess_Word == "/deleteaccount":
-            logged_in[0] = database.deleteAccount(logged_in[1])
+            accountInfo[0] = database.deleteAccount(accountInfo[1])
             loggedIn = False
     elif not loggedIn:
         if guess_Word == "/register":

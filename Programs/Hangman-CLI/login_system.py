@@ -25,7 +25,7 @@ def register():
         if password == "/login":
             login()
         elif password !="/login":
-            console.checkOption(False,password)
+            console.checkOption(False,password,"",0)
         
         #If the account was inserted then it returns True
         created = insertAccount(username,password,"",0)

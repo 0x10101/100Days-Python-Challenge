@@ -1,19 +1,4 @@
 """
-Version 2.2
-Changes:
-    -Made a function responsible for checking if random_words.txt exists
-       and if it doesn't then it creates it
-    -When user is in register form he can enter /login to go back to login form
-    -Created createDatabase() to check if database.py exists/has accounts
-           TABLE and if it doesn't then it creates it
-    -Created insertAccount(user,passw) for register()
-    -100 * len(random_word) instead of 100 * len(guess_Word)
-    -Score is saved on database now
-    -The programs runs database.showScoreboard when cmd option /scoreboard is
-         entered.
-    -Created hidden cmd option /value to print out "value" dict
-    -Organized the code
-
 Version 2.3
 Changes:
     -/account shows your level
@@ -32,7 +17,7 @@ Changes:
     -40 * len(random_word) instead of 100 * len(random_word)
     -Used level_system functions on the while loop
     -Changed print(letters_List) to print(*letters_List, sep=" ")
-    -Moved showHelp() to console.py
+    -Moved showHelp(), checkOption to console.py
     -console.showHelp() is printed only once
 
     
@@ -43,13 +28,13 @@ To-Do:
         (Commented until fixed)
     -Fix bug where for t
     -Fix /deleteAccount cmd option "Guss the word or a letter" bug
+    -User can't leave value["guess_Word"] empty
     
 """
 
 import random, sys, string, time, sqlite3
-import fileHandling, login_system, database, level_system
+import fileHandling, login_system, database, level_system, console
 from ascii_art import *
-import console
 
 #Function from hangman_functions
 fileHandling.check_randomWFile()
@@ -97,6 +82,7 @@ letters_List = generateList()
 logged_in = login_system.login()
 
 once = True
+
 while logged_in[0] and value["chances"]:
     while once:
       console.showHelp(True)
@@ -108,10 +94,21 @@ while logged_in[0] and value["chances"]:
         pastLevel = level_system.checkLevel(logged_in[4])
         try:
             value["guess_Word"] = input("Guess the word or a letter: ").lower().strip()
+            if not value["guess_Word"]:
+                print("Please enter a letter/word!")
+                continue
+            """
+            for character in list(value["guess_Word"]):
+              try:
+                if character == int(character):
+                  break
+              except ValueError:
+                pass
+            """
             logged_in[0] = console.checkOption(True,value["guess_Word"],
                                                   logged_in,logged_in[4])
             if not logged_in[0]:
-              break
+                break
             if value["stages_index"] < 10 and logged_in[0]:
                 print(stages[value["stages_index"]])
                 break

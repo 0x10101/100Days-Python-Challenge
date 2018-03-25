@@ -19,6 +19,8 @@ Changes:
     -Changed print(letters_List) to print(*letters_List, sep=" ")
     -Moved showHelp(), checkOption to console.py
     -console.showHelp() is printed only once
+    -User can't leave value["guess_Word"] empty
+
 
     
 
@@ -26,9 +28,6 @@ To-Do:
     -Add difficulty level
     -Fix "Only letters (from english vocabulary) please!" bug
         (Commented until fixed)
-    -Fix bug where for t
-    -Fix /deleteAccount cmd option "Guss the word or a letter" bug
-    -User can't leave value["guess_Word"] empty
     
 """
 

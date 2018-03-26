@@ -28,7 +28,7 @@ def register():
             console.checkOption(False,password,"",0)
         
         #If the account was inserted then it returns True
-        created = insertAccount(username,password,"",0)
+        created = insertAccount(username,password)
         
         if created:
             login()

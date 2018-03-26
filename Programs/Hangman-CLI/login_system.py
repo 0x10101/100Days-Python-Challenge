@@ -10,6 +10,19 @@ Changes:
 import sqlite3, json, console
 from database import insertAccount
 
+def getLoginInfo(data,name,register=False):
+    while True:
+        if register:
+            data = input("Create {}: ").format(name).lower()
+        if not register:
+            data = input("{}".format(name))
+        if data:
+            break
+        else:
+            print("Type something ffs!")
+    return data
+
+
 def register():
     print("""
     /login to create an account if you don't have one already

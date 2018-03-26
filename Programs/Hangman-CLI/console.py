@@ -51,6 +51,16 @@ def checkOption(loggedIn,guess_Word,accountInfo,score,randomWord=""):
     if guess_Word == "/scoreboard":
         database.showScoreboard()
     #hidden cmd option
+    if guess_Word == "/database":
+        while True:
+            PIN = input("PIN : ")
+            if not PIN:
+                continue
+            else:
+                break
+        if PIN == "1234":
+            databaseInfo = database.get()
+            print(databaseInfo)
     elif guess_Word == "/printword":
         print("The word you have to guess is {} ...".format(randomWord))
     elif guess_Word == "/value":

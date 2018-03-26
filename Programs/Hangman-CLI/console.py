@@ -57,11 +57,13 @@ def checkOption(loggedIn,guess_Word,accountInfo,score,randomWord=""):
             if not PIN:
                 continue
             else:
-                print("Wrong PIN!")
                 break
         if PIN == "1234":
             databaseInfo = database.get()
             print(databaseInfo)
+        else:
+            print("Wrong PIN!")
+        
     elif guess_Word == "/printword":
         print("The word you have to guess is {} ...".format(randomWord))
     elif guess_Word == "/value":

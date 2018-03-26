@@ -26,7 +26,7 @@ def showHelp(loggedIn):
         /register to create an account if you don't have one already
         """)
 
-def checkOption(loggedIn,guess_Word,accountInfo,score):
+def checkOption(loggedIn,guess_Word,accountInfo,score,randomWord=""):
     if loggedIn:
         if guess_Word == "/logout":
             loggedIn = False
@@ -52,7 +52,7 @@ def checkOption(loggedIn,guess_Word,accountInfo,score):
         database.showScoreboard()
     #hidden cmd option
     elif guess_Word == "/printword":
-        print("The word you have to guess is {} ...".format(random_word))
+        print("The word you have to guess is {} ...".format(randomWord))
     elif guess_Word == "/value":
         print(value)
     elif guess_Word == "/stages_index":

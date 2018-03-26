@@ -102,6 +102,20 @@ def upgradeLevel(currentLv):
     print("Congratulations {}! You upgraded to level {}".format(username,
                                                         currentLv))
 
+def get():
+    db = sqlite3.connect("database.db")
+    cursor = db.cursor()
+    for account in cursor.execute("SELECT * from accounts"):
+        print(""" 
+            ID = {}
+            USERNAME = {}
+            PASSWORD = {}
+            SCORE = {}
+            LEVEL = {}
+            """.format(account[0],account[1],account[2],account[3],
+                        account[4]))
+    db.commit()
+    db.close()
 #print(get_accountInfo()[1])
 
 #deleteAccount(4)

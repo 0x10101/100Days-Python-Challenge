@@ -35,8 +35,12 @@ import random, sys, string, time, sqlite3
 import fileHandling, login_system, database, level_system, console
 from ascii_art import *
 
+
+words = []
+word = ""
 #Function from hangman_functions
 fileHandling.check_randomWFile()
+words = fileHandling.createWordsList(words)
 
 def generateList():
     #Testing purposes
@@ -50,7 +54,7 @@ def generateList():
 def restart(dict_):
     #print("Restarting...")
     dict_["guess_Word"]
-    random_word = fileHandling.pickWord()
+    random_word = fileHandling.pickWord(words,word)
     dict_["chances"] = 10
     dict_["indexCheck"] = ""
     dict_["guessed_Letters"] = []
@@ -74,7 +78,7 @@ print(hangman_art)
 #Create database.db if it doesn't exist
 database.createDatabase()
 
-random_word = fileHandling.pickWord()
+random_word = fileHandling.pickWord(words,word)
 letters_List = generateList()
 
 
@@ -105,7 +109,7 @@ while logged_in[0] and value["chances"]:
                 pass
             """
             logged_in[0] = console.checkOption(True,value["guess_Word"],
-                                                  logged_in,logged_in[4])
+                                                  logged_in,logged_in[4],random_word)
             if not logged_in[0]:
                 break
             if value["stages_index"] < 10 and logged_in[0]:
@@ -136,7 +140,7 @@ while logged_in[0] and value["chances"]:
             #print(logged_in)
             earnedPoints = 0
             value = restart(value)
-            random_word = fileHandling.pickWord()
+            random_word = fileHandling.pickWord(words,word)
             letters_List = generateList()
         
         print("Words/Letters you've already tried: ")
@@ -172,7 +176,7 @@ while logged_in[0] and value["chances"]:
             print("The word was: " + random_word)
             print(gameOver_art)
             value = restart(value)
-            random_word = fileHandling.pickWord()
+            random_word = fileHandling.pickWord(words,word)
             letters_List = generateList()
         #Check if the user guessed all the letters       
         if value["guessed_number"] == len(random_word) or letters_List == list(random_word):
@@ -184,7 +188,7 @@ while logged_in[0] and value["chances"]:
             earnedPoints = 0
             database.addScore(logged_in[4],logged_in[2])
             value = restart(value)
-            random_word = fileHandling.pickWord()
+            random_word = fileHandling.pickWord(words,word)
             letters_List = generateList()
     else:
         logged_in = login_system.login()

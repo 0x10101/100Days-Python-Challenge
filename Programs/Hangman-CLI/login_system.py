@@ -27,25 +27,23 @@ def register():
     print("""
     /login to create an account if you don't have one already
     """)
-    while True:
-        print("Register an account!")
-        username = input("Create Username: ").lower()
-        if username == "/login":
-            login()
-        elif username != "/login":
-            console.checkOption(False,username,"",0)
-        password = input("Create Password: ").lower()
-        if password == "/login":
-            login()
-        elif password !="/login":
-            console.checkOption(False,password,"",0)
-        
-        #If the account was inserted then it returns True
-        created = insertAccount(username,password)
-        
-        if created:
-            login()
-            break
+    print("Register an account!")
+    username = input("Create Username: ").lower()
+    if username == "/login":
+        login()
+    elif username != "/login":
+        console.checkOption(False,username,"",0)
+    password = input("Create Password: ").lower()
+    if password == "/login":
+        login()
+    elif password !="/login":
+        console.checkOption(False,password,"",0)
+    
+    #If the account was inserted then it returns True
+    created = insertAccount(username,password)
+    
+    if created:
+        login()
 
 def login():
     print("""

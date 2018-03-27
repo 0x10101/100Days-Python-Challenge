@@ -129,7 +129,6 @@ while logged_in[0] and value["chances"]:
         
         #Check if the user guessed the whole word
         if value["guess_Word"] == random_word.lower():
-            print(str(letters_List))
             print("You guessed the word!")
             earnedPoints = 40 * len(random_word)
             logged_in[4] = logged_in[4] + earnedPoints

@@ -12,15 +12,15 @@ import time, random
 #Make a list out of every word in file
 def createWordsList(wordsList):
     with open("random_words.txt","r") as file:
-        words = list(file.read().split())
-    return words
+        wordsList = list(file.read().split())
+    return wordsList
 
-def pickWord():
+def pickWord(wordsL,wordVar):
     #Pick a random number for random_Index
     # use random_Index to pick a random word from the 'words' list
-    rand_Index = random.randint(0,len(words)-1)
-    word = words[rand_Index].title()
-    return word
+    rand_Index = random.randint(0,len(wordsL)-1)
+    wordVar = wordsL[rand_Index].title()
+    return wordVar
 
 def check_randomWFile():
     try:

@@ -1,8 +1,18 @@
+"""
+Version 1.1
+Changes:
+    -Handled 
+        FileNotFoundError: [Errno 2] No such file or 
+        directory: 'random_words.txt'
+"""
+
+
 import time, random
 
 #Make a list out of every word in file
-with open("random_words.txt","r") as file:
-    words = list(file.read().split())
+def createWordsList():
+    with open("random_words.txt","r") as file:
+        words = list(file.read().split())
 
 def pickWord():
     #Pick a random number for random_Index

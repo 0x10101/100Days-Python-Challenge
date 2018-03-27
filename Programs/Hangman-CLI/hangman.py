@@ -71,7 +71,7 @@ value = {"chances":10,"guess_Word":"","guesed_Letters":[],
 cmdOptions_list = ["/help","/exit","/score","/logout","/profile","/scoreboard",
                   "/account","/register","/printword","/stages_index",
                               "/logged_in","/value","/deleteaccount",
-                              "/levels"]
+                              "/levels","/database"]
 
 print(hangman_art)
 

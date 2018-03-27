@@ -10,9 +10,10 @@ Changes:
 import time, random
 
 #Make a list out of every word in file
-def createWordsList():
+def createWordsList(wordsList):
     with open("random_words.txt","r") as file:
         words = list(file.read().split())
+    return words
 
 def pickWord():
     #Pick a random number for random_Index

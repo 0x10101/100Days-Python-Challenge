@@ -11,28 +11,36 @@ class Manage:
 	def create_table(self,table):
 		c = self.conn.cursor()
 		c.execute("""CREATE TABLE IF NOT EXISTS {}(
-			ID INTEGER,
+			ID INTEGER UNIQUE,
 			name TEXT,
 			lastname TEXT,
 			username TEXT UNIQUE,
 			password TEXT)
 			""".format(table))
 		self.conn.commit()
-	def insert(self,ID,name,lname,usern,passw):
-		c = self.conn.cursor("INSERT INTO accounts VALUES(?,?,?,?)"), (ID,name,lname,usern,passw)
-		c.execute()
+	def insert(self,table,ID,name,lname,usern,passw):
+		c = self.conn.cursor()
+		c.execute("INSERT INTO %s Values(%s,%s,%s,%s,%s)" % (table,ID,name,lname,usern,passw))
+		#c.execute('INSERT INTO students Values(?,?,?,?,?)', (ID,name,lname,usern,passw))
+		#c.execute("INSERT INTO {} Values({},{},{},{},{})".format(table,ID,name,lname,usern,passw))
+		self.conn.commit()
 
 	def getAccounts(self,table):
 		c = self.conn.cursor()
 		accounts = []
+		accInfo = []
 		for account in c.execute("SELECT * FROM {}".format(table)):
 			print(account)
 			for item in range(4):
-				accounts.insert(item)
+				accInfo.append(account[item])
+			accounts.append(accInfo)
+			accInfo = []
 		return accounts	
 	
 
-#dbManage = Manage("database-test")
-#dbManage.connect()
-#dbManage.create_table("students")
-#dbManage.getAccounts("students")
+dbManage = Manage("database-test")
+dbManage.connect()
+dbManage.create_table("students")
+#dbManage.insert("students","1","gjerg1j","kadriu","dsadas","gjergji")
+acc = dbManage.getAccounts("students")
+print(acc)

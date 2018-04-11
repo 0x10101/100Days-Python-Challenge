@@ -17,7 +17,7 @@ def loginAttempt():
 
 root = tk.Tk()
 root.title("School Management")
-root.geometry("{}x{}".format(900,700))
+root.geometry("{}x{}".format(900,500))
 
 root.grid_columnconfigure(1, weight=1)
 root.grid_columnconfigure(1, weight=1)

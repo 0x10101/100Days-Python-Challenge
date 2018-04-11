@@ -20,8 +20,8 @@ class Manage:
 		self.conn.commit()
 	def insert(self,table,name,lname,usern,passw):
 		c = self.conn.cursor()
-		c.execute("""INSERT INTO students1(name,lastname,username,password)
-		 Values(?,?,?,?)""",(name,lname,usern,passw))
+		c.execute("""INSERT INTO {}(name,lastname,username,password)
+		 Values(?,?,?,?)""".format(table),(name,lname,usern,passw))
 		#c.execute('INSERT INTO students Values(?,?,?,?,?)', (ID,name,lname,usern,passw))
 		#c.execute("INSERT INTO {} Values({},{},{},{},{})".format(table,ID,name,lname,usern,passw))
 		self.conn.commit()
@@ -38,11 +38,11 @@ class Manage:
 			accInfo = []
 		return accounts	
 	
-
+#Testing
 dbManage = Manage("database-test")
 dbManage.connect()
 dbManage.create_table("students1")
-dbManage.insert("students","0","gjergj12","kadriu12345","gjergjk71")
+dbManage.insert("students1","0","gjergj12","1232123","gjergjk71")
 acc = dbManage.getAccounts("students1")
 print(acc)
 

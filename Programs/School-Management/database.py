@@ -11,16 +11,17 @@ class Manage:
 	def create_table(self,table):
 		c = self.conn.cursor()
 		c.execute("""CREATE TABLE IF NOT EXISTS {}(
-			ID INTEGER UNIQUE,
+			ID INTEGER PRIMARY KEY AUTOINCREMENT,
 			name TEXT,
 			lastname TEXT,
 			username TEXT UNIQUE,
 			password TEXT)
-			""".format(table))
+				""".format(table))
 		self.conn.commit()
-	def insert(self,table,ID,name,lname,usern,passw):
+	def insert(self,table,name,lname,usern,passw):
 		c = self.conn.cursor()
-		c.execute("INSERT INTO %s Values(%s,%s,%s,%s,%s)" % (table,ID,name,lname,usern,passw))
+		c.execute("""INSERT INTO students1(name,lastname,username,password)
+		 Values(?,?,?,?)""",(name,lname,usern,passw))
 		#c.execute('INSERT INTO students Values(?,?,?,?,?)', (ID,name,lname,usern,passw))
 		#c.execute("INSERT INTO {} Values({},{},{},{},{})".format(table,ID,name,lname,usern,passw))
 		self.conn.commit()
@@ -40,7 +41,9 @@ class Manage:
 
 dbManage = Manage("database-test")
 dbManage.connect()
-dbManage.create_table("students")
-#dbManage.insert("students","1","gjerg1j","kadriu","dsadas","gjergji")
-acc = dbManage.getAccounts("students")
+dbManage.create_table("students1")
+dbManage.insert("students","0","gjergj12","kadriu12345","gjergjk71")
+acc = dbManage.getAccounts("students1")
 print(acc)
+
+#nautilus

@@ -39,7 +39,10 @@ e2 = tk.Entry(root,font=20)
 e2.place(x=360,y=250,width=300,height=55)
 
 b1 = tk.Button(root,text="Login",font=("",28),command=loginAttempt)
-b1.place(x=310,y=330,width=150,height=50)
+b1.place(x=300,y=330,width=150,height=50)
+
+b2 = tk.Button(root,text="Register",font=("",28))
+b2.place(x=470,y=330,width=160,height=50)
 
 
 

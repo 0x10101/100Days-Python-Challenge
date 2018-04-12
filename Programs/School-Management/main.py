@@ -33,7 +33,7 @@ def showRegister():
 	e2.place_forget() # Entry for password
 
 	b1.place_forget() # Button for login 
-	b2.place_forget() # Button for register
+	b2.place_forget() # Button for show register
 
 	#Showing register widgets
 	l5.place(x=30,y=30) # Sign up
@@ -49,8 +49,38 @@ def showRegister():
 	e6.place(x=370,y=270) # Password
 	e7.place(x=370,y=310) # Birthday
 
-	b3.place(x=300,y=350,height=50)
-	b4.place(x=500,y=350,height=50)
+	b3.place(x=300,y=350,height=50) # Register 
+	b4.place(x=500,y=350,height=50) # Show Login
+
+
+def showLogin():
+	#Removing register widgets
+	l5.place_forget() # Sign up
+	l6.place_forget() # First name
+	l7.place_forget() # Last name
+	l8.place_forget() # Username
+	l9.place_forget() # Password
+	l10.place_forget() # Birthday
+
+	e3.place_forget() # First name
+	e4.place_forget() # Last name
+	e5.place_forget() # Username
+	e6.place_forget() # Password
+	e7.place_forget() # Birthday
+
+	b3.place_forget() # Register 
+	b4.place_forget() # Show Login
+
+	#Showing login widgets
+	l1.place(x=30,y=30) # Sign in
+	l2.place(x=130,y=180) # Username 
+	l3.place(x=135,y=250) # Password 
+
+	e1.place(x=360,y=180,width=300,height=55) # Entry for username
+	e2.place(x=360,y=250,width=300,height=55) # Entry for password
+
+	b1.place(x=300,y=330,width=150,height=50) # Button for login 
+	b2.place(x=470,y=330,width=160,height=50) # Button for show register
 
 root = tk.Tk()
 root.title("School Management")
@@ -100,7 +130,7 @@ l9 = tk.Label(root,text="Password: ",font=("",20))
 l10 = tk.Label(root,text="Birthday: ",font=("",20))
 
 e3 = tk.Entry(root,font=("",20))
-
+ 
 e4 = tk.Entry(root,font=("",20))
 
 e5 = tk.Entry(root,font=("",20))
@@ -111,7 +141,7 @@ e7 = tk.Entry(root,font=("",20))
 
 b3 = tk.Button(root,text="Register",font=("",28))
 
-b4 = tk.Button(root,text="Login",font=("",28))
+b4 = tk.Button(root,text="Login",font=("",28),command=showLogin)
 
 
 

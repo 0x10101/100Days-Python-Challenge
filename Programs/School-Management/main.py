@@ -13,12 +13,13 @@ def loginAttempt():
 	for account in c.execute("SELECT * FROM accounts"):
 		if account[3] == e1.get() and account[4] == e2.get():
 			access = True
+			print("username or password found in database")
 			break
 	if not access:
 		l3.place(x=200,y=380)
+		print("username or password not found in database")
 	else:
 		l3.place_forget()
-	print(access)
 	return access
 
 def showRegister():
@@ -37,7 +38,6 @@ l1.place(x=50,y=50)
 l2 = tk.Label(root,text="Username: ",font=("",30))
 l2.place(x=130,y=180)
 
-#e2_content = 
 e1 = tk.Entry(root,font=("",20))
 e1.place(x=360,y=180,width=300,height=55)
 

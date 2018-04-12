@@ -23,7 +23,16 @@ def loginAttempt():
 	return access
 
 def showRegister():
-	pass
+	l1.place_forget()
+	l2.place_forget()
+	l3.place_forget()
+	l4.place_forget()
+
+	e1.place_forget()
+	e2.place_forget()
+
+	b1.place_forget()
+	b2.place_forget()
 
 root = tk.Tk()
 root.title("School Management")

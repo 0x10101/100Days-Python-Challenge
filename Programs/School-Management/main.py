@@ -1,4 +1,4 @@
-#Version 0.1
+#Version 0.2
 
 import tkinter as tk
 from tkinter import ttk
@@ -87,7 +87,12 @@ def createAccount():
 	dbManager = db.Manage("database.db")
 	dbManager.connect()
 	dbManager.create_table("accounts")
-	dbManager.insert("accounts",e3.get(),e4.get(),e5.get(),e6.get(),e7.get())
+	try:
+		dbManager.insert("accounts",e3.get(),e4.get(),e5.get(),e6.get(),e7.get())
+		l11.place_forget()
+	except:
+		l11.place(x=270,y=400)
+
 	dbManager.close()
 
 
@@ -130,6 +135,8 @@ l8 = tk.Label(root,text="Username: ",font=("",20))
 l9 = tk.Label(root,text="Password: ",font=("",20))
 
 l10 = tk.Label(root,text="Birthday: ",font=("",20))
+
+l11 = tk.Label(root,text="Username is already taken!",font=("",20))
 
 e3 = tk.Entry(root,font=("",20))
  

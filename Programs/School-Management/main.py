@@ -24,33 +24,33 @@ def loginAttempt():
 
 def showRegister():
 	#Removing login widgets
-	l1.place_forget()
-	l2.place_forget()
-	l3.place_forget()
-	l4.place_forget()
+	l1.place_forget() # Sign in
+	l2.place_forget() # Username 
+	l3.place_forget() # Password 
+	l4.place_forget() # The message that is shown when user/pw is wrong
 
-	e1.place_forget()
-	e2.place_forget()
+	e1.place_forget() # Entry for username
+	e2.place_forget() # Entry for password
 
-	b1.place_forget()
-	b2.place_forget()
+	b1.place_forget() # Button for login 
+	b2.place_forget() # Button for register
 
 	#Showing register widgets
-	l5.place(x=30,y=30)
-	l6.place(x=200,y=150)
-	l7.place(x=200,y=190)
-	l8.place(x=200,y=230)
-	l9.place(x=200,y=270)
-	l10.place(x=200,y=310)
+	l5.place(x=30,y=30) # Sign up
+	l6.place(x=200,y=150) # First name
+	l7.place(x=200,y=190) # Last name
+	l8.place(x=200,y=230) # Username
+	l9.place(x=200,y=270) # Password
+	l10.place(x=200,y=310) # Birthday
 
-	e3.place(x=370,y=150)
-	e4.place(x=370,y=190)
-	e5.place(x=370,y=230)
-	e6.place(x=370,y=270)
-	e7.place(x=370,y=310)
+	e3.place(x=370,y=150) # First name
+	e4.place(x=370,y=190) # Last name
+	e5.place(x=370,y=230) # Username
+	e6.place(x=370,y=270) # Password
+	e7.place(x=370,y=310) # Birthday
 
-
-
+	b3.place(x=300,y=350,height=50)
+	b4.place(x=500,y=350,height=50)
 
 root = tk.Tk()
 root.title("School Management")
@@ -109,7 +109,9 @@ e6 = tk.Entry(root,font=("",20))
 
 e7 = tk.Entry(root,font=("",20))
 
+b3 = tk.Button(root,text="Register",font=("",28))
 
+b4 = tk.Button(root,text="Login",font=("",28))
 
 
 

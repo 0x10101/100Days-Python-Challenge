@@ -1,3 +1,5 @@
+#Version 0.1
+
 import tkinter as tk
 from tkinter import ttk
 from database import Manage
@@ -35,7 +37,7 @@ e1.place(x=360,y=180,width=300,height=55)
 l3 = tk.Label(root,text="Password:",font=("",30))
 l3.place(x=135,y=250)
 
-e2 = tk.Entry(root,font=20)
+e2 = tk.Entry(root,font=20,show="*")
 e2.place(x=360,y=250,width=300,height=55)
 
 b1 = tk.Button(root,text="Login",font=("",28),command=loginAttempt)

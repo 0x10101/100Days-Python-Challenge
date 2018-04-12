@@ -39,6 +39,9 @@ class Manage:
 			accounts.append(accInfo)
 			accInfo = []
 		return accounts
+	def close(self):
+		self.conn.close()
+		print("DISCONNECTED FROM {}".format(self.fileLocation))
 	
 #Testing
 #dbManage = Manage("database-tes")

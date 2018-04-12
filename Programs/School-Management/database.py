@@ -6,7 +6,7 @@ class Manage:
 
 	def connect(self):
 		self.conn = sqlite3.connect(self.fileLocation)
-		print("CONNECTED")
+		print("CONNECTED to {}".format(self.fileLocation))
 
 	def create_table(self,table):
 		c = self.conn.cursor()
@@ -18,6 +18,7 @@ class Manage:
 			password TEXT)
 				""".format(table))
 		self.conn.commit()
+		print("{} table is/was created on {}".format(table,self.fileLocation))
 	def insert(self,table,name,lname,usern,passw):
 		c = self.conn.cursor()
 		c.execute("""INSERT INTO {}(name,lastname,username,password)
@@ -25,7 +26,8 @@ class Manage:
 		#c.execute('INSERT INTO students Values(?,?,?,?,?)', (ID,name,lname,usern,passw))
 		#c.execute("INSERT INTO {} Values({},{},{},{},{})".format(table,ID,name,lname,usern,passw))
 		self.conn.commit()
-
+		print("""In {}(name,lastname,username,password) was inserted
+								{},{},{},{}""".format(table,name,lname,usern,passw))
 	def getAccounts(self,table):
 		c = self.conn.cursor()
 		accounts = []
@@ -36,14 +38,14 @@ class Manage:
 				accInfo.append(account[item])
 			accounts.append(accInfo)
 			accInfo = []
-		return accounts	
+		return accounts
 	
 #Testing
-dbManage = Manage("database-test")
-dbManage.connect()
-dbManage.create_table("students1")
-dbManage.insert("students1","0","gjergj12","1232123","gjergjk71")
-acc = dbManage.getAccounts("students1")
-print(acc)
+#dbManage = Manage("database-tes")
+#dbManage.connect()
+#dbManage.create_table("students1")
+#dbManage.insert("students1","0","gjergj12","1232123311","gjergjk71")
+#acc = dbManage.getAccounts("accounts")
+#print(acc)
 
 #nautilus

@@ -14,6 +14,10 @@ def loginAttempt():
 		if account[3] == e1.get() and account[4] == e2.get():
 			access = True
 			break
+	if not access:
+		l3.place(x=200,y=380)
+	else:
+		l3.place_forget()
 	print(access)
 	return access
 
@@ -42,6 +46,8 @@ l3.place(x=135,y=250)
 
 e2 = tk.Entry(root,font=("",20),show="*")
 e2.place(x=360,y=250,width=300,height=55)
+
+l3 = tk.Label(root,text="Username or Password is wrond!",font=("",20))
 
 b1 = tk.Button(root,text="Login",font=("",28),command=loginAttempt)
 b1.place(x=300,y=330,width=150,height=50)

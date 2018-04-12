@@ -34,6 +34,7 @@ def showRegister():
 	b1.place_forget()
 	b2.place_forget()
 
+
 root = tk.Tk()
 root.title("School Management")
 root.geometry("{}x{}".format(900,500))
@@ -41,8 +42,11 @@ root.geometry("{}x{}".format(900,500))
 root.grid_columnconfigure(1, weight=1)
 root.grid_columnconfigure(1, weight=1)
 
-l1 = tk.Label(root,text="Sign in",font=("",70))
-l1.place(x=50,y=50)
+
+#Login widgets
+
+l1 = tk.Label(root,text="Sign in",font=("",50))
+l1.place(x=30,y=30)
 
 l2 = tk.Label(root,text="Username: ",font=("",30))
 l2.place(x=130,y=180)
@@ -63,6 +67,11 @@ b1.place(x=300,y=330,width=150,height=50)
 
 b2 = tk.Button(root,text="Register",font=("",28),command=showRegister)
 b2.place(x=470,y=330,width=160,height=50)
+
+#Register widgets
+
+#l5 = tk.Label(root,text="Sign up",font=("",70))
+
 
 
 

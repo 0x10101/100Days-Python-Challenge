@@ -23,6 +23,7 @@ def loginAttempt():
 	return access
 
 def showRegister():
+	#Removing login widgets
 	l1.place_forget()
 	l2.place_forget()
 	l3.place_forget()
@@ -33,6 +34,22 @@ def showRegister():
 
 	b1.place_forget()
 	b2.place_forget()
+
+	#Showing register widgets
+	l5.place(x=30,y=30)
+	l6.place(x=200,y=150)
+	l7.place(x=200,y=190)
+	l8.place(x=200,y=230)
+	l9.place(x=200,y=270)
+	l10.place(x=200,y=310)
+
+	e3.place(x=370,y=150)
+	e4.place(x=370,y=190)
+	e5.place(x=370,y=230)
+	e6.place(x=370,y=270)
+	e7.place(x=370,y=310)
+
+
 
 
 root = tk.Tk()
@@ -70,7 +87,28 @@ b2.place(x=470,y=330,width=160,height=50)
 
 #Register widgets
 
-#l5 = tk.Label(root,text="Sign up",font=("",70))
+l5 = tk.Label(root,text="Sign up",font=("",50))
+
+l6 = tk.Label(root,text="First Name: ",font=("",20))
+
+l7 = tk.Label(root,text="Last Name: ",font=("",20))
+
+l8 = tk.Label(root,text="Username: ",font=("",20))
+
+l9 = tk.Label(root,text="Password: ",font=("",20))
+
+l10 = tk.Label(root,text="Birthday: ",font=("",20))
+
+e3 = tk.Entry(root,font=("",20))
+
+e4 = tk.Entry(root,font=("",20))
+
+e5 = tk.Entry(root,font=("",20))
+
+e6 = tk.Entry(root,font=("",20))
+
+e7 = tk.Entry(root,font=("",20))
+
 
 
 

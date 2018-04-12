@@ -102,27 +102,20 @@ root.geometry("{}x{}".format(900,500))
 #Login widgets
 
 l1 = tk.Label(root,text="Sign in",font=("",50))
-l1.place(x=30,y=30)
 
 l2 = tk.Label(root,text="Username: ",font=("",30))
-l2.place(x=130,y=180)
 
 e1 = tk.Entry(root,font=("",20))
-e1.place(x=360,y=180,width=300,height=55)
 
 l3 = tk.Label(root,text="Password:",font=("",30))
-l3.place(x=135,y=250)
 
 e2 = tk.Entry(root,font=("",20),show="*")
-e2.place(x=360,y=250,width=300,height=55)
 
 l4 = tk.Label(root,text="Username or Password is wrond!",font=("",20))
 
 b1 = tk.Button(root,text="Login",font=("",28),command=loginAttempt)
-b1.place(x=300,y=330,width=150,height=50)
 
 b2 = tk.Button(root,text="Register",font=("",28),command=showRegister)
-b2.place(x=470,y=330,width=160,height=50)
 
 #Register widgets
 
@@ -152,6 +145,7 @@ b3 = tk.Button(root,text="Register",font=("",28),command=createAccount)
 
 b4 = tk.Button(root,text="Login",font=("",28),command=showLogin)
 
+showLogin()
 
 
 root.mainloop()

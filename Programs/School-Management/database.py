@@ -15,7 +15,7 @@ class Manage:
 			name TEXT,
 			lastname TEXT,
 			username TEXT UNIQUE,
-			password TEXT
+			password TEXT,
 			age TEXT)
 				""".format(table))
 		self.conn.commit()
@@ -23,11 +23,11 @@ class Manage:
 	def insert(self,table,name,lname,usern,passw,age):
 		c = self.conn.cursor()
 		c.execute("""INSERT INTO {}(name,lastname,username,password,age)
-		 Values(?,?,?,?)""".format(table),(name,lname,usern,passw,age))
+		 Values(?,?,?,?,?)""".format(table),(name,lname,usern,passw,age))
 		#c.execute('INSERT INTO students Values(?,?,?,?,?)', (ID,name,lname,usern,passw))
 		#c.execute("INSERT INTO {} Values({},{},{},{},{})".format(table,ID,name,lname,usern,passw))
 		self.conn.commit()
-		print("""In {}(name,lastname,username,password) was inserted
+		print("""In {}(name,lastname,username,password,age) was inserted
 							{},{},{},{},{}""".format(table,name,lname,usern,passw,age))
 	def getAccounts(self,table):
 		c = self.conn.cursor()

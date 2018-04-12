@@ -2,25 +2,7 @@
 
 import tkinter as tk
 from tkinter import ttk
-from database import Manage
-
-def loginAttempt():
-	access = False
-	dbManager = Manage("database.db") #fileLocation
-	dbManager.connect()
-	dbManager.create_table("accounts")
-	c = dbManager.conn.cursor()
-	for account in c.execute("SELECT * FROM accounts"):
-		if account[3] == e1.get() and account[4] == e2.get():
-			access = True
-			print("username or password found in database")
-			break
-	if not access:
-		l4.place(x=200,y=380)
-		print("username or password not found in database")
-	else:
-		l4.place_forget()
-	return access
+import database as db
 
 def showRegister():
 	#Removing login widgets
@@ -82,6 +64,33 @@ def showLogin():
 	b1.place(x=300,y=330,width=150,height=50) # Button for login 
 	b2.place(x=470,y=330,width=160,height=50) # Button for show register
 
+def loginAttempt():
+	access = False
+	dbManager = db.Manage("database.db") #fileLocation
+	dbManager.connect()
+	dbManager.create_table("accounts")
+	c = dbManager.conn.cursor()
+	for account in c.execute("SELECT * FROM accounts"):
+		if account[3] == e1.get() and account[4] == e2.get():
+			access = True
+			print("username or password found in database")
+			break
+	if not access:
+		l4.place(x=200,y=380)
+		print("username or password not found in database")
+	else:
+		l4.place_forget()
+	dbManager.close()
+	return access
+
+def createAccount():
+	dbManager = db.Manage("database.db")
+	dbManager.connect()
+	dbManager.create_table("accounts")
+	dbManager.insert("accounts",e3.get(),e4.get(),e5.get(),e6.get(),e7.get())
+	dbManager.close()
+
+
 root = tk.Tk()
 root.title("School Management")
 root.geometry("{}x{}".format(900,500))
@@ -139,7 +148,7 @@ e6 = tk.Entry(root,font=("",20),show="*")
 
 e7 = tk.Entry(root,font=("",20))
 
-b3 = tk.Button(root,text="Register",font=("",28))
+b3 = tk.Button(root,text="Register",font=("",28),command=createAccount)
 
 b4 = tk.Button(root,text="Login",font=("",28),command=showLogin)
 

@@ -105,7 +105,7 @@ e4 = tk.Entry(root,font=("",20))
 
 e5 = tk.Entry(root,font=("",20))
 
-e6 = tk.Entry(root,font=("",20))
+e6 = tk.Entry(root,font=("",20),show="*")
 
 e7 = tk.Entry(root,font=("",20))
 

@@ -91,12 +91,16 @@ def createAccount():
 	dbManager.connect()
 	dbManager.create_table("accounts")
 	if e3.get() and e4.get() and e5.get() and e6.get() and e7.get():
-		try:
-			dbManager.insert("accounts",e3.get(),e4.get(),e5.get(),e6.get(),e7.get())
-			l11.place_forget()
-		except:
-			l11.place(x=270,y=400)
-	elif e3.get() 
+		if not hasNumbers(e3.get()) and not hasNumbers(e4.get()):
+			try:
+				dbManager.insert("accounts",e3.get(),e4.get(),e5.get(),e6.get(),e7.get())
+				l11.place_forget()
+			except:
+				errorMessage.set("Username is already taken!")
+				l11.place(x=270,y=400)
+		else:
+			errorMessage.set("First Name/Last Name can't contain numbers!")
+			l11.place(x=150,y=400)
 	dbManager.close()
 
 
@@ -140,7 +144,8 @@ l9 = tk.Label(root,text="Password: ",font=("",20))
 
 l10 = tk.Label(root,text="Birthday: ",font=("",20))
 
-l11 = tk.Label(root,text="Username is already taken!",font=("",20))
+errorMessage = tk.StringVar()
+l11 = tk.Label(root,textvariable=errorMessage,font=("",20))
 
 e3 = tk.Entry(root,font=("",20))
  

@@ -45,6 +45,7 @@ def showLogin():
 	l8.place_forget() # Username
 	l9.place_forget() # Password
 	l10.place_forget() # Birthday
+	l11.place_forget() # Error message
 
 	e3.place_forget() # First name
 	e4.place_forget() # Last name

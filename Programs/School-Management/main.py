@@ -67,6 +67,38 @@ def showLogin():
 	b1.place(x=300,y=330,width=150,height=50) # Button for login 
 	b2.place(x=470,y=330,width=160,height=50) # Button for show register
 
+def hideLoginRegister():
+	#Removing login widgets
+	l1.place_forget() # Sign in
+	l2.place_forget() # Username 
+	l3.place_forget() # Password 
+	l4.place_forget() # The message that is shown when user/pw is wrong
+
+	e1.place_forget() # Entry for username
+	e2.place_forget() # Entry for password
+
+	b1.place_forget() # Button for login 
+	b2.place_forget() # Button for show register
+	
+	#Removing register widgets
+	l5.place_forget() # Sign up
+	l6.place_forget() # First name
+	l7.place_forget() # Last name
+	l8.place_forget() # Username
+	l9.place_forget() # Password
+	l10.place_forget() # Birthday
+	l11.place_forget() # Error message
+
+	e3.place_forget() # First name
+	e4.place_forget() # Last name
+	e5.place_forget() # Username
+	e6.place_forget() # Password
+	e7.place_forget() # Birthday
+
+	b3.place_forget() # Register 
+	b4.place_forget() # Show Login
+
+
 def loginAttempt(event=None):
 	access = False
 	dbManager = db.Manage("database.db") #fileLocation
@@ -77,6 +109,7 @@ def loginAttempt(event=None):
 		if account[3] == e1.get() and account[4] == e2.get():
 			access = True
 			print("username or password found in database")
+			hideLoginRegister()
 			break
 	if not access:
 		l4.place(x=200,y=380)

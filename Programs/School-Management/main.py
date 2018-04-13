@@ -4,6 +4,9 @@ import tkinter as tk
 from tkinter import ttk
 import database as db
 
+def hasNumbers(inputString):
+	return any(char.isdigit() for char in inputString)
+
 def showRegister():
 	#Removing login widgets
 	l1.place_forget() # Sign in
@@ -87,12 +90,13 @@ def createAccount():
 	dbManager = db.Manage("database.db")
 	dbManager.connect()
 	dbManager.create_table("accounts")
-	try:
-		dbManager.insert("accounts",e3.get(),e4.get(),e5.get(),e6.get(),e7.get())
-		l11.place_forget()
-	except:
-		l11.place(x=270,y=400)
-
+	if e3.get() and e4.get() and e5.get() and e6.get() and e7.get():
+		try:
+			dbManager.insert("accounts",e3.get(),e4.get(),e5.get(),e6.get(),e7.get())
+			l11.place_forget()
+		except:
+			l11.place(x=270,y=400)
+	elif e3.get() 
 	dbManager.close()
 
 

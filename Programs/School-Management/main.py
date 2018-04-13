@@ -1,7 +1,6 @@
 #Version 0.2
 
 import tkinter as tk
-from tkinter import ttk
 import database as db
 
 def hasNumbers(inputString):
@@ -67,7 +66,7 @@ def showLogin():
 	b1.place(x=300,y=330,width=150,height=50) # Button for login 
 	b2.place(x=470,y=330,width=160,height=50) # Button for show register
 
-def loginAttempt():
+def loginAttempt(event=None):
 	access = False
 	dbManager = db.Manage("database.db") #fileLocation
 	dbManager.connect()
@@ -108,10 +107,6 @@ root = tk.Tk()
 root.title("School Management")
 root.geometry("{}x{}".format(900,500))
 
-#root.grid_columnconfigure(1, weight=1)
-#root.grid_columnconfigure(1, weight=1)
-
-
 #Login widgets
 
 l1 = tk.Label(root,text="Sign in",font=("",50))
@@ -119,15 +114,16 @@ l1 = tk.Label(root,text="Sign in",font=("",50))
 l2 = tk.Label(root,text="Username: ",font=("",30))
 
 e1 = tk.Entry(root,font=("",20))
+e1.bind("<Return>", loginAttempt)
 
 l3 = tk.Label(root,text="Password:",font=("",30))
 
 e2 = tk.Entry(root,font=("",20),show="*")
+e2.bind("<Return>", loginAttempt)
 
 l4 = tk.Label(root,text="Username or Password is wrond!",font=("",20))
 
 b1 = tk.Button(root,text="Login",font=("",28),command=loginAttempt)
-
 b2 = tk.Button(root,text="Register",font=("",28),command=showRegister)
 
 #Register widgets

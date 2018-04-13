@@ -1,6 +1,7 @@
 #Version 0.2
 
 import tkinter as tk
+from tkinter import ttk
 import database as db
 
 def hasNumbers(inputString):
@@ -98,6 +99,23 @@ def hideLoginRegister():
 	b3.place_forget() # Register 
 	b4.place_forget() # Show Login
 
+def logged_in():
+	tabControl=ttk.Notebook(root)
+	tabCreateTable=ttk.Frame(tabControl)
+	tabInsert=ttk.Frame(tabControl)
+	tabDelete=ttk.Frame(tabControl)
+	tabSelect=ttk.Frame(tabControl)
+	tabUpdate=ttk.Frame(tabControl)
+	tabControl.add(tabCreateTable,text='Dashboard')
+	tabControl.pack(expand=1,fill='both')
+	tabControl.add(tabInsert,text='Staff Management')
+	tabControl.pack(expand=1,fill='both')
+	tabControl.add(tabDelete,text='Class Types')
+	tabControl.pack(expand=1,fill='both')
+	tabControl.add(tabUpdate,text='Classes')
+	tabControl.pack(expand=1,fill='both')
+	tabControl.add(tabSelect,text='Students')
+	tabControl.pack(expand=1,fill='both')
 
 def loginAttempt(event=None):
 	access = False
@@ -110,6 +128,7 @@ def loginAttempt(event=None):
 			access = True
 			print("username or password found in database")
 			hideLoginRegister()
+			logged_in()
 			break
 	if not access:
 		l4.place(x=200,y=380)

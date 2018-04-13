@@ -85,7 +85,7 @@ def loginAttempt(event=None):
 	dbManager.close()
 	return access
 
-def createAccount():
+def createAccount(event=None):
 	dbManager = db.Manage("database.db")
 	dbManager.connect()
 	dbManager.create_table("accounts")
@@ -144,14 +144,19 @@ errorMessage = tk.StringVar()
 l11 = tk.Label(root,textvariable=errorMessage,font=("",20))
 
 e3 = tk.Entry(root,font=("",20))
+e3.bind("<Return>", createAccount)
  
 e4 = tk.Entry(root,font=("",20))
+e4.bind("<Return>", createAccount)
 
 e5 = tk.Entry(root,font=("",20))
+e5.bind("<Return>", createAccount)
 
 e6 = tk.Entry(root,font=("",20),show="*")
+e6.bind("<Return>", createAccount)
 
 e7 = tk.Entry(root,font=("",20))
+e7.bind("<Return>", createAccount)
 
 b3 = tk.Button(root,text="Register",font=("",28),command=createAccount)
 

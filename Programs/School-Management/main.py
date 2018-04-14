@@ -100,21 +100,6 @@ def hideLoginRegister():
 	b4.place_forget() # Show Login
 
 def logged_in():
-	tabControl=ttk.Notebook(root)
-	tabCreateTable=ttk.Frame(tabControl)
-	tabInsert=ttk.Frame(tabControl)
-	tabDelete=ttk.Frame(tabControl)
-	tabSelect=ttk.Frame(tabControl)
-	tabUpdate=ttk.Frame(tabControl)
-	tabControl.add(tabCreateTable,text='Dashboard')
-	tabControl.pack(expand=1,fill='both')
-	tabControl.add(tabInsert,text='Staff Management')
-	tabControl.pack(expand=1,fill='both')
-	tabControl.add(tabDelete,text='Class Types')
-	tabControl.pack(expand=1,fill='both')
-	tabControl.add(tabUpdate,text='Classes')
-	tabControl.pack(expand=1,fill='both')
-	tabControl.add(tabSelect,text='Students')
 	tabControl.pack(expand=1,fill='both')
 
 def loginAttempt(event=None):
@@ -159,6 +144,23 @@ def createAccount(event=None):
 root = tk.Tk()
 root.title("School Management")
 root.geometry("{}x{}".format(900,500))
+
+tabControl = ttk.Notebook(root,borderwidth=0)
+tabControl = tkk
+
+tabDashboard = ttk.Frame(tabControl)
+tabStaff = ttk.Frame(tabControl)
+tabClassTypes = ttk.Frame(tabControl)
+tabClasses = ttk.Frame(tabControl)
+tabStudents = ttk.Frame(tabControl)
+tabLogout = tk.Button(tabControl,command=logged_out)
+
+tabControl.add(tabDashboard,text='Dashboard')
+tabControl.add(tabStaff,text='Staff Management')
+tabControl.add(tabClassTypes,text='Class Types')
+tabControl.add(tabClasses,text='Classes')
+tabControl.add(tabStudents,text='Students')
+tabControl.add(tabLogout,text="Logout!")
 
 #Login widgets
 

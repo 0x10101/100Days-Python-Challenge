@@ -108,7 +108,8 @@ def logged_in():
 	tabControl.add(tabClasses,text='Classes')
 	tabControl.add(tabStudents,text='Students')
 	tabControl.pack(expand=1,fill='both')
-	b5.place(x=500,y=0,width=400,height=20)
+	b5.place(x=700,y=0,width=200,height=20)
+	b6.place(x=500,y=0,width=200,height=20)
 	s.configure("TNotebook", borderwidth=1)
 
 
@@ -119,6 +120,7 @@ def logged_out():
 	tabControl.hide(tabClasses)
 	tabControl.hide(tabStudents)
 	b5.place_forget()
+	b6.place_forget()
 	s.configure("TNotebook", borderwidth=0)
 	showLogin()
 
@@ -132,6 +134,7 @@ def loginAttempt(event=None):
 		if account[3] == e1.get() and account[4] == e2.get():
 			access = True
 			print("username or password found in database")
+			b6_user.set(e1.get())
 			hideLoginRegister()
 			logged_in()
 			break
@@ -206,7 +209,7 @@ e2_text = tk.StringVar()
 e2 = tk.Entry(root,textvariable=e2_text,font=("",20),show="*")
 e2.bind("<Return>", loginAttempt)
 
-l4 = tk.Label(root,text="Username or Password is wrond!",font=("",20))
+l4 = tk.Label(root,text="Username or Password is wrong!",font=("",20))
 
 b1 = tk.Button(root,text="Login",font=("",28),command=loginAttempt)
 b2 = tk.Button(root,text="Register",font=("",28),command=showRegister)
@@ -252,6 +255,9 @@ showLogin()
 #Logged in widgets
 
 b5 = tk.Button(root,text="Log out!",command=logged_out)
+
+b6_user = tk.StringVar()
+b6 = tk.Button(root,textvariable=b6_user)
 
 
 root.mainloop()

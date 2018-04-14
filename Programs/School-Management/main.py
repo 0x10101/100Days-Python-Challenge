@@ -62,6 +62,8 @@ def showLogin():
 	l2.place(x=130,y=180) # Username 
 	l3.place(x=135,y=250) # Password 
 
+	e1_text.set("")
+	e2_text.set("")
 	e1.place(x=360,y=180,width=300,height=55) # Entry for username
 	e2.place(x=360,y=250,width=300,height=55) # Entry for password
 
@@ -178,12 +180,14 @@ l1 = tk.Label(root,text="Sign in",font=("",50))
 
 l2 = tk.Label(root,text="Username: ",font=("",30))
 
-e1 = tk.Entry(root,font=("",20))
+e1_text = tk.StringVar()
+e1 = tk.Entry(root,textvariable=e1_text,font=("",20))
 e1.bind("<Return>", loginAttempt)
 
 l3 = tk.Label(root,text="Password:",font=("",30))
 
-e2 = tk.Entry(root,font=("",20),show="*")
+e2_text = tk.StringVar()
+e2 = tk.Entry(root,textvariable=e2_text,font=("",20),show="*")
 e2.bind("<Return>", loginAttempt)
 
 l4 = tk.Label(root,text="Username or Password is wrond!",font=("",20))

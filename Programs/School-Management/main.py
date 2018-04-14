@@ -106,6 +106,7 @@ def logged_in():
 	tabControl.add(tabClasses,text='Classes')
 	tabControl.add(tabStudents,text='Students')
 	tabControl.pack(expand=1,fill='both')
+	b5.place(x=500,y=0,width=400,height=20)
 	s.configure("TNotebook", borderwidth=1)
 
 
@@ -115,6 +116,7 @@ def logged_out():
 	tabControl.hide(tabClassTypes)
 	tabControl.hide(tabClasses)
 	tabControl.hide(tabStudents)
+	b5.place_forget()
 	s.configure("TNotebook", borderwidth=0)
 	showLogin()
 
@@ -226,6 +228,10 @@ b3 = tk.Button(root,text="Register",font=("",28),command=createAccount)
 b4 = tk.Button(root,text="Login",font=("",28),command=showLogin)
 
 showLogin()
+
+#Logged in widgets
+
+b5 = tk.Button(root,text="Log out!",command=logged_out)
 
 
 root.mainloop()

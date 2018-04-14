@@ -158,6 +158,9 @@ def createAccount(event=None):
 		else:
 			errorMessage.set("First Name/Last Name can't contain numbers!")
 			l11.place(x=150,y=400)
+	else:
+		errorMessage.set("Please complete all the fields!")
+		l11.place(x=260,y=400)
 	dbManager.close()
 
 

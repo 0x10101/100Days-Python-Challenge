@@ -110,6 +110,7 @@ def logged_out():
 	tabControl.hide(tabStudents)
 	tabControl.hide(tabLogout)
 	s.configure("TNotebook", borderwidth=0)
+	showLogin()
 
 def loginAttempt(event=None):
 	access = False

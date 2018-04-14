@@ -1,5 +1,6 @@
 import sqlite3
-
+#name,lastname,username,password,birthday
+#name,lname,usern,passw,birthday
 class Manage:
 	def __init__(self,fileLocation):
 		self.fileLocation = fileLocation
@@ -16,15 +17,15 @@ class Manage:
 				""".format(table,columns))
 		self.conn.commit()
 		print("{} table is/was created on {}".format(table,self.fileLocation))
-	def insert(self,table,name,lname,usern,passw,birthday):
+	def insert(self,table,columns,values):
 		c = self.conn.cursor()
-		c.execute("""INSERT INTO {}(name,lastname,username,password,birthday)
-		 Values(?,?,?,?,?)""".format(table),(name,lname,usern,passw,birthday))
+		c.execute("""INSERT INTO {}({})
+		 Values(?,?,?,?,?)""".format(table,columns),values)
 		#c.execute('INSERT INTO students Values(?,?,?,?,?)', (ID,name,lname,usern,passw))
 		#c.execute("INSERT INTO {} Values({},{},{},{},{})".format(table,ID,name,lname,usern,passw))
 		self.conn.commit()
-		print("""In {}(name,lastname,username,password,birthday) was inserted
-							{},{},{},{},{}""".format(table,name,lname,usern,passw,birthday))
+		print("""In {}({}) was inserted
+							{}""".format(table,columns,values))
 	def getAccounts(self,table):
 		c = self.conn.cursor()
 		accounts = []

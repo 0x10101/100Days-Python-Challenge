@@ -1,6 +1,16 @@
 import sqlite3
 #name,lastname,username,password,birthday
 #name,lname,usern,passw,birthday
+
+def numberColumns(columns):
+	columnsList = columns.split(",")
+	nValues = 0
+	for columns in columnsList:
+		nValues += 1
+	print("?" + ",?" * (nValues-1))
+	return "?" + ",?" * (nValues-1)
+
+
 class Manage:
 	def __init__(self,fileLocation):
 		self.fileLocation = fileLocation
@@ -19,8 +29,9 @@ class Manage:
 		print("{} table is/was created on {}".format(table,self.fileLocation))
 	def insert(self,table,columns,values):
 		c = self.conn.cursor()
+		nValues = numberColumns(columns) 
 		c.execute("""INSERT INTO {}({})
-		 Values(?,?,?,?,?)""".format(table,columns),values)
+		 Values({})""".format(table,columns,nValues),values)
 		#c.execute('INSERT INTO students Values(?,?,?,?,?)', (ID,name,lname,usern,passw))
 		#c.execute("INSERT INTO {} Values({},{},{},{},{})".format(table,ID,name,lname,usern,passw))
 		self.conn.commit()

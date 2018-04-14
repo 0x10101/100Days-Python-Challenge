@@ -147,10 +147,14 @@ def createAccount(event=None):
 	dbManager = db.Manage("database.db")
 	dbManager.connect()
 	dbManager.create_table("accounts",accounts_columns)
+	#Testing
+	#values = e3.get(),e4.get(),e5.get(),e6.get(),e7.get()	
+	#dbManager.insert("accounts",accounts_columnsList,values)
 	if e3.get() and e4.get() and e5.get() and e6.get() and e7.get():
 		if not hasNumbers(e3.get()) and not hasNumbers(e4.get()):
 			try:
-				dbManager.insert("accounts",e3.get(),e4.get(),e5.get(),e6.get(),e7.get())
+				values = e3.get(),e4.get(),e5.get(),e6.get(),e7.get()	
+				dbManager.insert("accounts",accounts_columnsList,values)
 				l11.place_forget()
 			except:
 				errorMessage.set("Username is already taken!")
@@ -170,6 +174,8 @@ accounts_columns = """
 			username TEXT UNIQUE,
 			password TEXT,
 			birthday TEXT """
+
+accounts_columnsList = "name,lastname,username,password,birthday"
 
 root = tk.Tk()
 root.title("School Management")

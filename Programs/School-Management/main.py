@@ -102,6 +102,15 @@ def hideLoginRegister():
 def logged_in():
 	tabControl.pack(expand=1,fill='both')
 
+def logged_out():
+	tabControl.hide(tabDashboard)
+	tabControl.hide(tabStaff)
+	tabControl.hide(tabClassTypes)
+	tabControl.hide(tabClasses)
+	tabControl.hide(tabStudents)
+	tabControl.hide(tabLogout)
+
+
 def loginAttempt(event=None):
 	access = False
 	dbManager = db.Manage("database.db") #fileLocation

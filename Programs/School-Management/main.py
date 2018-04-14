@@ -109,7 +109,7 @@ def logged_out():
 	tabControl.hide(tabClasses)
 	tabControl.hide(tabStudents)
 	tabControl.hide(tabLogout)
-
+	s.configure("TNotebook", borderwidth=0)
 
 def loginAttempt(event=None):
 	access = False
@@ -154,9 +154,9 @@ root = tk.Tk()
 root.title("School Management")
 root.geometry("{}x{}".format(900,500))
 
-tabControl = ttk.Notebook(root,borderwidth=0)
-tabControl = tkk
+s = ttk.Style()
 
+tabControl = ttk.Notebook(root)
 tabDashboard = ttk.Frame(tabControl)
 tabStaff = ttk.Frame(tabControl)
 tabClassTypes = ttk.Frame(tabControl)

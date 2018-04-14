@@ -8,16 +8,12 @@ class Manage:
 		self.conn = sqlite3.connect(self.fileLocation)
 		print("CONNECTED to {}".format(self.fileLocation))
 
-	def create_table(self,table):
+	def create_table(self,table,columns):
 		c = self.conn.cursor()
 		c.execute("""CREATE TABLE IF NOT EXISTS {}(
 			ID INTEGER PRIMARY KEY AUTOINCREMENT,
-			name TEXT,
-			lastname TEXT,
-			username TEXT UNIQUE,
-			password TEXT,
-			birthday TEXT)
-				""".format(table))
+			{})
+				""".format(table,columns))
 		self.conn.commit()
 		print("{} table is/was created on {}".format(table,self.fileLocation))
 	def insert(self,table,name,lname,usern,passw,birthday):
@@ -43,7 +39,7 @@ class Manage:
 	def close(self):
 		self.conn.close()
 		print("DISCONNECTED FROM {}".format(self.fileLocation))
-	
+
 #Testing
 #dbManage = Manage("database-tes")
 #dbManage.connect()

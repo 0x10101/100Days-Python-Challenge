@@ -184,6 +184,13 @@ def createAccount(event=None):
 		l11.place(x=260,y=400)
 	dbManager.close()
 
+def saveAccountInfo():
+	pass
+
+def editAccountInfo():
+	pass
+
+
 def tabAccountWidgets(accountInf):
 	l12 = tk.Label(tabAccount,text="Account Information",font=("",30))
 	l12.place(x=15,y=30)
@@ -202,6 +209,8 @@ def tabAccountWidgets(accountInf):
 
 	l17 = tk.Label(tabAccount,text="Birthday: {}".format(accountInf["Birthday"]),font=("",20))
 	l17.place(x=100,y=260)
+
+	b6.place(x=500,y=180,width=100,height=40)
 
 accounts_columns = """			
 			name TEXT,
@@ -295,7 +304,6 @@ b5 = tk.Button(root,text="Log out!",command=logged_out)
 
 #Accounts widgets
 
-
-
-
+b6 = tk.Button(tabAccount,text="Edit",command=editAccountInfo)
+b7 = tk.Button(tabAccount,text="Save",command=saveAccountInfo)
 root.mainloop()

@@ -129,6 +129,64 @@ def logged_out():
 	s.configure("TNotebook", borderwidth=0)
 	showLogin()
 
+def cancelEdit():
+	#Removing edit widgets
+	b7.place_forget()
+	b8.place_forget()
+
+	e8.place_forget()
+	e9.place_forget()
+	e10.place_forget()
+	e11.place_forget()
+	e12.place_forget()
+
+	b8.place_forget()
+
+	#Shows account info
+	tabAccountWidgets(loginAttempt())
+
+def saveAccountInfo():
+	pass
+
+def editAccountInfo():
+	l13_data.set("First Name:")
+	l14_data.set("Last Name:")
+	l15_data.set("Username:")
+	l16_data.set("Password:")
+	l17_data.set("Birthday:")
+
+	b6.place_forget()
+	b7.place(x=600,y=180,width=100,height=40)
+	b8.place(x=500,y=180,width=100,height=40)
+
+	e8.place(x=275,y=100,width=200,height=40)
+	e9.place(x=275,y=140,width=200,height=40)
+	e10.place(x=275,y=180,width=200,height=40)
+	e11.place(x=275,y=220,width=200,height=40)
+	e12.place(x=275,y=260,width=200,height=40)
+
+
+def tabAccountWidgets(accountInf):
+	l13_data.set("First Name: {}".format(accountInf["First Name"]))
+	l14_data.set("Last Name: {}".format(accountInf["Last Name"]))
+	l15_data.set("Username: {}".format(accountInf["Username"]))
+	l16_data.set("Password: {}".format(accountInf["Password"]))
+	l17_data.set("Birthday: {}".format(accountInf["Birthday"]))
+
+	l12.place(x=15,y=30)
+
+	l13.place(x=100,y=100)
+
+	l14.place(x=100,y=140)
+
+	l15.place(x=100,y=180)
+
+	l16.place(x=100,y=220)
+
+	l17.place(x=100,y=260)
+
+	b6.place(x=500,y=180,width=100,height=40)
+
 def loginAttempt(event=None):
 	access = False
 	dbManager = db.Manage("database.db") #fileLocation
@@ -184,45 +242,6 @@ def createAccount(event=None):
 		l11.place(x=260,y=400)
 	dbManager.close()
 
-def saveAccountInfo():
-	pass
-
-def editAccountInfo():
-	l13_data.set("First Name:")
-	l14_data.set("Last Name:")
-	l15_data.set("Username:")
-	l16_data.set("Password:")
-	l17_data.set("Birthday:")
-
-	b7.place(x=600,y=180,width=100,height=40)
-
-	e8.place(x=275,y=100,width=200,height=40)
-	e9.place(x=275,y=140,width=200,height=40)
-	e10.place(x=275,y=180,width=200,height=40)
-	e11.place(x=275,y=220,width=200,height=40)
-	e12.place(x=275,y=260,width=200,height=40)
-
-
-def tabAccountWidgets(accountInf):
-	l13_data.set("First Name: {}".format(accountInf["First Name"]))
-	l14_data.set("Last Name: {}".format(accountInf["Last Name"]))
-	l15_data.set("Username: {}".format(accountInf["Username"]))
-	l16_data.set("Password: {}".format(accountInf["Password"]))
-	l17_data.set("Birthday: {}".format(accountInf["Birthday"]))
-
-	l12.place(x=15,y=30)
-
-	l13.place(x=100,y=100)
-
-	l14.place(x=100,y=140)
-
-	l15.place(x=100,y=180)
-
-	l16.place(x=100,y=220)
-
-	l17.place(x=100,y=260)
-
-	b6.place(x=500,y=180,width=100,height=40)
 
 accounts_columns = """			
 			name TEXT,
@@ -341,5 +360,6 @@ e12 = tk.Entry(tabAccount,font=("",20))
 
 b6 = tk.Button(tabAccount,text="Edit",command=editAccountInfo)
 b7 = tk.Button(tabAccount,text="Save",command=saveAccountInfo)
+b8 = tk.Button(tabAccount,text="Cancel",command=cancelEdit)
 
 root.mainloop()

@@ -105,7 +105,6 @@ def logged_in():
 	tabControl.add(tabClassTypes,text='Class Types')
 	tabControl.add(tabClasses,text='Classes')
 	tabControl.add(tabStudents,text='Students')
-	tabControl.add(tabLogout,text="Logout!")
 	tabControl.pack(expand=1,fill='both')
 	s.configure("TNotebook", borderwidth=1)
 
@@ -116,7 +115,6 @@ def logged_out():
 	tabControl.hide(tabClassTypes)
 	tabControl.hide(tabClasses)
 	tabControl.hide(tabStudents)
-	tabControl.hide(tabLogout)
 	s.configure("TNotebook", borderwidth=0)
 	showLogin()
 
@@ -171,7 +169,6 @@ tabStaff = ttk.Frame(tabControl)
 tabClassTypes = ttk.Frame(tabControl)
 tabClasses = ttk.Frame(tabControl)
 tabStudents = ttk.Frame(tabControl)
-tabLogout = tk.Button(tabControl,command=logged_out)
 
 #Login widgets
 

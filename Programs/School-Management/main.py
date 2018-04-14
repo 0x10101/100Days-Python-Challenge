@@ -38,6 +38,8 @@ def showRegister():
 	b4.place(x=500,y=350,height=50) # Show Login
 
 
+
+
 def showLogin():
 	#Removing register widgets
 	l5.place_forget() # Sign up
@@ -107,9 +109,11 @@ def logged_in():
 	tabControl.add(tabClassTypes,text='Class Types')
 	tabControl.add(tabClasses,text='Classes')
 	tabControl.add(tabStudents,text='Students')
+	tabControl.add(tabAccount,text=e1.get())
 	tabControl.pack(expand=1,fill='both')
+
 	b5.place(x=700,y=0,width=200,height=20)
-	b6.place(x=500,y=0,width=200,height=20)
+	#b6.place(x=500,y=0,width=200,height=20)
 	s.configure("TNotebook", borderwidth=1)
 
 
@@ -119,8 +123,9 @@ def logged_out():
 	tabControl.hide(tabClassTypes)
 	tabControl.hide(tabClasses)
 	tabControl.hide(tabStudents)
+	tabControl.hide(tabAccount)
 	b5.place_forget()
-	b6.place_forget()
+	#b6.place_forget()
 	s.configure("TNotebook", borderwidth=0)
 	showLogin()
 
@@ -133,8 +138,17 @@ def loginAttempt(event=None):
 	for account in c.execute("SELECT * FROM accounts"):
 		if account[3] == e1.get() and account[4] == e2.get():
 			access = True
+			accountInfo = {"ID":account[0],
+							"First Name":account[1],
+							"Last Name":account[2],
+							"Username":account[3],
+							"Password":account[4],
+							"Birthday":account[5]}
 			print("username or password found in database")
-			b6_user.set(e1.get())
+			print(accountInfo)
+			tabAccountWidgets(accountInfo)
+			#b6_user.set(e1.get())
+
 			hideLoginRegister()
 			logged_in()
 			break
@@ -144,7 +158,7 @@ def loginAttempt(event=None):
 	else:
 		l4.place_forget()
 	dbManager.close()
-	return access
+	return accountInfo
 
 def createAccount(event=None):
 	dbManager = db.Manage("database.db")
@@ -170,6 +184,24 @@ def createAccount(event=None):
 		l11.place(x=260,y=400)
 	dbManager.close()
 
+def tabAccountWidgets(accountInf):
+	l12 = tk.Label(tabAccount,text="Account Information",font=("",30))
+	l12.place(x=15,y=30)
+
+	l13 = tk.Label(tabAccount,text="First Name: {}".format(accountInf["First Name"]),font=("",20))
+	l13.place(x=100,y=100)
+
+	l14 = tk.Label(tabAccount,text="Last Name: {}".format(accountInf["Last Name"]),font=("",20))
+	l14.place(x=100,y=140)
+
+	l15 = tk.Label(tabAccount,text="Username: {}".format(accountInf["Username"]),font=("",20))
+	l15.place(x=100,y=180)
+
+	l16 = tk.Label(tabAccount,text="Password: {}".format(accountInf["Password"]),font=("",20))
+	l16.place(x=100,y=220)
+
+	l17 = tk.Label(tabAccount,text="Birthday: {}".format(accountInf["Birthday"]),font=("",20))
+	l17.place(x=100,y=260)
 
 accounts_columns = """			
 			name TEXT,
@@ -192,6 +224,7 @@ tabStaff = ttk.Frame(tabControl)
 tabClassTypes = ttk.Frame(tabControl)
 tabClasses = ttk.Frame(tabControl)
 tabStudents = ttk.Frame(tabControl)
+tabAccount = ttk.Frame(tabControl)
 
 #Login widgets
 
@@ -252,12 +285,17 @@ b4 = tk.Button(root,text="Login",font=("",28),command=showLogin)
 
 showLogin()
 
-#Logged in widgets
+###Logged in widgets
 
+# Buttons near notebook widgets
 b5 = tk.Button(root,text="Log out!",command=logged_out)
 
-b6_user = tk.StringVar()
-b6 = tk.Button(root,textvariable=b6_user)
+#b6_user = tk.StringVar()
+#b6 = tk.Button(root,textvariable=b6_user,command=showAccountInfo)
+
+#Accounts widgets
+
+
 
 
 root.mainloop()

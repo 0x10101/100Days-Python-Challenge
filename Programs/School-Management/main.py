@@ -126,7 +126,7 @@ def loginAttempt(event=None):
 	access = False
 	dbManager = db.Manage("database.db") #fileLocation
 	dbManager.connect()
-	dbManager.create_table("accounts")
+	dbManager.create_table("accounts",accounts_columns)
 	c = dbManager.conn.cursor()
 	for account in c.execute("SELECT * FROM accounts"):
 		if account[3] == e1.get() and account[4] == e2.get():
@@ -146,7 +146,7 @@ def loginAttempt(event=None):
 def createAccount(event=None):
 	dbManager = db.Manage("database.db")
 	dbManager.connect()
-	dbManager.create_table("accounts")
+	dbManager.create_table("accounts",accounts_columns)
 	if e3.get() and e4.get() and e5.get() and e6.get() and e7.get():
 		if not hasNumbers(e3.get()) and not hasNumbers(e4.get()):
 			try:
@@ -163,6 +163,13 @@ def createAccount(event=None):
 		l11.place(x=260,y=400)
 	dbManager.close()
 
+
+accounts_columns = """			
+			name TEXT,
+			lastname TEXT,
+			username TEXT UNIQUE,
+			password TEXT,
+			birthday TEXT """
 
 root = tk.Tk()
 root.title("School Management")

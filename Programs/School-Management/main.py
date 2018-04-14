@@ -100,7 +100,15 @@ def hideLoginRegister():
 	b4.place_forget() # Show Login
 
 def logged_in():
+	tabControl.add(tabDashboard,text='Dashboard')
+	tabControl.add(tabStaff,text='Staff Management')
+	tabControl.add(tabClassTypes,text='Class Types')
+	tabControl.add(tabClasses,text='Classes')
+	tabControl.add(tabStudents,text='Students')
+	tabControl.add(tabLogout,text="Logout!")
 	tabControl.pack(expand=1,fill='both')
+	s.configure("TNotebook", borderwidth=1)
+
 
 def logged_out():
 	tabControl.hide(tabDashboard)
@@ -164,13 +172,6 @@ tabClassTypes = ttk.Frame(tabControl)
 tabClasses = ttk.Frame(tabControl)
 tabStudents = ttk.Frame(tabControl)
 tabLogout = tk.Button(tabControl,command=logged_out)
-
-tabControl.add(tabDashboard,text='Dashboard')
-tabControl.add(tabStaff,text='Staff Management')
-tabControl.add(tabClassTypes,text='Class Types')
-tabControl.add(tabClasses,text='Classes')
-tabControl.add(tabStudents,text='Students')
-tabControl.add(tabLogout,text="Logout!")
 
 #Login widgets
 

@@ -192,22 +192,22 @@ def editAccountInfo():
 
 
 def tabAccountWidgets(accountInf):
-	l12 = tk.Label(tabAccount,text="Account Information",font=("",30))
+	l13_data.set("First Name: {}".format(accountInf["First Name"]))
+	l14_data.set("Last Name: {}".format(accountInf["Last Name"]))
+	l15_data.set("Username: {}".format(accountInf["Username"]))
+	l16_data.set("Password: {}".format(accountInf["Password"]))
+	l17_data.set("Birthday: {}".format(accountInf["Birthday"]))
+
 	l12.place(x=15,y=30)
 
-	l13 = tk.Label(tabAccount,text="First Name: {}".format(accountInf["First Name"]),font=("",20))
 	l13.place(x=100,y=100)
 
-	l14 = tk.Label(tabAccount,text="Last Name: {}".format(accountInf["Last Name"]),font=("",20))
 	l14.place(x=100,y=140)
 
-	l15 = tk.Label(tabAccount,text="Username: {}".format(accountInf["Username"]),font=("",20))
 	l15.place(x=100,y=180)
 
-	l16 = tk.Label(tabAccount,text="Password: {}".format(accountInf["Password"]),font=("",20))
 	l16.place(x=100,y=220)
 
-	l17 = tk.Label(tabAccount,text="Birthday: {}".format(accountInf["Birthday"]),font=("",20))
 	l17.place(x=100,y=260)
 
 	b6.place(x=500,y=180,width=100,height=40)
@@ -304,6 +304,24 @@ b5 = tk.Button(root,text="Log out!",command=logged_out)
 
 #Accounts widgets
 
+l12 = tk.Label(tabAccount,text="Account Information",font=("",30))
+
+l13_data = tk.StringVar()
+l13 = tk.Label(tabAccount,textvariable=l13_data,font=("",20))
+
+l14_data = tk.StringVar()
+l14 = tk.Label(tabAccount,textvariable=l14_data,font=("",20))
+
+l15_data = tk.StringVar()
+l15 = tk.Label(tabAccount,textvariable=l15_data,font=("",20))
+
+l16_data = tk.StringVar()
+l16 = tk.Label(tabAccount,textvariable=l16_data,font=("",20))
+
+l17_data = tk.StringVar()
+l17 = tk.Label(tabAccount,textvariable=l17_data,font=("",20))
+
 b6 = tk.Button(tabAccount,text="Edit",command=editAccountInfo)
 b7 = tk.Button(tabAccount,text="Save",command=saveAccountInfo)
+
 root.mainloop()

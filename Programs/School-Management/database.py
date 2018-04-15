@@ -37,26 +37,21 @@ class Manage:
 		self.conn.commit()
 		print("""In {}({}) was inserted
 							{}""".format(table,columns,values))
-	def getAccounts(self,table):
+	def getTableData(self,table,where):
 		c = self.conn.cursor()
-		accounts = []
-		accInfo = []
-		for account in c.execute("SELECT * FROM {}".format(table)):
-			print(account)
-			for item in range(4):
-				accInfo.append(account[item])
-			accounts.append(accInfo)
-			accInfo = []
-		return accounts
+		data = []
+		for column in c.execute("SELECT * FROM {} WHERE {}".format(table,where)):
+			print(column)
+			data.append(column)
+		return data
 	def close(self):
 		self.conn.close()
 		print("DISCONNECTED FROM {}".format(self.fileLocation))
 
 #Testing
-#dbManage = Manage("database-tes")
+#dbManage = Manage("database.db")
 #dbManage.connect()
-#dbManage.create_table("students1")
-#dbManage.insert("students1","0","gjergj12","1232123311","gjergjk71")
+#dbManage.getTableData("accounts","id=2")
 #acc = dbManage.getAccounts("accounts")
 #print(acc)
 

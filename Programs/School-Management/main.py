@@ -171,6 +171,16 @@ def editAccountInfo():
 	b7.place(x=600,y=180,width=100,height=40)
 	b8.place(x=500,y=180,width=100,height=40)
 
+	dbManager = db.Manage("database.db")
+	dbManager.connect()
+	account = dbManager.getTableData("accounts","username='{}' and password='{}'".format(e1.get(),e2.get()))
+	dbManager.close()
+	e8_text.set(account["First Name"])
+	e9_text.set(account["Last Name"])
+	e10_text.set(account["Username"])
+	e11_text.set(account["Password"])
+	e12_text.set(account["Birthday"])
+
 	e8.place(x=275,y=100,width=200,height=40)
 	e9.place(x=275,y=140,width=200,height=40)
 	e10.place(x=275,y=180,width=200,height=40)
@@ -333,24 +343,29 @@ l12 = tk.Label(tabAccount,text="Account Information",font=("",30))
 
 l13_data = tk.StringVar()
 l13 = tk.Label(tabAccount,textvariable=l13_data,font=("",20))
-e8 = tk.Entry(tabAccount,font=("",20))
+e8_text = tk.StringVar()
+e8 = tk.Entry(tabAccount,textvariable=e8_text,font=("",20))
 
 
 l14_data = tk.StringVar()
 l14 = tk.Label(tabAccount,textvariable=l14_data,font=("",20))
-e9 = tk.Entry(tabAccount,font=("",20))
+e9_text = tk.StringVar()
+e9 = tk.Entry(tabAccount,textvariable=e9_text,font=("",20))
 
 l15_data = tk.StringVar()
 l15 = tk.Label(tabAccount,textvariable=l15_data,font=("",20))
-e10 = tk.Entry(tabAccount,font=("",20))
+e10_text = tk.StringVar()
+e10 = tk.Entry(tabAccount,textvariable=e10_text,font=("",20))
 
 l16_data = tk.StringVar()
 l16 = tk.Label(tabAccount,textvariable=l16_data,font=("",20))
-e11 = tk.Entry(tabAccount,font=("",20))
+e11_text = tk.StringVar()
+e11 = tk.Entry(tabAccount,textvariable=e11_text,font=("",20))
 
 l17_data = tk.StringVar()
 l17 = tk.Label(tabAccount,textvariable=l17_data,font=("",20))
-e12 = tk.Entry(tabAccount,font=("",20))
+e12_text = tk.StringVar()
+e12 = tk.Entry(tabAccount,textvariable=e12_text,font=("",20))
 
 b6 = tk.Button(tabAccount,text="Edit",command=editAccountInfo)
 b7 = tk.Button(tabAccount,text="Save",command=saveAccountInfo)

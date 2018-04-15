@@ -3,6 +3,7 @@
 import tkinter as tk
 from tkinter import ttk
 import database as db
+import login_system as ls
 
 def hasNumbers(inputString):
 	return any(char.isdigit() for char in inputString)
@@ -143,7 +144,7 @@ def cancelEdit():
 	b8.place_forget()
 
 	#Shows account info
-	tabAccountWidgets(loginAttempt())
+	tabAccountWidgets(ls.LoginSystem().login(e1.get(),e2.get()))
 
 def saveAccountInfo():
 	pass
@@ -188,35 +189,17 @@ def tabAccountWidgets(accountInf):
 	b6.place(x=500,y=180,width=100,height=40)
 
 def loginAttempt(event=None):
-	access = False
-	dbManager = db.Manage("database.db") #fileLocation
-	dbManager.connect()
-	dbManager.create_table("accounts",accounts_columns)
-	c = dbManager.conn.cursor()
-	for account in c.execute("SELECT * FROM accounts"):
-		if account[3] == e1.get() and account[4] == e2.get():
-			access = True
-			accountInfo = {"ID":account[0],
-							"First Name":account[1],
-							"Last Name":account[2],
-							"Username":account[3],
-							"Password":account[4],
-							"Birthday":account[5]}
-			print("username or password found in database")
-			print(accountInfo)
-			tabAccountWidgets(accountInfo)
-			#b6_user.set(e1.get())
-
+	loginSystem = ls.LoginSystem()
+	account = loginSystem.login(e1.get(),e2.get())
+	if account:
+			tabAccountWidgets(account)
 			hideLoginRegister()
 			logged_in()
-			break
-	if not access:
+	if not account:
 		l4.place(x=200,y=380)
 		print("username or password not found in database")
 	else:
 		l4.place_forget()
-	dbManager.close()
-	return accountInfo
 
 def createAccount(event=None):
 	dbManager = db.Manage("database.db")

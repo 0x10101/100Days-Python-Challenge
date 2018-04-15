@@ -147,7 +147,18 @@ def cancelEdit():
 	tabAccountWidgets(ls.LoginSystem().login(e1.get(),e2.get()))
 
 def saveAccountInfo():
-	pass
+	dbManager = db.Manage("database.db")
+	dbManager.connect()
+	dbManager.update("accounts","""
+							name='{}',
+							lastname='{}',
+							username='{}',
+							password='{}',
+							birthday='{}'""".format(e8.get(),e9.get(),e10.get(),e11.get(),e12.get()),
+								"username='{}' and password='{}'".format(e1.get(),e2.get()))
+	dbManager.getTableData("accounts","username=username")
+	dbManager.close()
+
 
 def editAccountInfo():
 	l13_data.set("First Name:")

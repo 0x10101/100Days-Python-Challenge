@@ -50,7 +50,7 @@ class Manage:
 		for column in c.execute("SELECT * FROM {} WHERE {}".format(table,where)):
 			print(column)
 			data.append(column)
-		if table == "accounts":
+		if table == "accounts" and data:
 			data = {
 				"ID":"{}".format(data[0][0]),
 				"First Name":"{}".format(data[0][1]),

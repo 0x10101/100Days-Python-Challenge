@@ -31,18 +31,26 @@ class Manage:
 		c = self.conn.cursor()
 		nValues = numberColumns(columns) 
 		c.execute("""INSERT INTO {}({})
-		 Values({})""".format(table,columns,nValues),values)
-		#c.execute('INSERT INTO students Values(?,?,?,?,?)', (ID,name,lname,usern,passw))
-		#c.execute("INSERT INTO {} Values({},{},{},{},{})".format(table,ID,name,lname,usern,passw))
+		 	Values({})""".format(table,columns,nValues),values)
 		self.conn.commit()
 		print("""In {}({}) was inserted
 							{}""".format(table,columns,values))
+
 	def getTableData(self,table,where):
 		c = self.conn.cursor()
 		data = []
 		for column in c.execute("SELECT * FROM {} WHERE {}".format(table,where)):
 			print(column)
 			data.append(column)
+		if table == "accounts":
+			data = {
+				"ID":"{}".format(data[0][0]),
+				"First Name":"{}".format(data[0][1]),
+				"Last Name":"{}".format(data[0][2]),
+				"Username":"{}".format(data[0][3]),
+				"Password":"{}".format(data[0][4]),
+				"Birthday":"{}".format(data[0][5])
+			}
 		return data
 	def close(self):
 		self.conn.close()
@@ -51,7 +59,8 @@ class Manage:
 #Testing
 #dbManage = Manage("database.db")
 #dbManage.connect()
-#dbManage.getTableData("accounts","id=2")
+#acc = dbManage.getTableData("accounts","id=2")
+#print(acc["ID"])
 #acc = dbManage.getAccounts("accounts")
 #print(acc)
 

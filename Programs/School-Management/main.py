@@ -143,7 +143,6 @@ def cancelEdit():
 	b8.place_forget()
 
 	#Shows account info
-	dbManager = db.Manage("database.db")
 	dbManager.connect()
 	account = dbManager.getTableData("accounts","username='{}' and password='{}'".format(e1.get(),e2.get()))
 	dbManager.close()
@@ -152,7 +151,6 @@ def cancelEdit():
 	tabAccountWidgets(ls.LoginSystem().login(account["Username"],account["Password"]))
 
 def saveAccountInfo(event=None):
-	dbManager = db.Manage("database.db")
 	dbManager.connect()
 	dbManager.update("accounts","""
 							name='{}',
@@ -179,7 +177,6 @@ def editAccountInfo():
 	b7.place(x=600,y=180,width=100,height=40)
 	b8.place(x=500,y=180,width=100,height=40)
 
-	dbManager = db.Manage("database.db")
 	dbManager.connect()
 
 	account = dbManager.getTableData("accounts","username='{}' and password='{}'".format(e1.get(),e2.get()))
@@ -232,7 +229,6 @@ def loginAttempt(event=None):
 		l4.place_forget()
 
 def createAccount(event=None):
-	dbManager = db.Manage("database.db")
 	dbManager.connect()
 	dbManager.create_table("accounts",accounts_columns)
 	#Testing
@@ -276,6 +272,8 @@ root.title("School Management")
 root.geometry("{}x{}".format(900,500))
 
 s = ttk.Style()
+
+dbManager = db.Manage("database.db")
 
 tabControl = ttk.Notebook(root)
 tabDashboard = ttk.Frame(tabControl)
@@ -426,7 +424,6 @@ st.component('rowcolumnheader').insert('end', 'ID')
 # Create the column headers
 st.component('columnheader').insert('0.0', "             {}             {}             {}".format(columns[0],columns[1],columns[2]))
 
-dbManager = db.Manage("database.db")
 dbManager.connect()
 dbManager.create_table("ClassTypes",classTypes_columns)
 #Testing

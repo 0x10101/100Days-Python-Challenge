@@ -114,7 +114,6 @@ def logged_in():
 	tabControl.pack(expand=1,fill='both')
 
 	b5.place(x=700,y=0,width=200,height=20)
-	#b6.place(x=500,y=0,width=200,height=20)
 	s.configure("TNotebook", borderwidth=1)
 
 
@@ -126,7 +125,6 @@ def logged_out():
 	tabControl.hide(tabStudents)
 	tabControl.hide(tabAccount)
 	b5.place_forget()
-	#b6.place_forget()
 	s.configure("TNotebook", borderwidth=0)
 	showLogin()
 
@@ -152,7 +150,7 @@ def cancelEdit():
 	print(account["Username"],account["Password"])
 	tabAccountWidgets(ls.LoginSystem().login(account["Username"],account["Password"]))
 
-def saveAccountInfo():
+def saveAccountInfo(event=None):
 	dbManager = db.Manage("database.db")
 	dbManager.connect()
 	dbManager.update("accounts","""
@@ -205,7 +203,7 @@ def tabAccountWidgets(accountInf):
 	l16_data.set("Password: {}".format(accountInf["Password"]))
 	l17_data.set("Birthday: {}".format(accountInf["Birthday"]))
 
-	l12.place(x=15,y=30)
+	l12.place(x=15,y=30) 
 
 	l13.place(x=100,y=100)
 
@@ -355,27 +353,33 @@ l13_data = tk.StringVar()
 l13 = tk.Label(tabAccount,textvariable=l13_data,font=("",20))
 e8_text = tk.StringVar()
 e8 = tk.Entry(tabAccount,textvariable=e8_text,font=("",20))
+e8.bind("<Return>", saveAccountInfo)
+
 
 
 l14_data = tk.StringVar()
 l14 = tk.Label(tabAccount,textvariable=l14_data,font=("",20))
 e9_text = tk.StringVar()
 e9 = tk.Entry(tabAccount,textvariable=e9_text,font=("",20))
+e9.bind("<Return>", saveAccountInfo)
 
 l15_data = tk.StringVar()
 l15 = tk.Label(tabAccount,textvariable=l15_data,font=("",20))
 e10_text = tk.StringVar()
 e10 = tk.Entry(tabAccount,textvariable=e10_text,font=("",20))
+e10.bind("<Return>", saveAccountInfo)
 
 l16_data = tk.StringVar()
 l16 = tk.Label(tabAccount,textvariable=l16_data,font=("",20))
 e11_text = tk.StringVar()
 e11 = tk.Entry(tabAccount,textvariable=e11_text,font=("",20))
+e11.bind("<Return>", saveAccountInfo)
 
 l17_data = tk.StringVar()
 l17 = tk.Label(tabAccount,textvariable=l17_data,font=("",20))
 e12_text = tk.StringVar()
 e12 = tk.Entry(tabAccount,textvariable=e12_text,font=("",20))
+e8.bind("<Return>", saveAccountInfo)
 
 b6 = tk.Button(tabAccount,text="Edit",command=editAccountInfo)
 b7 = tk.Button(tabAccount,text="Save",command=saveAccountInfo)

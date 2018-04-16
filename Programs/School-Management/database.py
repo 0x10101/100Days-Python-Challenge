@@ -59,6 +59,7 @@ class Manage:
 				"Password":"{}".format(data[0][4]),
 				"Birthday":"{}".format(data[0][5])
 			}
+		print("Data returned {}".format(data))
 		return data
 	def close(self):
 		self.conn.close()

@@ -162,10 +162,9 @@ def saveAccountInfo():
 							password='{}',
 							birthday='{}'""".format(e8.get(),e9.get(),e10.get(),e11.get(),e12.get()),
 								"username='{}' and password='{}'".format(e1.get(),e2.get()))
-	print(e1.get(),e2.get())
 	e1_text.set(e10.get())
 	e2_text.set(e11.get())
-	print(e1.get(),e2.get())
+	tabControl.add(tabAccount,text=e1.get())
 	dbManager.close()
 
 

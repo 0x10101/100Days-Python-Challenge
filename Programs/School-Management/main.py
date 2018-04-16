@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 import database as db
 import login_system as ls
+import Pmw, string
 
 def hasNumbers(inputString):
 	return any(char.isdigit() for char in inputString)
@@ -262,7 +263,13 @@ accounts_columns = """
 			password TEXT,
 			birthday TEXT """
 
+classTypes_columns = """ 
+			module TEXT UNIQUE,
+			difficulty TEXT,
+			duration INTEGER """
+
 accounts_columnsList = "name,lastname,username,password,birthday"
+classTypes_columns = "module,difficulty,duration"
 
 root = tk.Tk()
 root.title("School Management")
@@ -385,4 +392,60 @@ b6 = tk.Button(tabAccount,text="Edit",command=editAccountInfo)
 b7 = tk.Button(tabAccount,text="Save",command=saveAccountInfo)
 b8 = tk.Button(tabAccount,text="Cancel",command=cancelEdit)
 
+###Class types widgets
+
+fixedFont = Pmw.logicalfont('Fixed')
+st = Pmw.ScrolledText(tabClassTypes,
+        # borderframe = 1,
+        labelpos = 'n',
+        label_text='Class Types',
+        columnheader = 1,
+        rowheader = 1,
+        rowcolumnheader = 1,
+        usehullsize = 1,
+        hull_width = 800,
+        hull_height = 400,
+        text_wrap='none',
+	    text_font = fixedFont,
+	    Header_font = fixedFont,
+	    Header_foreground = 'blue',
+	    rowheader_width = 3,
+	    rowcolumnheader_width = 3,
+        text_padx = 4,
+        text_pady = 4,
+        Header_padx = 4,
+        rowheader_pady = 4,
+      )
+st.place(x=50,y=10)
+columns = 'Module Difficulty Duration'
+columns = string.split(columns)
+
+# Create the header for the row headers
+st.component('rowcolumnheader').insert('end', 'ID')
+
+# Create the column headers
+st.component('columnheader').insert('0.0', "             {}             {}             {}".format(columns[0],columns[1],columns[2]))
+
+dbManager = db.Manage("database.db")
+dbManager.connect()
+dbManager.create_table("ClassTypes",classTypes_columns)
+#Testing
+#dbManager.insert("ClassTypes",classTypes_columns,("Python","Begginer","6"))
+for account in dbManager.getTableData("ClassTypes","module=module"):
+	for x in range(len(account)):
+		if x == 3:
+			st.insert('end', "             " + str(account[x]) + " Months")
+		elif x != 0:
+			st.insert('end', "             " + str(account[x]))
+
+	st.insert("end","\n")
+	st.component('rowheader').insert('end', account[0])
+	st.component('rowheader').insert("end","\n")
+
+st.configure(
+            text_state = 'disabled',
+            Header_state = 'disabled',
+        )
+
+dbManager.close()
 root.mainloop()

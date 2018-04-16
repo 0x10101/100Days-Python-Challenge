@@ -144,7 +144,7 @@ def cancelEdit():
 	#Shows account info
 	dbManager = db.Manage("database.db")
 	dbManager.connect()
-	account = dbManager.getTableData("accounts","username='{}' and password='{}'".format(e10.get(),e11.get()))
+	account = dbManager.getTableData("accounts","username='{}' and password='{}'".format(e1.get(),e2.get()))
 	dbManager.close()
 	print(account)
 	print(account["Username"],account["Password"])

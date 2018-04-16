@@ -144,7 +144,12 @@ def cancelEdit():
 	b8.place_forget()
 
 	#Shows account info
-	account = saveAccountInfo()
+	dbManager = db.Manage("database.db")
+	dbManager.connect()
+	account = dbManager.getTableData("accounts","username='{}' and password='{}'".format(e10.get(),e11.get()))
+	dbManager.close()
+	print(account)
+	print(account["Username"],account["Password"])
 	tabAccountWidgets(ls.LoginSystem().login(account["Username"],account["Password"]))
 
 def saveAccountInfo():
@@ -157,10 +162,11 @@ def saveAccountInfo():
 							password='{}',
 							birthday='{}'""".format(e8.get(),e9.get(),e10.get(),e11.get(),e12.get()),
 								"username='{}' and password='{}'".format(e1.get(),e2.get()))
-	account = dbManager.getTableData("accounts","username=username")
+	print(e1.get(),e2.get())
+	e1_text.set(e10.get())
+	e2_text.set(e11.get())
+	print(e1.get(),e2.get())
 	dbManager.close()
-	return account
-
 
 
 def editAccountInfo():
@@ -176,6 +182,7 @@ def editAccountInfo():
 
 	dbManager = db.Manage("database.db")
 	dbManager.connect()
+
 	account = dbManager.getTableData("accounts","username='{}' and password='{}'".format(e1.get(),e2.get()))
 	dbManager.close()
 	e8_text.set(account["First Name"])

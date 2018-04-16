@@ -44,13 +44,13 @@ class Manage:
 				Columns changed {}
 				Where values {}""".format(table,columns,values))
 
-	def getTableData(self,table,where):
+	def getTableData(self,table,where,returnAccountDict=True):
 		c = self.conn.cursor()
 		data = []
 		for column in c.execute("SELECT * FROM {} WHERE {}".format(table,where)):
 			print(column)
 			data.append(column)
-		if table == "accounts" and data:
+		if table == "accounts" and data and returnAccountDict:
 			data = {
 				"ID":"{}".format(data[0][0]),
 				"First Name":"{}".format(data[0][1]),

@@ -11,30 +11,23 @@ def hasNumbers(inputString):
 
 def showRegister():
 	#Removing login widgets
-	l1.place_forget() # Sign in
-	l2.place_forget() # Username 
-	l3.place_forget() # Password 
-	l4.place_forget() # The message that is shown when user/pw is wrong
-
-	e1.place_forget() # Entry for username
-	e2.place_forget() # Entry for password
-
-	b1.place_forget() # Button for login 
-	b2.place_forget() # Button for show register
+	for widget in loginWidgets:
+		widget.place_forget()
 
 	#Showing register widgets
 	l5.place(x=30,y=30) # Sign up
-	l6.place(x=200,y=150) # First name
-	l7.place(x=200,y=190) # Last name
-	l8.place(x=200,y=230) # Username
-	l9.place(x=200,y=270) # Password
-	l10.place(x=200,y=310) # Birthday
 
-	e3.place(x=370,y=150) # First name
-	e4.place(x=370,y=190) # Last name
-	e5.place(x=370,y=230) # Username
-	e6.place(x=370,y=270) # Password
-	e7.place(x=370,y=310) # Birthday
+	showLabels = [l6,l7,l8,l9,l10]
+	ypos = 150
+	for label in showLabels:
+		label.place(x=200,y=ypos)
+		ypos += 40
+
+	showEntries = [e3,e4,e5,e6,e7]
+	ypos = 150
+	for entry in showEntries:
+		entry.place(x=370,y=ypos)
+		ypos += 40
 
 	b3.place(x=300,y=350,height=50) # Register 
 	b4.place(x=500,y=350,height=50) # Show Login
@@ -44,22 +37,9 @@ def showRegister():
 
 def showLogin():
 	#Removing register widgets
-	l5.place_forget() # Sign up
-	l6.place_forget() # First name
-	l7.place_forget() # Last name
-	l8.place_forget() # Username
-	l9.place_forget() # Password
-	l10.place_forget() # Birthday
-	l11.place_forget() # Error message
 
-	e3.place_forget() # First name
-	e4.place_forget() # Last name
-	e5.place_forget() # Username
-	e6.place_forget() # Password
-	e7.place_forget() # Birthday
-
-	b3.place_forget() # Register 
-	b4.place_forget() # Show Login
+	for widget in registerWidgets:
+		widget.place_forget()
 
 	#Showing login widgets
 	l1.place(x=30,y=30) # Sign in
@@ -76,34 +56,14 @@ def showLogin():
 
 def hideLoginRegister():
 	#Removing login widgets
-	l1.place_forget() # Sign in
-	l2.place_forget() # Username 
-	l3.place_forget() # Password 
-	l4.place_forget() # The message that is shown when user/pw is wrong
 
-	e1.place_forget() # Entry for username
-	e2.place_forget() # Entry for password
-
-	b1.place_forget() # Button for login 
-	b2.place_forget() # Button for show register
+	for widget in loginWidgets:
+		widget.place_forget()
 	
 	#Removing register widgets
-	l5.place_forget() # Sign up
-	l6.place_forget() # First name
-	l7.place_forget() # Last name
-	l8.place_forget() # Username
-	l9.place_forget() # Password
-	l10.place_forget() # Birthday
-	l11.place_forget() # Error message
 
-	e3.place_forget() # First name
-	e4.place_forget() # Last name
-	e5.place_forget() # Username
-	e6.place_forget() # Password
-	e7.place_forget() # Birthday
-
-	b3.place_forget() # Register 
-	b4.place_forget() # Show Login
+	for widget in registerWidgets:
+		widget.place_forget()
 
 def logged_in():
 	tabControl.add(tabDashboard,text='Dashboard')
@@ -131,16 +91,9 @@ def logged_out():
 
 def cancelEdit():
 	#Removing edit widgets
-	b7.place_forget()
-	b8.place_forget()
-
-	e8.place_forget()
-	e9.place_forget()
-	e10.place_forget()
-	e11.place_forget()
-	e12.place_forget()
-
-	b8.place_forget()
+	cancelEditWidgets = [b7,b8,e8,e9,e10,e11,e12,b8]
+	for widget in cancelEditWidgets:
+		widget.place_forget()
 
 	#Shows account info
 	dbManager.connect()
@@ -167,11 +120,13 @@ def saveAccountInfo(event=None):
 
 
 def editAccountInfo():
-	l13_data.set("First Name:")
-	l14_data.set("Last Name:")
-	l15_data.set("Username:")
-	l16_data.set("Password:")
-	l17_data.set("Birthday:")
+	labels_data = [l13_data,l14_data,l15_data,l16_data,l17_data]
+	texts = ["First Name:","Last Name:","Username:","Password:","Birthday:"]
+	item = 0
+	for label_data in labels_data:
+		label_data.set(texts[item])
+		item += 1
+
 
 	b6.place_forget()
 	b7.place(x=600,y=180,width=100,height=40)
@@ -187,11 +142,11 @@ def editAccountInfo():
 	e11_text.set(account["Password"])
 	e12_text.set(account["Birthday"])
 
-	e8.place(x=275,y=100,width=200,height=40)
-	e9.place(x=275,y=140,width=200,height=40)
-	e10.place(x=275,y=180,width=200,height=40)
-	e11.place(x=275,y=220,width=200,height=40)
-	e12.place(x=275,y=260,width=200,height=40)
+	entries = [e8,e9,e10,e11,e12]
+	ypos = 100
+	for entry in entries:
+		entry.place(x=275,y=ypos,width=200,height=40)
+		ypos += 40
 
 
 def tabAccountWidgets(accountInf):
@@ -203,15 +158,12 @@ def tabAccountWidgets(accountInf):
 
 	l12.place(x=15,y=30) 
 
-	l13.place(x=100,y=100)
-
-	l14.place(x=100,y=140)
-
-	l15.place(x=100,y=180)
-
-	l16.place(x=100,y=220)
-
-	l17.place(x=100,y=260)
+	#Placing labels dynamically
+	labels = [l13,l14,l15,l16,l17]
+	ypos = 100
+	for label in labels:
+		label.place(x=100,y=ypos)
+		ypos += 40
 
 	b6.place(x=500,y=180,width=100,height=40)
 
@@ -284,7 +236,6 @@ tabStudents = ttk.Frame(tabControl)
 tabAccount = ttk.Frame(tabControl)
 
 #Login widgets
-
 l1 = tk.Label(root,text="Sign in",font=("",50))
 
 l2 = tk.Label(root,text="Username: ",font=("",30))
@@ -303,6 +254,8 @@ l4 = tk.Label(root,text="Username or Password is wrong!",font=("",20))
 
 b1 = tk.Button(root,text="Login",font=("",28),command=loginAttempt)
 b2 = tk.Button(root,text="Register",font=("",28),command=showRegister)
+
+loginWidgets = [l1,l2,l3,l4,e1,e2,b1,b2]
 
 #Register widgets
 
@@ -340,6 +293,8 @@ b3 = tk.Button(root,text="Register",font=("",28),command=createAccount)
 
 b4 = tk.Button(root,text="Login",font=("",28),command=showLogin)
 
+registerWidgets = [l5,l6,l7,l8,l9,l10,l11,e3,e4,e5,e6,e7,b3,b4]
+
 showLogin()
 
 ###Logged in widgets
@@ -351,7 +306,6 @@ b5 = tk.Button(root,text="Log out!",command=logged_out)
 #b6 = tk.Button(root,textvariable=b6_user,command=showAccountInfo)
 
 #Accounts widgets
-
 l12 = tk.Label(tabAccount,text="Account Information",font=("",30))
 
 l13_data = tk.StringVar()
@@ -389,6 +343,8 @@ e8.bind("<Return>", saveAccountInfo)
 b6 = tk.Button(tabAccount,text="Edit",command=editAccountInfo)
 b7 = tk.Button(tabAccount,text="Save",command=saveAccountInfo)
 b8 = tk.Button(tabAccount,text="Cancel",command=cancelEdit)
+
+accountsWidgets = [l12,l13,l14,l15,l16,l17,e8,e9,e10,e11,e12,b6,b7,b8]
 
 ###Class types widgets
 

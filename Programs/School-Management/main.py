@@ -165,6 +165,7 @@ def saveAccountInfo():
 	e1_text.set(e10.get())
 	e2_text.set(e11.get())
 	tabControl.add(tabAccount,text=e1.get())
+	cancelEdit()
 	dbManager.close()
 
 

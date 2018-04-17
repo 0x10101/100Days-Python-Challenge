@@ -1,7 +1,7 @@
 #Version 0.2
 
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 import database as db
 import login_system as ls
 import Pmw, string
@@ -112,6 +112,7 @@ def saveAccountInfo(event=None):
 							password='{}',
 							birthday='{}'""".format(e8.get(),e9.get(),e10.get(),e11.get(),e12.get()),
 								"username='{}' and password='{}'".format(e1.get(),e2.get()))
+	messagebox.showinfo("Successful","Account info have been changed successfully")
 	e1_text.set(e10.get())
 	e2_text.set(e11.get())
 	tabControl.add(tabAccount,text=e1.get())
@@ -372,7 +373,7 @@ st = Pmw.ScrolledText(tabClassTypes,
       )
 st.place(x=50,y=10)
 columns = 'Module Difficulty Duration'
-columns = string.split(columns)
+columns = str.split(columns)
 
 # Create the header for the row headers
 st.component('rowcolumnheader').insert('end', 'ID')

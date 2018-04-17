@@ -443,28 +443,28 @@ st.configure(
             Header_state = 'disabled',
         )
 
-def addClassType():
-	root2 = tk.Tk() # create a Tk root window
+def addClassType(screenw=ws,screenh=hs):
+	addClassTypeFrame = tk.Toplevel()
+	w = 500
+	h = 100
 
-	w = 400 # width for the Tk root
-	h = 100 # height for the Tk root
+	x = (screenw/2) - (w/2)
+	y = (screenh/2) - (h/2)
 
-	# get screen width and height
-	ws = root.winfo_screenwidth() # width of the screen
-	hs = root.winfo_screenheight() # height of the screen
+	addClassTypeFrame.geometry('%dx%d+%d+%d' % (w, h, x, y))
+	addClassTypeFrame.title("Add class type")
 
-	# calculate x and y coordinates for the Tk root window
-	x = (ws/2) - (w/2)
-	y = (hs/2) - (h/2)
 
-	# set the dimensions of the screen 
-	# and where it is placed
-	root2.geometry('%dx%d+%d+%d' % (w, h, x, y))
+	#root2.mainloop() # starts the mainloop
 
-	root2.mainloop() # starts the mainloop
+b9 = tk.Button(tabClassTypes,text="ADD",width=20,height=3,command=addClassType)
+b9.place(x=100,y=410)
 
-b9 = tk.Button(tabClassTypes,text="ADD",width=10,height=1,command=addClassType)
-b9.place(x=400,y=450)
+b10 = tk.Button(tabClassTypes,text="EDIT",width=20,height=3,command=addClassType)
+b10.place(x=350,y=410)
+
+b11 = tk.Button(tabClassTypes,text="DELETE",width=20,height=3,command=addClassType)
+b11.place(x=600,y=410)
 
 dbManager.close()
 root.mainloop()

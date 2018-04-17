@@ -206,6 +206,33 @@ def createAccount(event=None):
 		l11.place(x=260,y=400)
 	dbManager.close()
 
+def insertClassType(classT):
+	dbManager.connect()
+	dbManager.insert("ClassTypes",classTypes_columns,("Python","Begginer","6"))
+	dbManager.create_table("ClassTypes",classTypes_columns)
+	st.configure(
+	            text_state = 'normal',
+	            Header_state = 'normal',
+	        )
+	#Testing
+	#dbManager.insert("ClassTypes",classTypes_columns,("Python","Begginer","6"))
+	for x in range(len(classT)):
+		if x == 3:
+			st.insert('end', "             " + str(classT[x]) + " Months")
+		elif x != 0:
+			st.insert('end', "             " + str(classT[x]))
+
+		st.insert("end","\n")
+		st.component('rowheader').insert('end', classT[0])
+		st.component('rowheader').insert("end","\n")
+
+	st.configure(
+	            text_state = 'disabled',
+	            Header_state = 'disabled',
+	        )
+	dbManager.close()
+
+
 
 accounts_columns = """			
 			name TEXT,
@@ -224,7 +251,20 @@ classTypes_columns = "module,difficulty,duration"
 
 root = tk.Tk()
 root.title("School Management")
-root.geometry("{}x{}".format(900,500))
+w = 900 # width for the Tk root
+h = 500 # height for the Tk root
+
+# get screen width and height
+ws = root.winfo_screenwidth() # width of the screen
+hs = root.winfo_screenheight() # height of the screen
+
+# calculate x and y coordinates for the Tk root window
+x = (ws/2) - (w/2)
+y = (hs/2) - (h/2)
+
+# set the dimensions of the screen 
+# and where it is placed
+root.geometry('%dx%d+%d+%d' % (w, h, x, y))
 
 s = ttk.Style()
 
@@ -387,21 +427,44 @@ dbManager.connect()
 dbManager.create_table("ClassTypes",classTypes_columns)
 #Testing
 #dbManager.insert("ClassTypes",classTypes_columns,("Python","Begginer","6"))
-for account in dbManager.getTableData("ClassTypes","module=module"):
-	for x in range(len(account)):
+for classType in dbManager.getTableData("ClassTypes","module=module"):
+	for x in range(len(classType)):
 		if x == 3:
-			st.insert('end', "             " + str(account[x]) + " Months")
+			st.insert('end', "             " + str(classType[x]) + " Months")
 		elif x != 0:
-			st.insert('end', "             " + str(account[x]))
+			st.insert('end', "             " + str(classType[x]))
 
 	st.insert("end","\n")
-	st.component('rowheader').insert('end', account[0])
+	st.component('rowheader').insert('end', classType[0])
 	st.component('rowheader').insert("end","\n")
 
 st.configure(
             text_state = 'disabled',
             Header_state = 'disabled',
         )
+
+def addClassType():
+	root2 = tk.Tk() # create a Tk root window
+
+	w = 400 # width for the Tk root
+	h = 100 # height for the Tk root
+
+	# get screen width and height
+	ws = root.winfo_screenwidth() # width of the screen
+	hs = root.winfo_screenheight() # height of the screen
+
+	# calculate x and y coordinates for the Tk root window
+	x = (ws/2) - (w/2)
+	y = (hs/2) - (h/2)
+
+	# set the dimensions of the screen 
+	# and where it is placed
+	root2.geometry('%dx%d+%d+%d' % (w, h, x, y))
+
+	root2.mainloop() # starts the mainloop
+
+b9 = tk.Button(tabClassTypes,text="ADD",width=10,height=1,command=addClassType)
+b9.place(x=400,y=450)
 
 dbManager.close()
 root.mainloop()

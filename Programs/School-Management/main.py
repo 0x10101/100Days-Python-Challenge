@@ -193,6 +193,8 @@ def createAccount(event=None):
 				values = e3.get(),e4.get(),e5.get(),e6.get(),e7.get()	
 				dbManager.insert("accounts",accounts_columnsList,values)
 				l11.place_forget()
+				messagebox.showinfo("Successful!","You have successfully signed up!")
+				showLogin()
 			except:
 				errorMessage.set("Username is already taken!")
 				l11.place(x=270,y=400)

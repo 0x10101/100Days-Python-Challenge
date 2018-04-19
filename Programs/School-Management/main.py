@@ -281,6 +281,10 @@ subjects_columnList = "subject"
 students_columnsList = "firstName,lastName,birthday,phone,address"
 employees = "firstName,lastName,birthday,phone,address,role,classes,wage"
 
+dbManager = db.Manage("database.db")
+dbManager.connect()
+dbManager.create_table("accounts",accounts_columns)
+
 root = tk.Tk()
 root.title("School Management")
 w = 900 # width for the Tk root
@@ -460,7 +464,7 @@ dbManager.connect()
 dbManager.create_table("ClassTypes",classTypes_columns)
 #Testing
 #dbManager.insert("ClassTypes",classTypes_columns,("Python","Begginer","6"))
-for classType in dbManager.getTableData("ClassTypes","module=module"):
+for classType in dbManager.getTableData("ClassTypes","id=id"):
 	for x in range(len(classType)):
 		if x == 3:
 			st1.insert('end', "     " + str(classType[x]) + " Months")
@@ -540,7 +544,7 @@ dbManager.create_table("Classes",classes_columns)
 
 #Testing
 #dbManager.insert("Classes",classes_columnsList,("CL-13","Java","25"))
-for Class in dbManager.getTableData("Classes","module=module"):
+for Class in dbManager.getTableData("Classes","id=id"):
 	for x in range(len(Class)):
 		if x != 0:
 			st2.insert('end', "     {}".format(str(Class[x])))
@@ -561,6 +565,67 @@ b13.place(x=350,y=410)
 
 b14 = tk.Button(tabClasses,text="DELETE",width=20,height=3)
 b14.place(x=600,y=410)
+
+### Students widgets
+
+st3 = Pmw.ScrolledText(tabStudents,
+        # borderframe = 1,
+        labelpos = 'n',
+        label_text='Students',
+        columnheader = 1,
+        rowheader = 1,
+        rowcolumnheader = 1,
+        usehullsize = 1,
+        hull_width = 800,
+        hull_height = 400,
+        text_wrap='none',
+	    text_font = fixedFont,
+	    Header_font = fixedFont,
+	    Header_foreground = 'blue',
+	    rowheader_width = 3,
+	    rowcolumnheader_width = 3,
+        text_padx = 4,
+        text_pady = 4,
+        Header_padx = 4,
+        rowheader_pady = 4,
+      )
+st3.place(x=50,y=10)
+ 
+columns2 = 'First Name/Last Name/Birthday/Phone/Address'
+columns2 = str.split(columns2,"/")
+print(columns2)
+
+st3.component('rowcolumnheader').insert('end', 'ID')
+#st2.component('columnheader').insert("0.0","             {}             {}             {}".format(columns2[0],columns2[1],columns2[2]))
+for item in columns2:
+	st3.component('columnheader').insert("0.0","{}     ".format(item))
+
+dbManager.connect()
+dbManager.create_table("Students",students_columns)
+
+#Testing
+#dbManager.insert("Classes",classes_columnsList,("CL-13","Java","25"))
+for Class in dbManager.getTableData("Students","id=id"):
+	for x in range(len(Class)):
+		if x != 0:
+			st2.insert('end', "     {}".format(str(Class[x])))
+	st3.insert("end","\n")
+	st3.component('rowheader').insert('end', Class[0])
+	st3.component('rowheader').insert("end","\n")
+
+st3.configure(
+            text_state = 'disabled',
+            Header_state = 'disabled',
+        )
+
+b15 = tk.Button(tabStudents,text="ADD",width=20,height=3)
+b15.place(x=100,y=410)
+
+b16 = tk.Button(tabStudents,text="EDIT",width=20,height=3)
+b16.place(x=350,y=410)
+
+b17 = tk.Button(tabStudents,text="DELETE",width=20,height=3)
+b17.place(x=600,y=410)
 
 dbManager.close()
 root.mainloop()

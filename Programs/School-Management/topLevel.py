@@ -22,6 +22,7 @@ class Create:
 	def createTitle(self,frame,titleText,fontfamily="",fontsize=20):
 		title = tk.Label(frame,text=titleText,font=(fontfamily,fontsize))
 		title.place(x=50,y=30)
+		return title
 
 	def top_labels(self,frame,columns,y_increment=50,fontsize=20,fontfamily="",xpos=100,ypos=100):
 		labels = []
@@ -45,21 +46,24 @@ class Create:
 			entries.append(entry)
 		return entries
 
-root = tk.Tk()
+	def top_button(self,frame,command,xpos,ypos,text="add",width=200,height=50):
+		button = tk.Button(frame,text=text,command=command)
+		button.place(x=xpos,y=ypos,width=width,height=height)
+		return button
 
-create = Create()
-top = create.top(root,"Add Employee")
-l1 = tk.Label(top,text="DSA")
-l2 = tk.Label(top,text="DAS")
+if __name__ == "__main__":
+	root = tk.Tk()
+	def test():
+		print("TEST")
+	create = Create()
+	top = create.top(root,"Add Employee",h=600)
 
-e1 = tk.Entry(top)
-e2 = tk.Entry(top)
+	employees = "firstName,lastName,birthday,phone,address,role,classes,wage"
 
-employees = "firstName,lastName,birthday,phone,address,role,classes,wage"
-
-create.createTitle(top,"Add Employee")
-labels = create.top_labels(top,str.split(employees,","))
-create.top_entries(top,str.split(employees,","),width=150,height=40,xpos=300)
-print(labels)
-root.mainloop()
+	create.createTitle(top,"Add Employee")
+	labels = create.top_labels(top,str.split(employees,","))
+	create.top_entries(top,str.split(employees,","),width=150,height=40,xpos=300)
+	create.top_button(top,test,160,500)
+	print(labels)
+	root.mainloop()
 

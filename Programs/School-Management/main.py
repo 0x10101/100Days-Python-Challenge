@@ -242,12 +242,44 @@ accounts_columns = """
 			birthday TEXT """
 
 classTypes_columns = """ 
-			module TEXT UNIQUE,
+			subject TEXT UNIQUE,
 			difficulty TEXT,
 			duration INTEGER """
 
+classes_columns = """
+			name TEXT UNIQUE,
+			subject TEXT,
+			hoursWeek INTEGER,
+			students INTEGER,
+			instructor TEXT"""
+
+subjects_column = "subject TEXT UNIQUE"
+
+students_columns = """
+			firstName TEXT,
+			lastName TEXT,
+			birthday TEXT,
+			phone INTEGER,
+			address TEXT
+"""
+
+employees_columns = """
+			firstName TEXT,
+			lastName TEXT,
+			birthday TEXT,
+			phone INTEGER,
+			address TEXT,
+			role TEXT,
+			classes INTEGER,
+			wage INTEGER
+"""
+
 accounts_columnsList = "name,lastname,username,password,birthday"
-classTypes_columns = "module,difficulty,duration"
+classTypes_columnsList = "subject,difficulty,duration"
+classes_columnsList = "name,subject,hoursWeek,students,instructor"
+subjects_columnList = "subject"
+students_columnsList = "firstName,lastName,birthday,phone,address"
+employees = "firstName,lastName,birthday,phone,address,role,classes,wage"
 
 root = tk.Tk()
 root.title("School Management")
@@ -297,6 +329,7 @@ l4 = tk.Label(root,text="Username or Password is wrong!",font=("",20))
 
 b1 = tk.Button(root,text="Login",font=("",28),command=loginAttempt)
 b2 = tk.Button(root,text="Register",font=("",28),command=showRegister)
+
 
 loginWidgets = [l1,l2,l3,l4,e1,e2,b1,b2]
 
@@ -392,7 +425,7 @@ accountsWidgets = [l12,l13,l14,l15,l16,l17,e8,e9,e10,e11,e12,b6,b7,b8]
 ###Class types widgets
 
 fixedFont = Pmw.logicalfont('Fixed')
-st = Pmw.ScrolledText(tabClassTypes,
+st1 = Pmw.ScrolledText(tabClassTypes,
         # borderframe = 1,
         labelpos = 'n',
         label_text='Class Types',
@@ -413,15 +446,15 @@ st = Pmw.ScrolledText(tabClassTypes,
         Header_padx = 4,
         rowheader_pady = 4,
       )
-st.place(x=50,y=10)
-columns = 'Module Difficulty Duration'
+st1.place(x=50,y=10)
+columns = 'Subject Difficulty Duration'
 columns = str.split(columns)
 
 # Create the header for the row headers
-st.component('rowcolumnheader').insert('end', 'ID')
+st1.component('rowcolumnheader').insert('end', 'ID')
 
 # Create the column headers
-st.component('columnheader').insert('0.0', "             {}             {}             {}".format(columns[0],columns[1],columns[2]))
+st1.component('columnheader').insert('0.0', "     {}     {}     {}".format(columns[0],columns[1],columns[2]))
 
 dbManager.connect()
 dbManager.create_table("ClassTypes",classTypes_columns)
@@ -430,15 +463,15 @@ dbManager.create_table("ClassTypes",classTypes_columns)
 for classType in dbManager.getTableData("ClassTypes","module=module"):
 	for x in range(len(classType)):
 		if x == 3:
-			st.insert('end', "             " + str(classType[x]) + " Months")
+			st1.insert('end', "     " + str(classType[x]) + " Months")
 		elif x != 0:
-			st.insert('end', "             " + str(classType[x]))
+			st1.insert('end', "     " + str(classType[x]))
 
-	st.insert("end","\n")
-	st.component('rowheader').insert('end', classType[0])
-	st.component('rowheader').insert("end","\n")
+	st1.insert("end","\n")
+	st1.component('rowheader').insert('end', classType[0])
+	st1.component('rowheader').insert("end","\n")
 
-st.configure(
+st1.configure(
             text_state = 'disabled',
             Header_state = 'disabled',
         )
@@ -465,6 +498,69 @@ b10.place(x=350,y=410)
 
 b11 = tk.Button(tabClassTypes,text="DELETE",width=20,height=3,command=addClassType)
 b11.place(x=600,y=410)
+
+
+
+###Classes widgets
+
+st2 = Pmw.ScrolledText(tabClasses,
+        # borderframe = 1,
+        labelpos = 'n',
+        label_text='Classes',
+        columnheader = 1,
+        rowheader = 1,
+        rowcolumnheader = 1,
+        usehullsize = 1,
+        hull_width = 800,
+        hull_height = 400,
+        text_wrap='none',
+	    text_font = fixedFont,
+	    Header_font = fixedFont,
+	    Header_foreground = 'blue',
+	    rowheader_width = 3,
+	    rowcolumnheader_width = 3,
+        text_padx = 4,
+        text_pady = 4,
+        Header_padx = 4,
+        rowheader_pady = 4,
+      )
+st2.place(x=50,y=10)
+ 
+columns2 = 'Name/Subject/Hours per Week/Students/Instructor Name'
+columns2 = str.split(columns2,"/")
+print(columns2)
+
+st2.component('rowcolumnheader').insert('end', 'ID')
+#st2.component('columnheader').insert("0.0","             {}             {}             {}".format(columns2[0],columns2[1],columns2[2]))
+for item in columns2:
+	st2.component('columnheader').insert("0.0","{}     ".format(item))
+
+dbManager.connect()
+dbManager.create_table("Classes",classes_columns)
+
+#Testing
+#dbManager.insert("Classes",classes_columnsList,("CL-13","Java","25"))
+for Class in dbManager.getTableData("Classes","module=module"):
+	for x in range(len(Class)):
+		if x != 0:
+			st2.insert('end', "     {}".format(str(Class[x])))
+	st2.insert("end","\n")
+	st2.component('rowheader').insert('end', Class[0])
+	st2.component('rowheader').insert("end","\n")
+
+st2.configure(
+            text_state = 'disabled',
+            Header_state = 'disabled',
+        )
+
+b12 = tk.Button(tabClasses,text="ADD",width=20,height=3)
+b12.place(x=100,y=410)
+
+b13 = tk.Button(tabClasses,text="EDIT",width=20,height=3)
+b13.place(x=350,y=410)
+
+b14 = tk.Button(tabClasses,text="DELETE",width=20,height=3)
+b14.place(x=600,y=410)
 
 dbManager.close()
 root.mainloop()

@@ -19,7 +19,7 @@ class Create:
 
 		return top
 	
-	def createTitle(self,frame,titleText,fontfamily="",fontsize=20):
+	def title(self,frame,titleText,fontfamily="",fontsize=20):
 		title = tk.Label(frame,text=titleText,font=(fontfamily,fontsize))
 		title.place(x=50,y=30)
 		return title
@@ -36,18 +36,13 @@ class Create:
 
 
 
-	def top_entries(self,frame,columns,y_increment=50,xpos=200,ypos=100,width=250,height=50,fontsize=20,fontfamily=""):
-		entries = []
-		for column in columns:
-			print(column)
-			entry = tk.Entry(frame,font=(fontfamily,fontsize))
+	def top_entries(self,frame,entries,columns,y_increment=50,xpos=200,ypos=100,width=250,height=50,fontsize=20,fontfamily=""):
+		for entry in entries:
 			entry.place(x=xpos,y=ypos,width=width,height=height)
 			ypos += y_increment
-			entries.append(entry)
-		return entries
 
-	def top_button(self,frame,command,xpos,ypos,text="add",width=200,height=50):
-		button = tk.Button(frame,text=text,command=command)
+	def top_button(self,frame,func,xpos,ypos,text="add",width=200,height=50):
+		button = tk.Button(frame,text=text,command=func)
 		button.place(x=xpos,y=ypos,width=width,height=height)
 		return button
 
@@ -57,13 +52,19 @@ if __name__ == "__main__":
 		print("TEST")
 	create = Create()
 	top = create.top(root,"Add Employee",h=600)
+	def show_data(entries):
+		eN = 1
+		for entry in entries:
+			print("{} {}".format(eN,entry.get()))
+			eN += 1
 
 	employees = "firstName,lastName,birthday,phone,address,role,classes,wage"
 
-	create.createTitle(top,"Add Employee")
+	create.title(top,"Add Employee")
 	labels = create.top_labels(top,str.split(employees,","))
-	create.top_entries(top,str.split(employees,","),width=150,height=40,xpos=300)
-	create.top_button(top,test,160,500)
-	print(labels)
+	entries = create.top_entries(top,str.split(employees,","),width=150,height=40,xpos=300)
+	create.top_button(top,lambda: show_data(entries),160,500)
+
+
 	root.mainloop()
 

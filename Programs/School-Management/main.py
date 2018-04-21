@@ -263,15 +263,17 @@ def refreshSt(scrolledText,table):
 	        )
 	dbManager.close()
 
-def fillSt(scrolledText,columns,table,table_columns):
-	columns = str.split(columns,"/")
+def fillSt(scrolledText,table,table_columns):
+	columns = str.split(table_columns,",")
+	columns.reverse()
+	print(columns)
 
 	# Create the header for the row headers
 	scrolledText.component('rowcolumnheader').insert('end', 'ID')
 
 	# Create the column headers
 	for column in columns:
-		scrolledText.component('columnheader').insert('0.0', "{}     ".format(column))
+		scrolledText.component('columnheader').insert('0.0', "{}     ".format(column.title()))
 
 	dbManager.connect()
 	dbManager.create_table(table,table_columns)
@@ -585,7 +587,7 @@ st1 = Pmw.ScrolledText(tabClassTypes,
 st1.place(x=50,y=10)
 columns = 'Subject/Difficulty/Duration'
 
-fillSt(st1,columns,"ClassTypes",classTypes_columns)
+fillSt(st1,"ClassTypes",classTypes_columnsList)
 
 b9 = tk.Button(tabClassTypes,text="ADD",width=20,height=3,command=lambda: addClass(st1,"ClassTypes",str.split(classTypes_columnsList,","),"Add class type"))
 b9.place(x=100,y=410)
@@ -624,7 +626,7 @@ st2.place(x=50,y=10)
  
 columns2 = 'Name/Subject/Hours per Week/Students/Instructor Name'
 
-fillSt(st2,columns2,"Classes",classes_columnsList)
+fillSt(st2,"Classes",classes_columnsList)
 
 b12 = tk.Button(tabClasses,text="ADD",width=20,height=3,command=lambda: addClass(st2,"Classes",str.split(classes_columnsList,","),"Add class"))
 b12.place(x=100,y=410)
@@ -662,7 +664,7 @@ st3.place(x=50,y=10)
  
 columns3 = 'First Name/Last Name/Birthday/Phone/Address'
 
-fillSt(st3,columns3,"Students",students_columnsList)
+fillSt(st3,"Students",students_columnsList)
 
 b15 = tk.Button(tabStudents,text="ADD",width=20,height=3,command=lambda: addClass(st3,"Students",str.split(students_columnsList,","),"Add student"))
 b15.place(x=100,y=410)
@@ -672,6 +674,8 @@ b16.place(x=350,y=410)
 
 b17 = tk.Button(tabStudents,text="DELETE",width=20,height=3)
 b17.place(x=600,y=410)
+
+
 ### Staff Management
 
 st4 = Pmw.ScrolledText(tabStaff,
@@ -699,7 +703,7 @@ st4.place(x=50,y=10)
  
 columns4 = 'First Name/Last Name/Birthday/Phone/Address'
 
-fillSt(st4,columns4,"employees",employees_columnsList)
+fillSt(st4,"employees",employees_columnsList)
 
 b15 = tk.Button(tabStaff,text="ADD",width=20,height=3,command=lambda: addClass(st4,"employees",str.split(employees_columnsList,","),"Add employees"))
 b15.place(x=100,y=410)

@@ -17,6 +17,11 @@ class Create:
 
 		top.geometry('%dx%d+%d+%d' % (w, h, x, y))
 		top.title(title)
+		
+		self.w = w 
+		self.h = h
+		self.x = x
+		self.y = y 
 
 		return top
 	
@@ -47,7 +52,13 @@ class Create:
 		self.ypos += 10
 		button = tk.Button(frame,text=text,command=func)
 		button.place(x=xpos,y=self.ypos,width=width,height=height)
-		return button
+	
+		return (self.w,self.ypos + 20)
+
+	def changeGeometry(self,frame):
+		frame.geometry('%dx%d+%d+%d' % (self.w,self.ypos + 150,self.x,self.y))
+
+
 
 if __name__ == "__main__":
 	root = tk.Tk()

@@ -2,8 +2,11 @@ import sqlite3
 #name,lastname,username,password,birthday
 #name,lname,usern,passw,birthday
 
-def numberColumns(columns):
-	columnsList = columns.split(",")
+def numberColumns(columns,split):
+	if split:
+		columnsList = columns.split(",")
+	else:
+		columnsList = columns
 	nValues = 0
 	for columns in columnsList:
 		nValues += 1
@@ -27,9 +30,11 @@ class Manage:
 				""".format(table,columns))
 		self.conn.commit()
 		print("{} table is/was created on {}".format(table,self.fileLocation))
-	def insert(self,table,columns,values):
+	def insert(self,table,columns,values,split=True):
 		c = self.conn.cursor()
-		nValues = numberColumns(columns) 
+		nValues = numberColumns(columns,split=True) 
+		print("""INSERT INTO {}({})
+		 	Values({})""".format(table,columns,nValues),values)
 		c.execute("""INSERT INTO {}({})
 		 	Values({})""".format(table,columns,nValues),values)
 		self.conn.commit()
@@ -37,6 +42,7 @@ class Manage:
 							{}""".format(table,columns,values))
 	def update(self,table,columns,values):
 		c = self.conn.cursor()
+		
 		nValues = numberColumns(columns)
 		c.execute("UPDATE {} SET {} WHERE {}".format(table,columns,values))
 		self.conn.commit() 

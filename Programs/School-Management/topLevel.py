@@ -1,8 +1,9 @@
 import tkinter as tk
 
 class Create:
-	def __init__(self):
+	def __init__(self,ypos=0):
 		#self.frame = frame
+		self.ypos = ypos
 		pass
 
 	def top(self,frame,title,w=500,h=500):
@@ -40,10 +41,12 @@ class Create:
 		for entry in entries:
 			entry.place(x=xpos,y=ypos,width=width,height=height)
 			ypos += y_increment
+		self.ypos = ypos
 
-	def top_button(self,frame,func,xpos,ypos,text="add",width=200,height=50):
+	def top_button(self,frame,func,xpos,text="add",width=200,height=50):
+		self.ypos += 10
 		button = tk.Button(frame,text=text,command=func)
-		button.place(x=xpos,y=ypos,width=width,height=height)
+		button.place(x=xpos,y=self.ypos,width=width,height=height)
 		return button
 
 if __name__ == "__main__":

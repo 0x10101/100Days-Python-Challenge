@@ -235,6 +235,33 @@ def insertClassType(classT):
 	        )
 	dbManager.close()
 
+def refreshSt(scrolledText,table):
+	time.sleep(1)
+	scrolledText.clear()
+	dbManager.connect()
+	scrolledText.configure(
+            text_state = 'normal',
+            Header_state = 'normal',
+        )
+	lastData = []
+	data = dbManager.getTableData(table,"id=id")
+	for column in data:
+		for i in range(len(column)):
+			if i != 0:
+				scrolledText.insert('end', "     {}".format(str(column[i])))
+		if column == data[-1]:
+			lastData = data[-1]
+		scrolledText.insert("end","\n")
+	print("DASDSKDJSJDHJSHDJ")
+	print(lastData)
+	scrolledText.component('rowheader').insert('end', lastData[0])
+	scrolledText.component('rowheader').insert("end","\n")
+
+	scrolledText.configure(
+	            text_state = 'disabled',
+	            Header_state = 'disabled',
+	        )
+	dbManager.close()
 
 
 accounts_columns = """			
@@ -530,7 +557,7 @@ def insertValues(table,entries):
 	dbManager.insert(table,classes_columnsList,(entries[0].get(),entries[1].get(),entries[2].get(),
 														entries[3].get(),entries[4].get()))
 	dbManager.close()
-	refreshSt2()
+	refreshSt(st2,"Classes")
 
 
 def addClass(columns):
@@ -622,35 +649,6 @@ b13.place(x=350,y=410)
 b14 = tk.Button(tabClasses,text="DELETE",width=20,height=3)
 b14.place(x=600,y=410)
 
-def refreshSt2():
-	time.sleep(1)
-	st2.clear()
-	dbManager.connect()
-	st2.configure(
-            text_state = 'normal',
-            Header_state = 'normal',
-        )
-	lastClass = []
-	classes = dbManager.getTableData("Classes","id=id")
-	for Class in classes:
-		for data in range(len(Class)):
-			if data != 0:
-				st2.insert('end', "     {}".format(str(Class[data])))
-		if Class == classes[-1]:
-			lastClass = Class
-		st2.insert("end","\n")
-
-	st2.component('rowheader').insert('end', lastClass[0])
-	st2.component('rowheader').insert("end","\n")
-
-	st2.configure(
-	            text_state = 'disabled',
-	            Header_state = 'disabled',
-	        )
-	dbManager.close()
-
-def refreshSt3():
-	pass
 ### Students widgets
 
 st3 = Pmw.ScrolledText(tabStudents,

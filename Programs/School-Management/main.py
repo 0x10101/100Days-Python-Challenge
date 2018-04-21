@@ -236,7 +236,7 @@ def insertClassType(classT):
 	dbManager.close()
 
 def refreshSt(scrolledText,table):
-	time.sleep(1)
+	time.sleep(0.5)
 	scrolledText.clear()
 	dbManager.connect()
 	scrolledText.configure(
@@ -262,6 +262,33 @@ def refreshSt(scrolledText,table):
 	            Header_state = 'disabled',
 	        )
 	dbManager.close()
+
+def fillSt(scrolledText,columns,table,table_columns):
+	columns = str.split(columns,"/")
+
+	# Create the header for the row headers
+	scrolledText.component('rowcolumnheader').insert('end', 'ID')
+
+	# Create the column headers
+	for column in columns:
+		scrolledText.component('columnheader').insert('0.0', "{}     ".format(column))
+
+	dbManager.connect()
+	dbManager.create_table(table,table_columns)
+
+	for data in dbManager.getTableData(table,"id=id"):
+		for x in range(len(data)):
+			if x != 0:
+				st1.insert('end', "     " + str(data[x]))
+
+		scrolledText.insert("end","\n")
+		scrolledText.component('rowheader').insert('end', data[0])
+		scrolledText.component('rowheader').insert("end","\n")
+
+	scrolledText.configure(
+	            text_state = 'disabled',
+	            Header_state = 'disabled',
+	        )
 
 
 accounts_columns = """			
@@ -309,7 +336,7 @@ classTypes_columnsList = "subject,difficulty,duration"
 classes_columnsList = "name,subject,hoursWeek,students,instructor"
 subjects_columnList = "subject"
 students_columnsList = "firstName,lastName,birthday,phone,address"
-employees = "firstName,lastName,birthday,phone,address,role,classes,wage"
+employees_columnsList = "firstName,lastName,birthday,phone,address,role,classes,wage"
 
 dbManager = db.Manage("database.db")
 dbManager.connect()
@@ -489,35 +516,9 @@ st1 = Pmw.ScrolledText(tabClassTypes,
         rowheader_pady = 4,
       )
 st1.place(x=50,y=10)
-columns = 'Subject Difficulty Duration'
-columns = str.split(columns)
+columns = 'Subject/Difficulty/Duration'
 
-# Create the header for the row headers
-st1.component('rowcolumnheader').insert('end', 'ID')
-
-# Create the column headers
-st1.component('columnheader').insert('0.0', "     {}     {}     {}".format(columns[0],columns[1],columns[2]))
-
-dbManager.connect()
-dbManager.create_table("ClassTypes",classTypes_columns)
-#Testing
-#dbManager.insert("ClassTypes",classTypes_columns,("Python","Begginer","6"))
-for classType in dbManager.getTableData("ClassTypes","id=id"):
-	for x in range(len(classType)):
-		if x == 3:
-			st1.insert('end', "     " + str(classType[x]) + " Months")
-		elif x != 0:
-			st1.insert('end', "     " + str(classType[x]))
-
-	st1.insert("end","\n")
-	st1.component('rowheader').insert('end', classType[0])
-	st1.component('rowheader').insert("end","\n")
-
-st1.configure(
-            text_state = 'disabled',
-            Header_state = 'disabled',
-        )
-
+fillSt(st1,columns,"ClassTypes",classTypes_columns)
 
 b9 = tk.Button(tabClassTypes,text="ADD",width=20,height=3,command=lambda: addTop.top_labels(addTop))
 b9.place(x=100,y=410)
@@ -586,7 +587,7 @@ def addClass(columns):
 		x += 1
 	columns = columnsText
 
-	button = create.top_button(top,lambda: insertValues("Classes",entries_classesAdd),400,400)
+	button = create.top_button(top,lambda: insertValues("Classes",entries_classesAdd),150,400)
 
 
 
@@ -614,31 +615,8 @@ st2 = Pmw.ScrolledText(tabClasses,
 st2.place(x=50,y=10)
  
 columns2 = 'Name/Subject/Hours per Week/Students/Instructor Name'
-columns2 = str.split(columns2,"/")
-print(columns2)
 
-st2.component('rowcolumnheader').insert('end', 'ID')
-#st2.component('columnheader').insert("0.0","             {}             {}             {}".format(columns2[0],columns2[1],columns2[2]))
-for item in columns2:
-	st2.component('columnheader').insert("0.0","{}     ".format(item))
-
-dbManager.connect()
-dbManager.create_table("Classes",classes_columns)
-
-#Testing
-#dbManager.insert("Classes",classes_columnsList,("CL-13","Java","25"))
-for Class in dbManager.getTableData("Classes","id=id"):
-	for x in range(len(Class)):
-		if x != 0:
-			st2.insert('end', "     {}".format(str(Class[x])))
-	st2.insert("end","\n")
-	st2.component('rowheader').insert('end', Class[0])
-	st2.component('rowheader').insert("end","\n")
-
-st2.configure(
-            text_state = 'disabled',
-            Header_state = 'disabled',
-        )
+fillSt(st2,columns2,"Classes",classes_columnsList)
 
 b12 = tk.Button(tabClasses,text="ADD",width=20,height=3,command=lambda: addClass(str.split(classes_columnsList,",")))
 b12.place(x=100,y=410)
@@ -675,31 +653,8 @@ st3 = Pmw.ScrolledText(tabStudents,
 st3.place(x=50,y=10)
  
 columns3 = 'First Name/Last Name/Birthday/Phone/Address'
-columns3 = str.split(columns3,"/")
-print(columns3)
 
-st3.component('rowcolumnheader').insert('end', 'ID')
-#st2.component('columnheader').insert("0.0","             {}             {}             {}".format(columns2[0],columns2[1],columns2[2]))
-for item in columns3:
-	st3.component('columnheader').insert("0.0","{}     ".format(item))
-
-dbManager.connect()
-dbManager.create_table("Students",students_columns)
-
-#Testing
-#dbManager.insert("Classes",classes_columnsList,("CL-13","Java","25"))
-for student in dbManager.getTableData("Students","id=id"):
-	for x in range(len(student)):
-		if x != 0:
-			st2.insert('end', "     {}".format(str(student[x])))
-	st3.insert("end","\n")
-	st3.component('rowheader').insert('end', student[0])
-	st3.component('rowheader').insert("end","\n")
-
-st3.configure(
-            text_state = 'disabled',
-            Header_state = 'disabled',
-        )
+fillSt(st3,columns3,"Students",students_columnsList)
 
 b15 = tk.Button(tabStudents,text="ADD",width=20,height=3)
 b15.place(x=100,y=410)
@@ -709,7 +664,6 @@ b16.place(x=350,y=410)
 
 b17 = tk.Button(tabStudents,text="DELETE",width=20,height=3)
 b17.place(x=600,y=410)
-dbManager.close()
 ### Staff Management
 
 st4 = Pmw.ScrolledText(tabStaff,
@@ -736,31 +690,8 @@ st4 = Pmw.ScrolledText(tabStaff,
 st4.place(x=50,y=10)
  
 columns4 = 'First Name/Last Name/Birthday/Phone/Address'
-columns4 = str.split(columns4,"/")
-print(columns4)
 
-st4.component('rowcolumnheader').insert('end', 'ID')
-#st2.component('columnheader').insert("0.0","             {}             {}             {}".format(columns2[0],columns2[1],columns2[2]))
-for item in columns4:
-	st4.component('columnheader').insert("0.0","{}     ".format(item))
-
-dbManager.connect()
-dbManager.create_table("employees",employees_columns)
-
-#Testing
-#dbManager.insert("Classes",classes_columnsList,("CL-13","Java","25"))
-for employee in dbManager.getTableData("employees","id=id"):
-	for x in range(len(employee)):
-		if x != 0:
-			st2.insert('end', "     {}".format(str(employee[x])))
-	st4.insert("end","\n")
-	st4.component('rowheader').insert('end', employee[0])
-	st4.component('rowheader').insert("end","\n")
-
-st4.configure(
-            text_state = 'disabled',
-            Header_state = 'disabled',
-        )
+fillSt(st4,columns4,"employees",employees_columnsList)
 
 b15 = tk.Button(tabStaff,text="ADD",width=20,height=3)
 b15.place(x=100,y=410)
@@ -772,5 +703,4 @@ b17 = tk.Button(tabStaff,text="DELETE",width=20,height=3)
 b17.place(x=600,y=410)
 
 
-dbManager.close()
 root.mainloop()

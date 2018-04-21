@@ -275,11 +275,12 @@ def fillSt(scrolledText,columns,table,table_columns):
 
 	dbManager.connect()
 	dbManager.create_table(table,table_columns)
-
-	for data in dbManager.getTableData(table,"id=id"):
+	allData = dbManager.getTableData(table,"id=id")
+	print(allData)
+	for data in allData:
 		for x in range(len(data)):
 			if x != 0:
-				st1.insert('end', "     " + str(data[x]))
+				scrolledText.insert('end', "     " + str(data[x]))
 
 		scrolledText.insert("end","\n")
 		scrolledText.component('rowheader').insert('end', data[0])
@@ -289,6 +290,72 @@ def fillSt(scrolledText,columns,table,table_columns):
 	            text_state = 'disabled',
 	            Header_state = 'disabled',
 	        )
+
+def getAddEntries(frame,entriesNeeded):
+	e13 = tk.Entry(frame,font=("",20))
+	e14 = tk.Entry(frame,font=("",20))
+	e15 = tk.Entry(frame,font=("",20))
+	e16 = tk.Entry(frame,font=("",20))
+	e17 = tk.Entry(frame,font=("",20))
+	e18 = tk.Entry(frame,font=("",20))
+	e19 = tk.Entry(frame,font=("",20))
+	e20 = tk.Entry(frame,font=("",20))
+
+	entries_classesAdd = [e13,e14,e15,e16,e17,e18,e19,e20]
+	entries_returned = []
+	for i in range(entriesNeeded):
+		entries_returned.append(entries_classesAdd[i])
+	return entries_returned
+
+def insertValues(scrolledText,table,entries,columns):
+	dbManager.connect()
+	entries = [entry for entry in tuple(entries)]
+	entries_get = []
+	for entry in entries:
+		entries_get.append(entry.get())
+	values = ""
+	x = 0
+	for entry_get in entries_get:
+		if x != 0:
+			values += "," + entry_get
+		else:
+			values += entry_get
+		x += 1
+
+	dbManager.insert(table,columns,tuple(str.split(values,",")))
+	dbManager.close()
+	refreshSt(scrolledText,table)
+
+
+def addClass(scrolledText,table,columns,titleText):
+	x = 0
+	for column in columns:
+		if column == "hoursWeek":
+			columns[x] = "Hours"
+		x += 1
+	print(columns)
+	create = topL.Create()
+	top = create.top(root,titleText,h=600)
+	entries_classesAdd = getAddEntries(top,len(columns))
+	create.title(top,titleText)
+	create.top_labels(top,columns,xpos=50)
+	print(entries_classesAdd)
+	create.top_entries(top,entries_classesAdd,columns)
+	x = 0
+	columnsText = ""
+	for column in columns:
+		if column == "Hours":
+			columns[x] = "hoursWeek"
+		if x != 0:
+			columnsText += "," + column
+		else:
+			columnsText += column
+		x += 1
+	columns = columnsText
+
+	button = create.top_button(top,lambda: insertValues(scrolledText,table,entries_classesAdd,columns),150)
+	create.changeGeometry(top)
+
 
 
 accounts_columns = """			
@@ -520,7 +587,7 @@ columns = 'Subject/Difficulty/Duration'
 
 fillSt(st1,columns,"ClassTypes",classTypes_columns)
 
-b9 = tk.Button(tabClassTypes,text="ADD",width=20,height=3,command=lambda: addTop.top_labels(addTop))
+b9 = tk.Button(tabClassTypes,text="ADD",width=20,height=3,command=lambda: addClass(st1,"ClassTypes",str.split(classTypes_columnsList,","),"Add class type"))
 b9.place(x=100,y=410)
 
 b10 = tk.Button(tabClassTypes,text="EDIT",width=20,height=3)
@@ -529,66 +596,7 @@ b10.place(x=350,y=410)
 b11 = tk.Button(tabClassTypes,text="DELETE",width=20,height=3)
 b11.place(x=600,y=410)
 
-
-
-###Classes widgets
-
-# Classes add toplevel widgets
-
-## Entries that are not used in main.py
-def getAddEntries(frame):
-	e13 = tk.Entry(frame,font=("",20))
-	e14 = tk.Entry(frame,font=("",20))
-	e15 = tk.Entry(frame,font=("",20))
-	e16 = tk.Entry(frame,font=("",20))
-	e17 = tk.Entry(frame,font=("",20))
-	entries_classesAdd = [e13,e14,e15,e16,e17]
-	return entries_classesAdd
-####
-
-
-
-
-##
-
-
-def insertValues(table,entries):
-	dbManager.connect()
-
-	dbManager.insert(table,classes_columnsList,(entries[0].get(),entries[1].get(),entries[2].get(),
-														entries[3].get(),entries[4].get()))
-	dbManager.close()
-	refreshSt(st2,"Classes")
-
-
-def addClass(columns):
-	x = 0
-	for column in columns:
-		if column == "hoursWeek":
-			columns[x] = "Hours"
-		x += 1
-	print(columns)
-	create = topL.Create()
-	top = create.top(root,"Add Class",h=600)
-	entries_classesAdd = getAddEntries(top)
-	create.title(top,"Add Class")
-	create.top_labels(top,columns,xpos=50)
-	print(entries_classesAdd)
-	create.top_entries(top,entries_classesAdd,columns)
-	x = 0
-	columnsText = ""
-	for column in columns:
-		if column == "Hours":
-			columns[x] = "hoursWeek"
-		if x != 0:
-			columnsText += "," + column
-		else:
-			columnsText += column
-		x += 1
-	columns = columnsText
-
-	button = create.top_button(top,lambda: insertValues("Classes",entries_classesAdd),150,400)
-
+##Classes
 
 
 st2 = Pmw.ScrolledText(tabClasses,
@@ -618,7 +626,7 @@ columns2 = 'Name/Subject/Hours per Week/Students/Instructor Name'
 
 fillSt(st2,columns2,"Classes",classes_columnsList)
 
-b12 = tk.Button(tabClasses,text="ADD",width=20,height=3,command=lambda: addClass(str.split(classes_columnsList,",")))
+b12 = tk.Button(tabClasses,text="ADD",width=20,height=3,command=lambda: addClass(st2,"Classes",str.split(classes_columnsList,","),"Add class"))
 b12.place(x=100,y=410)
 
 b13 = tk.Button(tabClasses,text="EDIT",width=20,height=3)
@@ -656,7 +664,7 @@ columns3 = 'First Name/Last Name/Birthday/Phone/Address'
 
 fillSt(st3,columns3,"Students",students_columnsList)
 
-b15 = tk.Button(tabStudents,text="ADD",width=20,height=3)
+b15 = tk.Button(tabStudents,text="ADD",width=20,height=3,command=lambda: addClass(st3,"Students",str.split(students_columnsList,","),"Add student"))
 b15.place(x=100,y=410)
 
 b16 = tk.Button(tabStudents,text="EDIT",width=20,height=3)
@@ -693,7 +701,7 @@ columns4 = 'First Name/Last Name/Birthday/Phone/Address'
 
 fillSt(st4,columns4,"employees",employees_columnsList)
 
-b15 = tk.Button(tabStaff,text="ADD",width=20,height=3)
+b15 = tk.Button(tabStaff,text="ADD",width=20,height=3,command=lambda: addClass(st4,"employees",str.split(employees_columnsList,","),"Add employees"))
 b15.place(x=100,y=410)
 
 b16 = tk.Button(tabStaff,text="EDIT",width=20,height=3)

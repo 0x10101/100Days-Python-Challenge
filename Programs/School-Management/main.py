@@ -1,7 +1,10 @@
 #Version 0.2
-
 import tkinter as tk
 from tkinter import ttk, messagebox
+try:
+	import Tix as tix
+except:
+	import tix as tix
 import database as db
 import login_system as ls
 import Pmw, string
@@ -102,8 +105,6 @@ def cancelEdit():
 	dbManager.connect()
 	account = dbManager.getTableData("accounts","username='{}' and password='{}'".format(e1.get(),e2.get()))
 	dbManager.close()
-	print(account)
-	print(account["Username"],account["Password"])
 	tabAccountWidgets(ls.LoginSystem().login(account["Username"],account["Password"]))
 
 def saveAccountInfo(event=None):
@@ -154,10 +155,10 @@ def editAccountInfo():
 
 
 def tabAccountWidgets(accountInf):
-	l13_data.set("First Name: {}".format(accountInf["First Name"]))
-	l14_data.set("Last Name: {}".format(accountInf["Last Name"]))
+	l13_data.set("First Name: {}".format(accountInf["First Name"].title()))
+	l14_data.set("Last Name: {}".format(accountInf["Last Name"].title()))
 	l15_data.set("Username: {}".format(accountInf["Username"]))
-	l16_data.set("Password: {}".format(accountInf["Password"]))
+	l16_data.set("Password: {}".format("*"*(len(accountInf["Password"])-1)))
 	l17_data.set("Birthday: {}".format(accountInf["Birthday"]))
 
 	l12.place(x=15,y=30) 
@@ -248,12 +249,10 @@ def refreshSt(scrolledText,table):
 	for column in data:
 		for i in range(len(column)):
 			if i != 0:
-				scrolledText.insert('end', "     {}".format(str(column[i])))
+				scrolledText.insert('end',str(column[i]) + " "*(15 - len(column[i])) +  "|")
 		if column == data[-1]:
 			lastData = data[-1]
 		scrolledText.insert("end","\n")
-	print("DASDSKDJSJDHJSHDJ")
-	print(lastData)
 	scrolledText.component('rowheader').insert('end', lastData[0])
 	scrolledText.component('rowheader').insert("end","\n")
 
@@ -262,27 +261,25 @@ def refreshSt(scrolledText,table):
 	            Header_state = 'disabled',
 	        )
 	dbManager.close()
-
+          
 def fillSt(scrolledText,table,table_columns):
 	columns = str.split(table_columns,",")
 	columns.reverse()
-	print(columns)
 
 	# Create the header for the row headers
 	scrolledText.component('rowcolumnheader').insert('end', 'ID')
 
 	# Create the column headers
 	for column in columns:
-		scrolledText.component('columnheader').insert('0.0', "{}     ".format(column.title()))
+		scrolledText.component('columnheader').insert('0.0', "{}".format(column.title()) + " "*(15 - len(column)) + "|")
 
 	dbManager.connect()
 	dbManager.create_table(table,table_columns)
 	allData = dbManager.getTableData(table,"id=id")
-	print(allData)
 	for data in allData:
 		for x in range(len(data)):
 			if x != 0:
-				scrolledText.insert('end', "     " + str(data[x]))
+				scrolledText.insert('end',str(data[x]) + " "*(15 - len(data[x])) +  "|")
 
 		scrolledText.insert("end","\n")
 		scrolledText.component('rowheader').insert('end', data[0])
@@ -292,7 +289,6 @@ def fillSt(scrolledText,table,table_columns):
 	            text_state = 'disabled',
 	            Header_state = 'disabled',
 	        )
-
 def getAddEntries(frame,entriesNeeded):
 	e13 = tk.Entry(frame,font=("",20))
 	e14 = tk.Entry(frame,font=("",20))
@@ -309,7 +305,8 @@ def getAddEntries(frame,entriesNeeded):
 		entries_returned.append(entries_classesAdd[i])
 	return entries_returned
 
-def insertValues(scrolledText,table,entries,columns):
+def insertValues(toplevel,scrolledText,table,entries,columns,messageText):
+	insert = True
 	dbManager.connect()
 	entries = [entry for entry in tuple(entries)]
 	entries_get = []
@@ -318,30 +315,35 @@ def insertValues(scrolledText,table,entries,columns):
 	values = ""
 	x = 0
 	for entry_get in entries_get:
+		if len(entry_get) >= 15:
+			insert = False
 		if x != 0:
 			values += "," + entry_get
 		else:
 			values += entry_get
 		x += 1
-
-	dbManager.insert(table,columns,tuple(str.split(values,",")))
+	if insert:
+		dbManager.insert(table,columns,tuple(str.split(values,",")))
+		toplevel.destroy()
+		messagebox.showinfo("Successful",messageText)
+		refreshSt(scrolledText,table)
+	else:
+		messagebox.showerror("Error","15 Characters is the limit!")
 	dbManager.close()
-	refreshSt(scrolledText,table)
 
 
-def addClass(scrolledText,table,columns,titleText):
+
+def addClass(scrolledText,table,columns,titleText,messageText):
 	x = 0
 	for column in columns:
 		if column == "hoursWeek":
 			columns[x] = "Hours"
 		x += 1
-	print(columns)
 	create = topL.Create()
 	top = create.top(root,titleText,h=600)
 	entries_classesAdd = getAddEntries(top,len(columns))
 	create.title(top,titleText)
 	create.top_labels(top,columns,xpos=50)
-	print(entries_classesAdd)
 	create.top_entries(top,entries_classesAdd,columns)
 	x = 0
 	columnsText = ""
@@ -355,7 +357,7 @@ def addClass(scrolledText,table,columns,titleText):
 		x += 1
 	columns = columnsText
 
-	button = create.top_button(top,lambda: insertValues(scrolledText,table,entries_classesAdd,columns),150)
+	button = create.top_button(top,lambda: insertValues(top,scrolledText,table,entries_classesAdd,columns,messageText),150)
 	create.changeGeometry(top)
 
 
@@ -397,7 +399,7 @@ employees_columns = """
 			address TEXT,
 			role TEXT,
 			classes INTEGER,
-			wage INTEGER
+			wage INTEGER CHECK
 """
 
 accounts_columnsList = "name,lastname,username,password,birthday"
@@ -413,7 +415,7 @@ dbManager.create_table("accounts",accounts_columns)
 dbManager.close()
 
 
-root = tk.Tk()
+root = tix.Tk()
 root.title("School Management")
 w = 900 # width for the Tk root
 h = 500 # height for the Tk root
@@ -589,7 +591,7 @@ columns = 'Subject/Difficulty/Duration'
 
 fillSt(st1,"ClassTypes",classTypes_columnsList)
 
-b9 = tk.Button(tabClassTypes,text="ADD",width=20,height=3,command=lambda: addClass(st1,"ClassTypes",str.split(classTypes_columnsList,","),"Add class type"))
+b9 = tk.Button(tabClassTypes,text="ADD",width=20,height=3,command=lambda: addClass(st1,"ClassTypes",str.split(classTypes_columnsList,","),"Add class type","Successfully added class type!"),)
 b9.place(x=100,y=410)
 
 b10 = tk.Button(tabClassTypes,text="EDIT",width=20,height=3)
@@ -624,11 +626,10 @@ st2 = Pmw.ScrolledText(tabClasses,
       )
 st2.place(x=50,y=10)
  
-columns2 = 'Name/Subject/Hours per Week/Students/Instructor Name'
 
 fillSt(st2,"Classes",classes_columnsList)
 
-b12 = tk.Button(tabClasses,text="ADD",width=20,height=3,command=lambda: addClass(st2,"Classes",str.split(classes_columnsList,","),"Add class"))
+b12 = tk.Button(tabClasses,text="ADD",width=20,height=3,command=lambda: addClass(st2,"Classes",str.split(classes_columnsList,","),"Add class","Successfully added class!"))
 b12.place(x=100,y=410)
 
 b13 = tk.Button(tabClasses,text="EDIT",width=20,height=3)
@@ -662,11 +663,9 @@ st3 = Pmw.ScrolledText(tabStudents,
       )
 st3.place(x=50,y=10)
  
-columns3 = 'First Name/Last Name/Birthday/Phone/Address'
-
 fillSt(st3,"Students",students_columnsList)
 
-b15 = tk.Button(tabStudents,text="ADD",width=20,height=3,command=lambda: addClass(st3,"Students",str.split(students_columnsList,","),"Add student"))
+b15 = tk.Button(tabStudents,text="ADD",width=20,height=3,command=lambda: addClass(st3,"Students",str.split(students_columnsList,","),"Add student","Successfully added student!"))
 b15.place(x=100,y=410)
 
 b16 = tk.Button(tabStudents,text="EDIT",width=20,height=3)
@@ -701,11 +700,10 @@ st4 = Pmw.ScrolledText(tabStaff,
       )
 st4.place(x=50,y=10)
  
-columns4 = 'First Name/Last Name/Birthday/Phone/Address'
 
 fillSt(st4,"employees",employees_columnsList)
 
-b15 = tk.Button(tabStaff,text="ADD",width=20,height=3,command=lambda: addClass(st4,"employees",str.split(employees_columnsList,","),"Add employees"))
+b15 = tk.Button(tabStaff,text="ADD",width=20,height=3,command=lambda: addClass(st4,"employees",str.split(employees_columnsList,","),"Add employee","Successfully added employee!"))
 b15.place(x=100,y=410)
 
 b16 = tk.Button(tabStaff,text="EDIT",width=20,height=3)

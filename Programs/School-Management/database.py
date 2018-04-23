@@ -24,6 +24,10 @@ class Manage:
 
 	def create_table(self,table,columns):
 		c = self.conn.cursor()
+		print("""CREATE TABLE IF NOT EXISTS {}(
+			ID INTEGER PRIMARY KEY AUTOINCREMENT,
+			{})
+				""".format(table,columns))
 		c.execute("""CREATE TABLE IF NOT EXISTS {}(
 			ID INTEGER PRIMARY KEY AUTOINCREMENT,
 			{})
@@ -43,7 +47,7 @@ class Manage:
 	def update(self,table,columns,values):
 		c = self.conn.cursor()
 		
-		nValues = numberColumns(columns)
+		nValues = numberColumns(columns,split=True)
 		c.execute("UPDATE {} SET {} WHERE {}".format(table,columns,values))
 		self.conn.commit() 
 		print("""In  table {}
@@ -72,11 +76,11 @@ class Manage:
 		print("DISCONNECTED FROM {}".format(self.fileLocation))
 
 #Testing
-#dbManage = Manage("database.db")
-#dbManage.connect()
+dbManage = Manage("database.db")
+dbManage.connect()
 #dbManage.update("accounts","password='gjergji.12345'","id=1")
-#acc = dbManage.getTableData("accounts","id=2")
-#print(acc["ID"])
+acc = dbManage.getTableData("accounts","id=2")
+#print(acc["Birthday"])
 #acc = dbManage.getAccounts("accounts")
 #print(acc)
 

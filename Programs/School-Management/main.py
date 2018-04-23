@@ -9,7 +9,7 @@ import database as db
 import login_system as ls
 import Pmw, string
 import topLevel as topL
-import time
+import time #, pygubu
 
 
 def hasNumbers(inputString):
@@ -29,11 +29,16 @@ def showRegister():
 		label.place(x=200,y=ypos)
 		ypos += 40
 
-	showEntries = [e3,e4,e5,e6,e7]
+	showEntries = [e3,e4,e5,e6]
 	ypos = 150
 	for entry in showEntries:
 		entry.place(x=370,y=ypos)
 		ypos += 40
+
+	ypos += 10
+	spinBoxDay.place(x=370,y=ypos,height=20,width=50)
+	spinBoxMonth.place(x=430,y=ypos,height=20,width=50)
+	spinBoxYear.place(x=490,y=ypos,height=20,width=50)
 
 	b3.place(x=300,y=350,height=50) # Register 
 	b4.place(x=500,y=350,height=50) # Show Login
@@ -97,7 +102,7 @@ def logged_out():
 
 def cancelEdit():
 	#Removing edit widgets
-	cancelEditWidgets = [b7,b8,e8,e9,e10,e11,e12,b8]
+	cancelEditWidgets = [b7,b8,e8,e9,e10,e11,b8,spinBoxDay,spinBoxMonth,spinBoxYear]
 	for widget in cancelEditWidgets:
 		widget.place_forget()
 
@@ -108,13 +113,14 @@ def cancelEdit():
 	tabAccountWidgets(ls.LoginSystem().login(account["Username"],account["Password"]))
 
 def saveAccountInfo(event=None):
+	birthday_date = "{}/{}/{}".format(spinBoxDay_data.get(),spinBoxMonth_data.get(),spinBoxYear_data.get())
 	dbManager.connect()
 	dbManager.update("accounts","""
 							name='{}',
 							lastname='{}',
 							username='{}',
 							password='{}',
-							birthday='{}'""".format(e8.get(),e9.get(),e10.get(),e11.get(),e12.get()),
+							birthday='{}'""".format(e8.get(),e9.get(),e10.get(),e11.get(),birthday_date),
 								"username='{}' and password='{}'".format(e1.get(),e2.get()))
 	messagebox.showinfo("Successful","Account info have been changed successfully")
 	e1_text.set(e10.get())
@@ -145,13 +151,22 @@ def editAccountInfo():
 	e9_text.set(account["Last Name"])
 	e10_text.set(account["Username"])
 	e11_text.set(account["Password"])
-	e12_text.set(account["Birthday"])
 
-	entries = [e8,e9,e10,e11,e12]
+	entries = [e8,e9,e10,e11]
 	ypos = 100
 	for entry in entries:
 		entry.place(x=275,y=ypos,width=200,height=40)
 		ypos += 40
+
+	accountBirthday = str.split(account["Birthday"],"/")
+	spinBoxDay_data.set(accountBirthday[0])
+	spinBoxMonth_data.set(accountBirthday[1])
+	spinBoxYear_data.set(accountBirthday[2])
+
+	ypos += 25
+	spinBoxDay.place(x=275,y=ypos,height=30,width=60)
+	spinBoxMonth.place(x=275+60,y=ypos,height=30,width=60)
+	spinBoxYear.place(x=275+60+60,y=ypos,height=30,width=60)
 
 
 def tabAccountWidgets(accountInf):
@@ -172,6 +187,7 @@ def tabAccountWidgets(accountInf):
 
 	b6.place(x=500,y=180,width=100,height=40)
 
+
 def loginAttempt(event=None):
 	loginSystem = ls.LoginSystem()
 	account = loginSystem.login(e1.get(),e2.get())
@@ -188,13 +204,13 @@ def loginAttempt(event=None):
 def createAccount(event=None):
 	dbManager.connect()
 	dbManager.create_table("accounts",accounts_columns)
+	birthday_date = "{}/{}/{}".format(spinBoxDay_data.get(),spinBoxMonth_data.get(),spinBoxYear_data.get())
 	#Testing
-	#values = e3.get(),e4.get(),e5.get(),e6.get(),e7.get()	
 	#dbManager.insert("accounts",accounts_columnsList,values)
-	if e3.get() and e4.get() and e5.get() and e6.get() and e7.get():
+	if e3.get() and e4.get() and e5.get() and e6.get() and birthday_date:
 		if not hasNumbers(e3.get()) and not hasNumbers(e4.get()):
 			try:
-				values = e3.get(),e4.get(),e5.get(),e6.get(),e7.get()	
+				values = e3.get(),e4.get(),e5.get(),e6.get(),birthday_date	
 				dbManager.insert("accounts",accounts_columnsList,values)
 				l11.place_forget()
 				messagebox.showinfo("Successful!","You have successfully signed up!")
@@ -439,6 +455,10 @@ createTop = topL.Create()
 
 entriesList = []
 
+
+#builder = pygubu.Builder()
+#builder.add_from_file("LabelFrame_2.ui")
+
 tabControl = ttk.Notebook(root)
 tabDashboard = ttk.Frame(tabControl)
 tabStaff = ttk.Frame(tabControl)
@@ -499,14 +519,24 @@ e5.bind("<Return>", createAccount)
 e6 = tk.Entry(root,font=("",20),show="*")
 e6.bind("<Return>", createAccount)
 
-e7 = tk.Entry(root,font=("",20))
-e7.bind("<Return>", createAccount)
-
 b3 = tk.Button(root,text="Register",font=("",28),command=createAccount)
 
 b4 = tk.Button(root,text="Login",font=("",28),command=showLogin)
 
-registerWidgets = [l5,l6,l7,l8,l9,l10,l11,e3,e4,e5,e6,e7,b3,b4]
+spinBoxDay_data = tk.StringVar()
+spinBoxDay = tk.Spinbox(root,from_=01, to=31, increment=1, textvariable=spinBoxDay_data,
+            validate='all')
+
+spinBoxMonth_data = tk.StringVar()
+spinBoxMonth = tk.Spinbox(root,from_=01, to=12, increment=1, textvariable=spinBoxMonth_data,
+            validate='all')
+
+spinBoxYear_data = tk.StringVar()
+spinBoxYear = tk.Spinbox(root,from_=1980, to=2018, increment=1, textvariable=spinBoxYear_data,
+            validate='all')
+
+
+registerWidgets = [l5,l6,l7,l8,l9,l10,l11,e3,e4,e5,e6,b3,b4,spinBoxDay,spinBoxMonth,spinBoxYear]
 
 showLogin()
 
@@ -549,15 +579,16 @@ e11.bind("<Return>", saveAccountInfo)
 
 l17_data = tk.StringVar()
 l17 = tk.Label(tabAccount,textvariable=l17_data,font=("",20))
-e12_text = tk.StringVar()
-e12 = tk.Entry(tabAccount,textvariable=e12_text,font=("",20))
+
+
+
 e8.bind("<Return>", saveAccountInfo)
 
 b6 = tk.Button(tabAccount,text="Edit",command=editAccountInfo)
 b7 = tk.Button(tabAccount,text="Save",command=saveAccountInfo)
 b8 = tk.Button(tabAccount,text="Cancel",command=cancelEdit)
 
-accountsWidgets = [l12,l13,l14,l15,l16,l17,e8,e9,e10,e11,e12,b6,b7,b8]
+accountsWidgets = [l12,l13,l14,l15,l16,l17,e8,e9,e10,e11,b6,b7,b8,spinBoxDay,spinBoxMonth,spinBoxYear]
 
 
 ###Class types widgets

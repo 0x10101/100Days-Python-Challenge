@@ -361,19 +361,7 @@ def addClass(scrolledText,table,columns,titleText,messageText):
 	create.title(top,titleText)
 	create.top_labels(top,columns,xpos=50)
 	create.top_entries(top,entries_classesAdd,columns)
-	x = 0
-	columnsText = ""
-	for column in columns:
-		if column == "Hours":
-			columns[x] = "hoursWeek"
-		if x != 0:
-			columnsText += "," + column
-		else:
-			columnsText += column
-		x += 1
-	columns = columnsText
-
-	button = create.top_button(top,lambda: insertValues(top,scrolledText,table,entries_classesAdd,columns,messageText),150)
+	button = create.top_button(top,lambda: insertValues(top,scrolledText,table,entries_classesAdd,classes_columnsList,messageText),150)
 	create.changeGeometry(top)
 
 
@@ -395,7 +383,8 @@ classes_columns = """
 			subject TEXT,
 			hoursWeek INTEGER,
 			students INTEGER,
-			instructor TEXT"""
+			instructor TEXT,
+			price INTEGER"""
 
 subjects_column = "subject TEXT UNIQUE"
 
@@ -420,7 +409,7 @@ employees_columns = """
 
 accounts_columnsList = "name,lastname,username,password,birthday"
 classTypes_columnsList = "subject,difficulty,duration"
-classes_columnsList = "name,subject,hoursWeek,students,instructor"
+classes_columnsList = "name,subject,hoursWeek,students,instructor,price"
 subjects_columnList = "subject"
 students_columnsList = "firstName,lastName,birthday,phone,address"
 employees_columnsList = "firstName,lastName,birthday,phone,address,role,classes,wage"
@@ -432,6 +421,7 @@ dbManager.close()
 
 
 root = tix.Tk()
+
 root.title("School Management")
 w = 900 # width for the Tk root
 h = 500 # height for the Tk root
@@ -618,7 +608,7 @@ st1 = Pmw.ScrolledText(tabClassTypes,
         rowheader_pady = 4,
       )
 st1.place(x=50,y=10)
-columns = 'Subject/Difficulty/Duration'
+columns = 'Subject/Difficulty/Duration/Price'
 
 fillSt(st1,"ClassTypes",classTypes_columnsList)
 

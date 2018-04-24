@@ -89,7 +89,7 @@ def logged_in():
 	tabControl.add(tabStudents,text='Students')
 	tabControl.add(tabAccount,text=e1.get())
 	tabControl.pack(expand=1,fill='both')
-	
+
 	updateStats()
 	showStats()
 
@@ -314,27 +314,47 @@ def fillSt(scrolledText,table,table_columns):
 	            Header_state = 'disabled',
 	        )
 def getAddEntries(frame,entriesNeeded):
-	e13 = tk.Entry(frame,font=("",20))
-	e14 = tk.Entry(frame,font=("",20))
-	e15 = tk.Entry(frame,font=("",20))
-	e16 = tk.Entry(frame,font=("",20))
-	e17 = tk.Entry(frame,font=("",20))
-	e18 = tk.Entry(frame,font=("",20))
-	e19 = tk.Entry(frame,font=("",20))
-	e20 = tk.Entry(frame,font=("",20))
+	e13_data = tk.StringVar()
+	e13 = tk.Entry(frame,font=("",20),textvariable=e13_data)
+
+	e14_data = tk.StringVar()
+	e14 = tk.Entry(frame,font=("",20),textvariable=e14_data)
+
+	e15_data = tk.StringVar()
+	e15 = tk.Entry(frame,font=("",20),textvariable=e15_data)
+
+	e16_data = tk.StringVar()
+	e16 = tk.Entry(frame,font=("",20),textvariable=e16_data)
+
+	e17_data = tk.StringVar()
+	e17 = tk.Entry(frame,font=("",20),textvariable=e17_data)
+
+	e18_data = tk.StringVar()
+	e18 = tk.Entry(frame,font=("",20),textvariable=e18_data)
+
+	e19_data = tk.StringVar()
+	e19 = tk.Entry(frame,font=("",20),textvariable=e19_data)
+
+	e20_data = tk.StringVar()
+	e20 = tk.Entry(frame,font=("",20),textvariable=e20_data)
 
 	entries_classesAdd = [e13,e14,e15,e16,e17,e18,e19,e20]
+	entries_textvariable = [e13_data,e14_data,e15_data,e16_data,e17_data,e18_data,
+										e19_data,e20_data]
 	entries_returned = []
+	entries_textvariablesReturned = []
 	for i in range(entriesNeeded):
 		entries_returned.append(entries_classesAdd[i])
-	return entries_returned
+		entries_textvariablesReturned.append(entries_textvariable[i])
+	
+	return [entries_returned,entries_textvariablesReturned]
 
-def insertValues(toplevel,scrolledText,table,entries,columns,messageText):
+def insertValues(toplevel,table,columns,entries,scrolledText,messageText):
 	insert = True
 	dbManager.connect()
-	entries = [entry for entry in tuple(entries)]
+	entries[1] = [entry for entry in tuple(entries)]
 	entries_get = []
-	for entry in entries:
+	for entry in entries[0]:
 		entries_get.append(entry.get())
 	values = ""
 	x = 0
@@ -357,28 +377,41 @@ def insertValues(toplevel,scrolledText,table,entries,columns,messageText):
 
 
 
-def addClass(scrolledText,table,columns,titleText,messageText):
+def addToplevel(scrolledText,table,columns,titleText,messageText):
 	x = 0
-	for column in columns:
-		if column == "hoursWeek":
-			columns[x] = "Hours"
-		x += 1
-	create = topL.Create()
+	print(columns)
+	create = topL.Create()	
 	top = create.top(root,titleText,h=600)
 	entries_classesAdd = getAddEntries(top,len(columns))
 	create.title(top,titleText)
 	labels = create.top_labels(top,columns,xpos=50)
 	create.top_entries(top,labels,entries_classesAdd,columns)
-	button = create.top_button(top,lambda: insertValues(top,scrolledText,table,entries_classesAdd,classes_columnsList,messageText),150)
+
+	x = 0
+	columnsText = ""
+	for column in columns:
+		if x != 0:
+			columnsText += "," + column
+		else:
+			columnsText += column
+		x += 1
+	columns = columnsText
+
+	button = create.top_button(top,lambda: insertValues(top,table,columns,entries_classesAdd,scrolledText,messageText),150)
 	create.changeGeometry(top)
+	updateStats()
+	logged_in()
+	tabDashboard.update()
 
 def updateStats():
-	students = dbManager.getTableData("students","id=id")
+	dbManager.connect()
+	students = dbManager.getTableData("Students","id=id")
+	print("STUDENTS {}".format(len(students)))
 	studentsNr = 0
 	for student in students:
 		studentsNr += 1
 
-	classes = dbManager.getTableData("classes","id=id")
+	classes = dbManager.getTableData("Classes","id=id")
 	classesNr = 0
 	for class_ in classes:
 		classesNr += 1
@@ -388,22 +421,48 @@ def updateStats():
 	for employee in employees:
 		employeesNr += 1
 
-	classTypes = dbManager.getTableData("classTypes","id=id")
+	classTypes = dbManager.getTableData("ClassTypes","id=id")
 	classTypesNr = 0
 	for classType in classTypes:
 		classTypesNr += 1
 
+	incomeCalc = 0
+	for class_ in classes:
+		try:
+			incomeCalc += int(class_[6])
+		except:
+			print("{} isn't integer/float".format(class_[6]))
+
+	outcomeCalc = 0
+	for employee in employees:
+		try:
+			outcomeCalc += int(employee[8])
+		except:
+			print("{} isn't integer/float".format(employee[8]))
+
+
+
+	
 	studentsStats.set("Students: {}".format(studentsNr))
 	classesStats.set("Classes: {}".format(classesNr))
 	employeesStats.set("Employees: {}".format(employeesNr))
 	classTypesStats.set("Class Types: {}".format(classTypesNr))
+	income.set("Income: +{}$".format(incomeCalc))
+
+	outcome.set("Outcome: -{}$".format(outcomeCalc))
+	profit.set("Profit: {}$".format(incomeCalc - outcomeCalc))
+
+
+	dbManager.close()
 
 def showStats():
 	ypos = 100
 	for label in dashboardStats:
-		label.configure(font=("",20))
 		label.place(x=100,y=ypos)
 		ypos += 50
+	l23.place(x=350,y=(ypos/2)-30)
+	l24.place(x=350,y=ypos/2+10)
+	l25.place(x=350,y=ypos/2+50)
 
 
 
@@ -422,7 +481,7 @@ classTypes_columns = """
 classes_columns = """
 			name TEXT UNIQUE,
 			subject TEXT,
-			hoursWeek INTEGER,
+			hours INTEGER,
 			students INTEGER,
 			instructor TEXT,
 			price INTEGER"""
@@ -450,7 +509,7 @@ employees_columns = """
 
 accounts_columnsList = "name,lastname,username,password,birthday"
 classTypes_columnsList = "subject,difficulty,duration"
-classes_columnsList = "name,subject,hoursWeek,students,instructor,price"
+classes_columnsList = "name,subject,hours,students,instructor,price"
 subjects_columnList = "subject"
 students_columnsList = "firstName,lastName,birthday,phone,address"
 employees_columnsList = "firstName,lastName,birthday,phone,address,role,classes,wage"
@@ -497,6 +556,10 @@ tabClassTypes = ttk.Frame(tabControl)
 tabClasses = ttk.Frame(tabControl)
 tabStudents = ttk.Frame(tabControl)
 tabAccount = ttk.Frame(tabControl)
+
+
+tabDashboard.bind("<<NotebookTabChanged>>", 
+       lambda event: event.widget.winfo_children()[event.widget.index("current")].update())
 
 #Login widgets
 l1 = tk.Label(root,text="Sign in",font=("",50))
@@ -580,18 +643,28 @@ l18 = tk.Label(tabDashboard,text="Statistics",font=("",30))
 l18.place(x=50,y=10)
 
 studentsStats = tk.StringVar()
-l19 = tk.Label(tabDashboard,textvariable=studentsStats)
+l19 = tk.Label(tabDashboard,textvariable=studentsStats,font=("",20))
 
 classesStats = tk.StringVar()
-l20 = tk.Label(tabDashboard,textvariable=classesStats)
+l20 = tk.Label(tabDashboard,textvariable=classesStats,font=("",20))
 
 employeesStats = tk.StringVar()
-l21 = tk.Label(tabDashboard,textvariable=employeesStats)
+l21 = tk.Label(tabDashboard,textvariable=employeesStats,font=("",20))
 
 classTypesStats = tk.StringVar()
-l22 = tk.Label(tabDashboard,textvariable=classTypesStats)
+l22 = tk.Label(tabDashboard,textvariable=classTypesStats,font=("",20))
 
-dashboardStats = [l19,l20,l21,l22]
+income = tk.StringVar()
+l23 = tk.Label(tabDashboard,textvariable=income,font=("",20))
+
+outcome = tk.StringVar()
+l24 = tk.Label(tabDashboard,textvariable=outcome,font=("",20))
+
+profit = tk.StringVar()
+l25 = tk.Label(tabDashboard,textvariable=profit,font=("",20))
+
+
+dashboardStats = [l19,l21,l20,l22]
 
 ##
 
@@ -677,7 +750,7 @@ columns = 'Subject/Difficulty/Duration/Price'
 
 fillSt(st1,"ClassTypes",classTypes_columnsList)
 
-b9 = tk.Button(tabClassTypes,text="ADD",width=20,height=3,command=lambda: addClass(st1,"ClassTypes",str.split(classTypes_columnsList,","),"Add class type","Successfully added class type!"),)
+b9 = tk.Button(tabClassTypes,text="ADD",width=20,height=3,command=lambda: addToplevel(st1,"ClassTypes",str.split(classTypes_columnsList,","),"Add class type","Successfully added class type!"),)
 b9.place(x=100,y=410)
 
 b10 = tk.Button(tabClassTypes,text="EDIT",width=20,height=3)
@@ -715,7 +788,7 @@ st2.place(x=50,y=10)
 
 fillSt(st2,"Classes",classes_columnsList)
 
-b12 = tk.Button(tabClasses,text="ADD",width=20,height=3,command=lambda: addClass(st2,"Classes",str.split(classes_columnsList,","),"Add class","Successfully added class!"))
+b12 = tk.Button(tabClasses,text="ADD",width=20,height=3,command=lambda: addToplevel(st2,"Classes",str.split(classes_columnsList,","),"Add class","Successfully added class!"))
 b12.place(x=100,y=410)
 
 b13 = tk.Button(tabClasses,text="EDIT",width=20,height=3)
@@ -751,7 +824,7 @@ st3.place(x=50,y=10)
  
 fillSt(st3,"Students",students_columnsList)
 
-b15 = tk.Button(tabStudents,text="ADD",width=20,height=3,command=lambda: addClass(st3,"Students",str.split(students_columnsList,","),"Add student","Successfully added student!"))
+b15 = tk.Button(tabStudents,text="ADD",width=20,height=3,command=lambda: addToplevel(st3,"Students",str.split(students_columnsList,","),"Add student","Successfully added student!"))
 b15.place(x=100,y=410)
 
 b16 = tk.Button(tabStudents,text="EDIT",width=20,height=3)
@@ -789,7 +862,7 @@ st4.place(x=50,y=10)
 
 fillSt(st4,"employees",employees_columnsList)
 
-b15 = tk.Button(tabStaff,text="ADD",width=20,height=3,command=lambda: addClass(st4,"employees",str.split(employees_columnsList,","),"Add employee","Successfully added employee!"))
+b15 = tk.Button(tabStaff,text="ADD",width=20,height=3,command=lambda: addToplevel(st4,"employees",str.split(employees_columnsList,","),"Add employee","Successfully added employee!"))
 b15.place(x=100,y=410)
 
 b16 = tk.Button(tabStaff,text="EDIT",width=20,height=3)
@@ -798,5 +871,5 @@ b16.place(x=350,y=410)
 b17 = tk.Button(tabStaff,text="DELETE",width=20,height=3)
 b17.place(x=600,y=410)
 
-
+tabDashboard.after_idle(updateStats)
 root.mainloop()

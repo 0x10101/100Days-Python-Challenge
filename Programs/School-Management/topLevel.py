@@ -33,7 +33,6 @@ class Create:
 	def top_labels(self,frame,columns,y_increment=50,fontsize=20,fontfamily="",xpos=100,ypos=100):
 		labels = []
 		for column in columns:
-			print(column)
 			label = tk.Label(frame,text=column.title() + ":",font=(fontfamily,fontsize))
 			label.place(x=xpos,y=ypos)
 			ypos += y_increment
@@ -42,10 +41,31 @@ class Create:
 
 
 
-	def top_entries(self,frame,entries,columns,y_increment=50,xpos=200,ypos=100,width=250,height=50,fontsize=20,fontfamily=""):
-		for entry in entries:
-			entry.place(x=xpos,y=ypos,width=width,height=height)
+	def top_entries(self,frame,labels,entries,columns,y_increment=50,xpos=200,ypos=100,width=250,height=50,fontsize=20,fontfamily=""):
+		labelsText = []
+		for label in labels:
+			labelsText.append(label.cget("text"))
+		print(labelsText)
+		item = 0
+		for entry in entries[0]:
+			#if labelsText[item] not in notEntries:
+			if labelsText[item] == "Birthday:":
+				spinBoxDay = tk.Spinbox(frame,from_=01, to=31, increment=1,
+				            validate='all',font=("",20))
+
+				spinBoxMonth = tk.Spinbox(frame,from_=01, to=12, increment=1,
+				            validate='all',font=("",20))
+
+				spinBoxYear = tk.Spinbox(frame,from_=1980, to=2018, increment=1,
+				            validate='all',font=("",20))
+				spinBoxDay.place(x=xpos,y=ypos,height=50,width=80)
+				spinBoxMonth.place(x=xpos+80,y=ypos,height=50,width=80)
+				spinBoxYear.place(x=xpos+160,y=ypos,height=50,width=100)
+				entries[1][item].set("{}/{}/{}".format(spinBoxDay.get(),spinBoxMonth.get(),spinBoxYear.get()))
+			else:
+				entry.place(x=xpos,y=ypos,width=width,height=height)
 			ypos += y_increment
+			item += 1
 		self.ypos = ypos
 
 	def top_button(self,frame,func,xpos,text="add",width=200,height=50):
@@ -58,7 +78,7 @@ class Create:
 	def changeGeometry(self,frame):
 		frame.geometry('%dx%d+%d+%d' % (self.w,self.ypos + 150,self.x,self.y))
 
-
+"""
 
 if __name__ == "__main__":
 	root = tk.Tk()
@@ -82,3 +102,4 @@ if __name__ == "__main__":
 
 	root.mainloop()
 
+"""

@@ -10,6 +10,11 @@ import login_system as ls
 import Pmw, string
 import topLevel as topL
 import time #, pygubu
+import matplotlib
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+from matplotlib.figure import Figure
+
+matplotlib.use("TkAgg")
 
 
 def hasNumbers(inputString):
@@ -84,6 +89,9 @@ def logged_in():
 	tabControl.add(tabStudents,text='Students')
 	tabControl.add(tabAccount,text=e1.get())
 	tabControl.pack(expand=1,fill='both')
+	
+	updateStats()
+	showStats()
 
 	b5.place(x=700,y=0,width=200,height=20)
 	s.configure("TNotebook", borderwidth=1)
@@ -359,10 +367,43 @@ def addClass(scrolledText,table,columns,titleText,messageText):
 	top = create.top(root,titleText,h=600)
 	entries_classesAdd = getAddEntries(top,len(columns))
 	create.title(top,titleText)
-	create.top_labels(top,columns,xpos=50)
-	create.top_entries(top,entries_classesAdd,columns)
+	labels = create.top_labels(top,columns,xpos=50)
+	create.top_entries(top,labels,entries_classesAdd,columns)
 	button = create.top_button(top,lambda: insertValues(top,scrolledText,table,entries_classesAdd,classes_columnsList,messageText),150)
 	create.changeGeometry(top)
+
+def updateStats():
+	students = dbManager.getTableData("students","id=id")
+	studentsNr = 0
+	for student in students:
+		studentsNr += 1
+
+	classes = dbManager.getTableData("classes","id=id")
+	classesNr = 0
+	for class_ in classes:
+		classesNr += 1
+
+	employees = dbManager.getTableData("employees","id=id")
+	employeesNr = 0
+	for employee in employees:
+		employeesNr += 1
+
+	classTypes = dbManager.getTableData("classTypes","id=id")
+	classTypesNr = 0
+	for classType in classTypes:
+		classTypesNr += 1
+
+	studentsStats.set("Students: {}".format(studentsNr))
+	classesStats.set("Classes: {}".format(classesNr))
+	employeesStats.set("Employees: {}".format(employeesNr))
+	classTypesStats.set("Class Types: {}".format(classTypesNr))
+
+def showStats():
+	ypos = 100
+	for label in dashboardStats:
+		label.configure(font=("",20))
+		label.place(x=100,y=ypos)
+		ypos += 50
 
 
 
@@ -530,7 +571,31 @@ registerWidgets = [l5,l6,l7,l8,l9,l10,l11,e3,e4,e5,e6,b3,b4,spinBoxDay,spinBoxMo
 
 showLogin()
 
-###Logged in widgets
+####Logged in widgets
+
+##Dashboard 
+
+
+l18 = tk.Label(tabDashboard,text="Statistics",font=("",30))
+l18.place(x=50,y=10)
+
+studentsStats = tk.StringVar()
+l19 = tk.Label(tabDashboard,textvariable=studentsStats)
+
+classesStats = tk.StringVar()
+l20 = tk.Label(tabDashboard,textvariable=classesStats)
+
+employeesStats = tk.StringVar()
+l21 = tk.Label(tabDashboard,textvariable=employeesStats)
+
+classTypesStats = tk.StringVar()
+l22 = tk.Label(tabDashboard,textvariable=classTypesStats)
+
+dashboardStats = [l19,l20,l21,l22]
+
+##
+
+
 
 # Buttons near notebook widgets
 b5 = tk.Button(root,text="Log out!",command=logged_out)

@@ -36,7 +36,10 @@ class Manage:
 		print("{} table is/was created on {}".format(table,self.fileLocation))
 	def insert(self,table,columns,values,split=True):
 		c = self.conn.cursor()
-		nValues = numberColumns(columns,split=True) 
+		try:
+			nValues = numberColumns(columns,split=True) 
+		except:
+			nValues = numberColumns(columns,split=False) 
 		print("""INSERT INTO {}({})
 		 	Values({})""".format(table,columns,nValues),values)
 		c.execute("""INSERT INTO {}({})
@@ -76,10 +79,10 @@ class Manage:
 		print("DISCONNECTED FROM {}".format(self.fileLocation))
 
 #Testing
-dbManage = Manage("database.db")
-dbManage.connect()
+#dbManage = Manage("database.db")
+#dbManage.connect()
 #dbManage.update("accounts","password='gjergji.12345'","id=1")
-acc = dbManage.getTableData("accounts","id=2")
+#acc = dbManage.getTableData("accounts","id=2")
 #print(acc["Birthday"])
 #acc = dbManage.getAccounts("accounts")
 #print(acc)

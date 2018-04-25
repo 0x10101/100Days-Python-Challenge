@@ -47,25 +47,37 @@ class Create:
 			labelsText.append(label.cget("text"))
 		print(labelsText)
 		item = 0
-		for entry in entries[0]:
-			#if labelsText[item] not in notEntries:
-			if labelsText[item] == "Birthday:":
-				spinBoxDay = tk.Spinbox(frame,from_=01, to=31, increment=1,
-				            validate='all',font=("",20))
+		if entries:
+			for entry in entries[0]:
+				#if labelsText[item] not in notEntries:
+				if labelsText[item] == "Birthday:":
+					spinBoxDay_data2 = tk.StringVar()
+					spinBoxDay2 = tk.Spinbox(frame,from_=01, to=31, increment=1,
+					            validate='all',font=("",20),textvariable=spinBoxDay_data2)
 
-				spinBoxMonth = tk.Spinbox(frame,from_=01, to=12, increment=1,
-				            validate='all',font=("",20))
-
-				spinBoxYear = tk.Spinbox(frame,from_=1980, to=2018, increment=1,
-				            validate='all',font=("",20))
-				spinBoxDay.place(x=xpos,y=ypos,height=50,width=80)
-				spinBoxMonth.place(x=xpos+80,y=ypos,height=50,width=80)
-				spinBoxYear.place(x=xpos+160,y=ypos,height=50,width=100)
-				entries[1][item].set("{}/{}/{}".format(spinBoxDay.get(),spinBoxMonth.get(),spinBoxYear.get()))
-			else:
-				entry.place(x=xpos,y=ypos,width=width,height=height)
-			ypos += y_increment
-			item += 1
+					spinBoxMonth_data2 = tk.StringVar() 
+	 				spinBoxMonth2 = tk.Spinbox(frame,from_=01, to=12, increment=1,
+					            validate='all',font=("",20),textvariable=spinBoxMonth_data2)
+	 				
+	 				spinBoxYear_data2 = tk.StringVar()
+					spinBoxYear2 = tk.Spinbox(frame,from_=1980, to=2018, increment=1,
+					            validate='all',font=("",20),textvariable=spinBoxYear_data2)
+					
+					spinBoxDay2.place(x=xpos,y=ypos,height=50,width=80)
+					spinBoxMonth2.place(x=xpos+80,y=ypos,height=50,width=80)
+					spinBoxYear2.place(x=xpos+160,y=ypos,height=50,width=100)
+					birthday_date = "{}/{}/{}".format(spinBoxDay_data2.get(),spinBoxMonth_data2.get(),spinBoxYear_data2.get())
+					entries[1][item].set(birthday_date)
+				if labelsText[item] == "Wage:":
+					wage_data = tk.StringVar()
+					wage = tk.Spinbox(frame,from_=100, to=2000, increment=50,
+					            validate='all',font=("",20),textvariable=wage_data)
+					wage.place(x=xpos,y=ypos,height=50,width=200)
+					entries[1][item].set(str(wage_data.get()))
+				else:
+					entry.place(x=xpos,y=ypos,width=width,height=height)
+				ypos += y_increment
+				item += 1
 		self.ypos = ypos
 
 	def top_button(self,frame,func,xpos,text="add",width=200,height=50):
@@ -78,7 +90,6 @@ class Create:
 	def changeGeometry(self,frame):
 		frame.geometry('%dx%d+%d+%d' % (self.w,self.ypos + 150,self.x,self.y))
 
-"""
 
 if __name__ == "__main__":
 	root = tk.Tk()
@@ -96,10 +107,9 @@ if __name__ == "__main__":
 
 	create.title(top,"Add Employee")
 	labels = create.top_labels(top,str.split(employees,","))
-	entries = create.top_entries(top,str.split(employees,","),width=150,height=40,xpos=300)
-	create.top_button(top,lambda: show_data(entries),160,500)
+	entries = create.top_entries(top,labels,[],str.split(employees,","))
+	create.top_button(top,lambda: show_data(entries),160)
 
 
 	root.mainloop()
 
-"""

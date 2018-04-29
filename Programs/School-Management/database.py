@@ -1,5 +1,6 @@
 import sqlite3
 import widgetsFunctions as widgetsF
+import treeviewFunctions as treeviewF
 #name,lastname,username,password,birthday
 #name,lname,usern,passw,birthday
 
@@ -77,6 +78,12 @@ class Manage:
 		if debug:
 			print("Data returned {}".format(data))
 		return data
+	def delete(self,table,where,debug=False):
+		c = self.conn.cursor()
+		c.execute("DELETE FROM {} WHERE {}".format(table,where))
+		self.conn.commit()
+		if debug:
+			print("DELETE FROM {} WHERE {}".format(table,where))
 	def close(self):
 		self.conn.close()
 		print("DISCONNECTED FROM {}".format(self.fileLocation))
@@ -103,7 +110,7 @@ def insertValues(toplevel,table,columns,entries,treeView,messageText,messagebox)
 		dbManager.insert(table,columns,tuple(str.split(values,",")))
 		toplevel.destroy()
 		messagebox.showinfo("Successful",messageText)
-		widgetsF.updateTreeView(treeView,table)
+		treeviewF.updateTreeView(treeView,table)
 	else:
 		messagebox.showerror("Error","15 Characters is the limit!")
 	dbManager.close()

@@ -14,7 +14,7 @@ import matplotlib
 #from matplotlib.figure import Figure
 import widgetsFunctions as widgetsF
 import accountSystem as accountS
-
+import treeviewFunctions as treeviewF
 
 def login(event=None):
 	loginS = ls.LoginSystem()
@@ -311,7 +311,7 @@ accountsWidgets = {"label12":l12,
 
 fixedFont = Pmw.logicalfont('Fixed')
 
-treeClassType = widgetsF.createTreeView(tabClassTypes,"ClassTypes",["ID"] + str.split(db.classTypes_columnsList,","))
+treeClassType = treeviewF.createTreeView(tabClassTypes,"ClassTypes",["ID"] + str.split(db.classTypes_columnsList,","))
 #widgetsF.fillSt(st1,"ClassTypes",db.classTypes_columnsList)
 
 
@@ -321,13 +321,13 @@ b9.place(x=100,y=410)
 b10 = tk.Button(tabClassTypes,text="EDIT",width=20,height=3)
 b10.place(x=350,y=410)
 
-b11 = tk.Button(tabClassTypes,text="DELETE",width=20,height=3)
+b11 = tk.Button(tabClassTypes,text="DELETE",width=20,height=3,command=lambda: treeviewF.delete(treeClassType,"ClassTypes",dashboardData))
 b11.place(x=600,y=410)
 
 ##Classes
 
  
-treeClasses = widgetsF.createTreeView(tabClasses,"Classes",["ID"] + str.split(db.classes_columnsList,","))
+treeClasses = treeviewF.createTreeView(tabClasses,"Classes",["ID"] + str.split(db.classes_columnsList,","))
 
 
 
@@ -337,12 +337,12 @@ b12.place(x=100,y=410)
 b13 = tk.Button(tabClasses,text="EDIT",width=20,height=3)
 b13.place(x=350,y=410)
 
-b14 = tk.Button(tabClasses,text="DELETE",width=20,height=3)
+b14 = tk.Button(tabClasses,text="DELETE",width=20,height=3,command=lambda: treeviewF.delete(treeClasses,"Classes",dashboardData))
 b14.place(x=600,y=410)
 
 ### Students widgets
 
-treeStudents = widgetsF.createTreeView(tabStudents,"Students",["ID"] + str.split(db.students_columnsList,","))
+treeStudents = treeviewF.createTreeView(tabStudents,"Students",["ID"] + str.split(db.students_columnsList,","))
 
 
 b15 = tk.Button(tabStudents,text="ADD",width=20,height=3,command=lambda: widgetsF.addToplevel(root,treeStudents,"Students",str.split(db.students_columnsList,","),"Add student","Successfully added student!",dashboardData,tabDashboard,messagebox))
@@ -351,13 +351,13 @@ b15.place(x=100,y=410)
 b16 = tk.Button(tabStudents,text="EDIT",width=20,height=3)
 b16.place(x=350,y=410)
 
-b17 = tk.Button(tabStudents,text="DELETE",width=20,height=3)
+b17 = tk.Button(tabStudents,text="DELETE",width=20,height=3,command=lambda: treeviewF.delete(treeStudents,"Students",dashboardData))
 b17.place(x=600,y=410)
 
 
 ### Staff Management
 
-treeStaff = widgetsF.createTreeView(tabStaff,"employees",["ID"] + str.split(db.employees_columnsList,","))
+treeStaff = treeviewF.createTreeView(tabStaff,"employees",["ID"] + str.split(db.employees_columnsList,","))
 
 b15 = tk.Button(tabStaff,text="ADD",width=20,height=3,command=lambda: widgetsF.addToplevel(root,treeStaff,"employees",str.split(db.employees_columnsList,","),"Add employee","Successfully added employee!",dashboardData,tabDashboard,messagebox))
 b15.place(x=100,y=410)
@@ -365,7 +365,7 @@ b15.place(x=100,y=410)
 b16 = tk.Button(tabStaff,text="EDIT",width=20,height=3)
 b16.place(x=350,y=410)
 
-b17 = tk.Button(tabStaff,text="DELETE",width=20,height=3)
+b17 = tk.Button(tabStaff,text="DELETE",width=20,height=3,command=lambda: treeviewF.delete(treeStaff,"employees",dashboardData))
 b17.place(x=600,y=410)
 
 #tabDashboard.after_idle(updateStats)

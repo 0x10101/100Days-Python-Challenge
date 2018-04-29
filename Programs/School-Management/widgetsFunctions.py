@@ -1,6 +1,7 @@
 import database as db
 import topLevel as topL
 import tkinter as tk
+from tkinter import ttk
 import time 
 
 def showRegister(loginWidgets,registerWidgets):
@@ -137,34 +138,6 @@ def getAddEntries(frame,entriesNeeded):
 	return [entries_returned,entries_textvariablesReturned]
 
 
-def addToplevel(frame,scrolledText,table,columns,titleText,messageText,dashboardData,tabDashboard,messagebox):
-	x = 0
-	print(columns)
-	create = topL.Create()	
-	top = create.top(frame,titleText,h=600)
-	entries_classesAdd = getAddEntries(top,len(columns))
-	create.title(top,titleText)
-	labels = create.top_labels(top,columns,xpos=50)
-	create.top_entries(top,labels,entries_classesAdd,columns)
-
-	x = 0
-	columnsText = ""
-	for column in columns:
-		if x != 0:
-			columnsText += "," + column
-		else:
-			columnsText += column
-		x += 1
-	columns = columnsText
-
-	button_func = lambda: db.insertValues(top,table,columns,
-					entries_classesAdd,scrolledText,messageText,messagebox)
-	button = create.top_button(top,button_func,150)
-	create.changeGeometry(top)
-	updateStats(dashboardData)
-	#logged_in()
-	tabDashboard.update()
-
 def tabAccountWidgets(accountsWidgets,accountsData,accountInf):
 	accountsData["l13_data"].set("First Name: {}".format(accountInf["First Name"].title()))
 	accountsData["l14_data"].set("Last Name: {}".format(accountInf["Last Name"].title()))
@@ -234,58 +207,75 @@ def updateStats(data):
 	data["outcome"].set("Outcome: -{}$".format(outcomeCalc))
 	data["profit"].set("Profit: {}$".format(incomeCalc - outcomeCalc))
 
-def fillSt(scrolledText,table,table_columns):
-	columns = str.split(table_columns,",")
-	columns.reverse()
 
-	# Create the header for the row headers
-	scrolledText.component('rowcolumnheader').insert('end', 'ID')
+def addToplevel(frame,treeView,table,columns,titleText,messageText,dashboardData,tabDashboard,messagebox):
+	x = 0
+	print(columns)
+	create = topL.Create()	
+	top = create.top(frame,titleText,h=600)
+	entries_classesAdd = getAddEntries(top,len(columns))
+	create.title(top,titleText)
+	labels = create.top_labels(top,columns,xpos=50)
+	create.top_entries(top,labels,entries_classesAdd,columns)
 
-	# Create the column headers
+	x = 0
+	columnsText = ""
 	for column in columns:
-		scrolledText.component('columnheader').insert('0.0', "{}".format(column.title()) + " "*(15 - len(column)) + "|")
+		if x != 0:
+			columnsText += "," + column
+		else:
+			columnsText += column
+		x += 1
+	columns = columnsText
+
+	button_func = lambda: db.insertValues(top,table,columns,
+					entries_classesAdd,treeView,messageText,messagebox)
+	button = create.top_button(top,button_func,150)
+	create.changeGeometry(top)
+	updateStats(dashboardData)
+	#logged_in()
+	tabDashboard.update()
+
+
+def createTreeView(tab,table,columns):
+	tree = ttk.Treeview(tab,columns=columns) #height=18
+
+	for column in tree["columns"]:
+		if column == "ID":
+			tree.column("{}".format(column),minwidth=0,width=30)
+		else:
+			tree.column("{}".format(column),minwidth=0,width=100)
+
+	for column in tree["columns"]:
+		tree.heading("{}".format(column),text=column)
 
 	dbManager = db.Manage("database.db")
 	dbManager.connect()
-	dbManager.create_table(table,table_columns)
-	allData = dbManager.getTableData(table,"id=id")
-	for data in allData:
-		for x in range(len(data)):
-			if x != 0:
-				scrolledText.insert('end',str(data[x]) + " "*(15 - len(data[x])) +  "|")
 
-		scrolledText.insert("end","\n")
-		scrolledText.component('rowheader').insert('end', data[0])
-		scrolledText.component('rowheader').insert("end","\n")
+	for row in dbManager.getTableData(table,"id=id"):
+		tree.insert("" , 0,    text="", values=(row))
 
-	scrolledText.configure(
-	            text_state = 'disabled',
-	            Header_state = 'disabled',
-	        )
+	dbManager.close()
 
-def refreshSt(scrolledText,table):
-	time.sleep(0.5)
-	scrolledText.clear()
+	tree.place(x=10,y=10)
+	return tree
+
+def updateTreeView(treeView,table):
+	treeView.delete(*treeView.get_children())
+
+	for column in treeView["columns"]:
+		if column == "ID":
+			treeView.column("{}".format(column),minwidth=0,width=30)
+		else:
+			treeView.column("{}".format(column),minwidth=0,width=100)
+
+	for column in treeView["columns"]:
+		treeView.heading("{}".format(column),text=column)
+
 	dbManager = db.Manage("database.db")
 	dbManager.connect()
-	scrolledText.configure(
-            text_state = 'normal',
-            Header_state = 'normal',
-        )
-	lastData = []
-	data = dbManager.getTableData(table,"id=id")
-	for column in data:
-		for i in range(len(column)):
-			if i != 0:
-				scrolledText.insert('end',str(column[i]) + " "*(15 - len(column[i])) +  "|")
-		if column == data[-1]:
-			lastData = data[-1]
-		scrolledText.insert("end","\n")
-	scrolledText.component('rowheader').insert('end', lastData[0])
-	scrolledText.component('rowheader').insert("end","\n")
 
-	scrolledText.configure(
-	            text_state = 'disabled',
-	            Header_state = 'disabled',
-	        )
+	for row in dbManager.getTableData(table,"id=id"):
+		treeView.insert("" , 0,    text="", values=(row))
+
 	dbManager.close()

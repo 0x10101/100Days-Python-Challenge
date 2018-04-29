@@ -81,7 +81,7 @@ class Manage:
 		self.conn.close()
 		print("DISCONNECTED FROM {}".format(self.fileLocation))
 
-def insertValues(toplevel,table,columns,entries,scrolledText,messageText,messagebox):
+def insertValues(toplevel,table,columns,entries,treeView,messageText,messagebox):
 	insert = True
 	dbManager = Manage("database.db")
 	dbManager.connect()
@@ -103,7 +103,7 @@ def insertValues(toplevel,table,columns,entries,scrolledText,messageText,message
 		dbManager.insert(table,columns,tuple(str.split(values,",")))
 		toplevel.destroy()
 		messagebox.showinfo("Successful",messageText)
-		widgetsF.refreshSt(scrolledText,table)
+		widgetsF.updateTreeView(treeView,table)
 	else:
 		messagebox.showerror("Error","15 Characters is the limit!")
 	dbManager.close()

@@ -310,34 +310,12 @@ accountsWidgets = {"label12":l12,
 
 
 fixedFont = Pmw.logicalfont('Fixed')
-st1 = Pmw.ScrolledText(tabClassTypes,
-        # borderframe = 1,
-        labelpos = 'n',
-        label_text='Class Types',
-        columnheader = 1,
-        rowheader = 1,
-        rowcolumnheader = 1,
-        usehullsize = 1,
-        hull_width = 800,
-        hull_height = 400,
-        text_wrap='none',
-	    text_font = fixedFont,
-	    Header_font = fixedFont,
-	    Header_foreground = 'blue',
-	    rowheader_width = 3,
-	    rowcolumnheader_width = 3,
-        text_padx = 4,
-        text_pady = 4,
-        Header_padx = 4,
-        rowheader_pady = 4,
-      )
-st1.place(x=50,y=10)
-columns = 'Subject/Difficulty/Duration/Price'
 
-widgetsF.fillSt(st1,"ClassTypes",db.classTypes_columnsList)
+treeClassType = widgetsF.createTreeView(tabClassTypes,"ClassTypes",["ID"] + str.split(db.classTypes_columnsList,","))
+#widgetsF.fillSt(st1,"ClassTypes",db.classTypes_columnsList)
 
 
-b9 = tk.Button(tabClassTypes,text="ADD",width=20,height=3,command=lambda: widgetsF.addToplevel(root,st1,"ClassTypes",str.split(db.classTypes_columnsList,","),"Add class type","Successfully added class type!",dashboardData,tabDashboard,messagebox))
+b9 = tk.Button(tabClassTypes,text="ADD",width=20,height=3,command=lambda: widgetsF.addToplevel(root,treeClassType,"ClassTypes",str.split(db.classTypes_columnsList,","),"Add class type","Successfully added class type!",dashboardData,tabDashboard,messagebox))
 b9.place(x=100,y=410)
 
 b10 = tk.Button(tabClassTypes,text="EDIT",width=20,height=3)
@@ -348,34 +326,12 @@ b11.place(x=600,y=410)
 
 ##Classes
 
-
-st2 = Pmw.ScrolledText(tabClasses,
-        # borderframe = 1,
-        labelpos = 'n',
-        label_text='Classes',
-        columnheader = 1,
-        rowheader = 1,
-        rowcolumnheader = 1,
-        usehullsize = 1,
-        hull_width = 800,
-        hull_height = 400,
-        text_wrap='none',
-	    text_font = fixedFont,
-	    Header_font = fixedFont,
-	    Header_foreground = 'blue',
-	    rowheader_width = 3,
-	    rowcolumnheader_width = 3,
-        text_padx = 4,
-        text_pady = 4,
-        Header_padx = 4,
-        rowheader_pady = 4,
-      )
-st2.place(x=50,y=10)
  
+treeClasses = widgetsF.createTreeView(tabClasses,"Classes",["ID"] + str.split(db.classes_columnsList,","))
 
-widgetsF.fillSt(st2,"Classes",db.classes_columnsList)
 
-b12 = tk.Button(tabClasses,text="ADD",width=20,height=3,command=lambda: widgetsF.addToplevel(root,st2,"Classes",str.split(db.classes_columnsList,","),"Add class","Successfully added class!",dashboardData,tabDashboard,messagebox))
+
+b12 = tk.Button(tabClasses,text="ADD",width=20,height=3,command=lambda: widgetsF.addToplevel(root,treeClasses,"Classes",str.split(db.classes_columnsList,","),"Add class","Successfully added class!",dashboardData,tabDashboard,messagebox))
 b12.place(x=100,y=410)
 
 b13 = tk.Button(tabClasses,text="EDIT",width=20,height=3)
@@ -386,32 +342,10 @@ b14.place(x=600,y=410)
 
 ### Students widgets
 
-st3 = Pmw.ScrolledText(tabStudents,
-        # borderframe = 1,
-        labelpos = 'n',
-        label_text='Students',
-        columnheader = 1,
-        rowheader = 1,
-        rowcolumnheader = 1,
-        usehullsize = 1,
-        hull_width = 800,
-        hull_height = 400,
-        text_wrap='none',
-	    text_font = fixedFont,
-	    Header_font = fixedFont,
-	    Header_foreground = 'blue',
-	    rowheader_width = 3,
-	    rowcolumnheader_width = 3,
-        text_padx = 4,
-        text_pady = 4,
-        Header_padx = 4,
-        rowheader_pady = 4,
-      )
-st3.place(x=50,y=10)
- 
-widgetsF.fillSt(st3,"Students",db.students_columnsList)
+treeStudents = widgetsF.createTreeView(tabStudents,"Students",["ID"] + str.split(db.students_columnsList,","))
 
-b15 = tk.Button(tabStudents,text="ADD",width=20,height=3,command=lambda: widgetsF.addToplevel(root,st3,"Students",str.split(db.students_columnsList,","),"Add student","Successfully added student!",dashboardData,tabDashboard,messagebox))
+
+b15 = tk.Button(tabStudents,text="ADD",width=20,height=3,command=lambda: widgetsF.addToplevel(root,treeStudents,"Students",str.split(db.students_columnsList,","),"Add student","Successfully added student!",dashboardData,tabDashboard,messagebox))
 b15.place(x=100,y=410)
 
 b16 = tk.Button(tabStudents,text="EDIT",width=20,height=3)
@@ -423,33 +357,9 @@ b17.place(x=600,y=410)
 
 ### Staff Management
 
-st4 = Pmw.ScrolledText(tabStaff,
-        # borderframe = 1,
-        labelpos = 'n',
-        label_text='Employees',
-        columnheader = 1,
-        rowheader = 1,
-        rowcolumnheader = 1,
-        usehullsize = 1,
-        hull_width = 800,
-        hull_height = 400,
-        text_wrap='none',
-	    text_font = fixedFont,
-	    Header_font = fixedFont,
-	    Header_foreground = 'blue',
-	    rowheader_width = 3,
-	    rowcolumnheader_width = 3,
-        text_padx = 4,
-        text_pady = 4,
-        Header_padx = 4,
-        rowheader_pady = 4,
-      )
-st4.place(x=50,y=10)
- 
+treeStaff = widgetsF.createTreeView(tabStaff,"employees",["ID"] + str.split(db.employees_columnsList,","))
 
-widgetsF.fillSt(st4,"employees",db.employees_columnsList)
-
-b15 = tk.Button(tabStaff,text="ADD",width=20,height=3,command=lambda: widgetsF.addToplevel(root,st4,"employees",str.split(db.employees_columnsList,","),"Add employee","Successfully added employee!",dashboardData,tabDashboard,messagebox))
+b15 = tk.Button(tabStaff,text="ADD",width=20,height=3,command=lambda: widgetsF.addToplevel(root,treeStaff,"employees",str.split(db.employees_columnsList,","),"Add employee","Successfully added employee!",dashboardData,tabDashboard,messagebox))
 b15.place(x=100,y=410)
 
 b16 = tk.Button(tabStaff,text="EDIT",width=20,height=3)

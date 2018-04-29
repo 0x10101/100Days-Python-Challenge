@@ -1,4 +1,5 @@
 import sqlite3
+import widgetsFunctions as widgetsF
 #name,lastname,username,password,birthday
 #name,lname,usern,passw,birthday
 
@@ -57,11 +58,12 @@ class Manage:
 				Columns changed {}
 				Where values {}""".format(table,columns,values))
 
-	def getTableData(self,table,where,returnAccountDict=True):
+	def getTableData(self,table,where,returnAccountDict=True,debug=False):
 		c = self.conn.cursor()
 		data = []
 		for column in c.execute("SELECT * FROM {} WHERE {}".format(table,where)):
-			print(column)
+			if debug:
+				print(column)
 			data.append(column)
 		if table == "accounts" and data and returnAccountDict:
 			data = {
@@ -72,11 +74,92 @@ class Manage:
 				"Password":"{}".format(data[0][4]),
 				"Birthday":"{}".format(data[0][5])
 			}
-		print("Data returned {}".format(data))
+		if debug:
+			print("Data returned {}".format(data))
 		return data
 	def close(self):
 		self.conn.close()
 		print("DISCONNECTED FROM {}".format(self.fileLocation))
+
+def insertValues(toplevel,table,columns,entries,scrolledText,messageText,messagebox):
+	insert = True
+	dbManager = Manage("database.db")
+	dbManager.connect()
+	entries[1] = [entry for entry in tuple(entries)]
+	entries_get = []
+	for entry in entries[0]:
+		entries_get.append(entry.get())
+	values = ""
+	x = 0
+	for entry_get in entries_get:
+		if len(entry_get) >= 15:
+			insert = False
+		if x != 0:
+			values += "," + entry_get
+		else:
+			values += entry_get
+		x += 1
+	if insert:
+		dbManager.insert(table,columns,tuple(str.split(values,",")))
+		toplevel.destroy()
+		messagebox.showinfo("Successful",messageText)
+		widgetsF.refreshSt(scrolledText,table)
+	else:
+		messagebox.showerror("Error","15 Characters is the limit!")
+	dbManager.close()
+
+accounts_columns = """			
+			name TEXT,
+			lastname TEXT,
+			username TEXT UNIQUE,
+			password TEXT,
+			birthday TEXT """
+
+classTypes_columns = """ 
+			subject TEXT UNIQUE,
+			difficulty TEXT,
+			duration INTEGER """
+
+classes_columns = """
+			name TEXT UNIQUE,
+			subject TEXT,
+			hours INTEGER,
+			students INTEGER,
+			instructor TEXT,
+			price INTEGER"""
+
+subjects_column = "subject TEXT UNIQUE"
+
+students_columns = """
+			firstName TEXT,
+			lastName TEXT,
+			birthday TEXT,
+			phone INTEGER,
+			address TEXT
+"""
+
+employees_columns = """
+			firstName TEXT,
+			lastName TEXT,
+			birthday TEXT,
+			phone INTEGER,
+			address TEXT,
+			role TEXT,
+			classes INTEGER,
+			wage INTEGER CHECK
+"""
+
+accounts_columnsList = "name,lastname,username,password,birthday"
+classTypes_columnsList = "subject,difficulty,duration"
+classes_columnsList = "name,subject,hours,students,instructor,price"
+subjects_columnList = "subject"
+students_columnsList = "firstName,lastName,birthday,phone,address"
+employees_columnsList = "firstName,lastName,birthday,phone,address,role,classes,wage"
+
+dbManager = Manage("database.db")
+dbManager.connect()
+account = dbManager.getTableData("accounts","username='{}' and password='{}'".format("gjergjk71","gjergji.123"))
+
 
 #Testing
 #dbManage = Manage("database.db")
@@ -86,5 +169,4 @@ class Manage:
 #print(acc["Birthday"])
 #acc = dbManage.getAccounts("accounts")
 #print(acc)
-
-#nautilus
+#tilus

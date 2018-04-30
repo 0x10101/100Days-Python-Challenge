@@ -88,7 +88,7 @@ class Manage:
 		self.conn.close()
 		print("DISCONNECTED FROM {}".format(self.fileLocation))
 
-def insertValues(toplevel,table,columns,entries,treeView,messageText,messagebox):
+def insertValues(toplevel,table,columns,entries,treeView,messageText,messagebox,dashboardData):
 	insert = True
 	dbManager = Manage("database.db")
 	dbManager.connect()
@@ -110,10 +110,12 @@ def insertValues(toplevel,table,columns,entries,treeView,messageText,messagebox)
 		dbManager.insert(table,columns,tuple(str.split(values,",")))
 		toplevel.destroy()
 		messagebox.showinfo("Successful",messageText)
-		treeviewF.updateTreeView(treeView,table)
+		treeView.insert("", 0, text="", values=dbManager.getTableData(table,"id=id")[-1])
+		#treeviewF.updateTreeView(treeView,table)
 	else:
 		messagebox.showerror("Error","15 Characters is the limit!")
 	dbManager.close()
+	widgetsF.updateStats(dashboardData)
 
 accounts_columns = """			
 			name TEXT,
@@ -163,9 +165,9 @@ subjects_columnList = "subject"
 students_columnsList = "firstName,lastName,birthday,phone,address"
 employees_columnsList = "firstName,lastName,birthday,phone,address,role,classes,wage"
 
-dbManager = Manage("database.db")
+"""dbManager = Manage("database.db")
 dbManager.connect()
-account = dbManager.getTableData("accounts","username='{}' and password='{}'".format("gjergjk71","gjergji.123"))
+account = dbManager.getTableData("accounts","username='{}' and password='{}'".format("gjergjk71","gjergji.123"))"""
 
 
 #Testing

@@ -1,17 +1,10 @@
-#Version 0.2
+#Version 0.8
 import tkinter as tk
 from tkinter import ttk, messagebox
-#try:
-#	import Tix as tix
-#except:
-#	import tix as tix
 import database as db
 import login_system as ls
-import Pmw, string
+import string
 import topLevel as topL
-import matplotlib
-#from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
-#from matplotlib.figure import Figure
 import widgetsFunctions as widgetsF
 import accountSystem as accountS
 import treeviewFunctions as treeviewF
@@ -309,7 +302,6 @@ accountsWidgets = {"label12":l12,
 
 
 
-fixedFont = Pmw.logicalfont('Fixed')
 
 treeClassType = treeviewF.createTreeView(tabClassTypes,"ClassTypes",["ID"] + str.split(db.classTypes_columnsList,","))
 #widgetsF.fillSt(st1,"ClassTypes",db.classTypes_columnsList)

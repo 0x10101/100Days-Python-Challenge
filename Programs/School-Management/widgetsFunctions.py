@@ -229,7 +229,7 @@ def addToplevel(frame,treeView,table,columns,titleText,messageText,dashboardData
 	columns = columnsText
 
 	button_func = lambda: db.insertValues(top,table,columns,
-					entries_classesAdd,treeView,messageText,messagebox)
+					entries_classesAdd,treeView,messageText,messagebox,dashboardData)
 	button = create.top_button(top,button_func,150)
 	create.changeGeometry(top)
 	updateStats(dashboardData)

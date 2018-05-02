@@ -4,6 +4,11 @@
 {% for entry in toDo %}
 <div class="card text-white bg-warning mb-3" style="max-width: 100rem;">
   <div class="card-body">
+
+  	<a href="delete_todo/{{ entry.id }}">
+  		<button type="submit" class="btn btn-danger float-right">DELETE</button>
+  	</a>
+
     <h5 class="card-title">I have to.. ( {{ entry.date_added }} )</h5>
     <p class="card-text">{{ entry }}</p>
  </div>

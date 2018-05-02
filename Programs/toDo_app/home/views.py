@@ -24,3 +24,7 @@ def new_todo(request):
 
 	context = {"form":form}
 	return render(request, "new_todo.html", context)
+
+def delete_todo(request,id):
+	Entry.objects.filter(id=id).delete()
+	return HttpResponseRedirect("/")

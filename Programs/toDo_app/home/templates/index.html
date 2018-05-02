@@ -4,9 +4,9 @@
 {% for entry in toDo %}
 <div class="card text-white bg-warning mb-3" style="max-width: 100rem;">
   <div class="card-body">
-    <h5 class="card-title">I have to..</h5>
+    <h5 class="card-title">I have to.. ( {{ entry.date_added }} )</h5>
     <p class="card-text">{{ entry }}</p>
-  </div>
+ </div>
 </div>
 {% empty %}
 <div class="card text-white bg-warning mb-3" style="max-width: 100rem;">

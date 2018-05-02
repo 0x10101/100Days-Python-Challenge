@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% for entry in toDo %}
+<div class="card text-white bg-warning mb-3" style="max-width: 100rem;">
+  <div class="card-body">
+    <h5 class="card-title">I have to..</h5>
+    <p class="card-text">{{ entry }}</p>
+  </div>
+</div>
+{% empty %}
+<div class="card text-white bg-warning mb-3" style="max-width: 100rem;">
+  <div class="card-body">
+    <h5 class="card-title">I have nothing to do!</h5>
+  </div>
+</div>
+{% endfor %}
+<hr><hr><hr>
+<a href="/new_todo"><button type="button" class="btn btn-primary btn-lg btn-block fixed">ADD</button></a>
+
+{% endblock content %}
+

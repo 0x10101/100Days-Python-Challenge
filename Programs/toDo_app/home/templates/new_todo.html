@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h3 style="text-align: center;">I have to</h3>
+	<form action="{% url 'home:new_todo' %}" method="post">
+		{% csrf_token %}
+		<!--{{ form.as_p }} 
+		<p><textarea name="text" id="id_text" required rows="10" cols="40">
+				</textarea></p> -->
+		<div class="form-group">
+    		<textarea name="text" id="id_text" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+  		</div>
+		<a href="/"><button type="submit" class="btn btn-primary btn-lg btn-block">ADD</button></a>
+	</form>
+
+{% endblock content %}

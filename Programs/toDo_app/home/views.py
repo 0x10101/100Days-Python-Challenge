@@ -8,7 +8,7 @@ from .forms import EntryForm
 
 
 def index(request):
-	toDo = Entry.objects.all().order_by('-date_added')
+	toDo = Entry.objects.all().order_by('-id')
 
 	context = {"toDo":toDo}
 	return render(request,"index.html",context)
